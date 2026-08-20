@@ -24,8 +24,18 @@ export const inr = (v, dp = 2) =>
 export const pct = (v, dp = 0) =>
   v == null || Number.isNaN(v) ? '—' : `${v > 0 ? '+' : ''}${Number(v).toFixed(dp)}%`
 
-export const prettyLocation = (s) =>
-  s.replace('vellore_', '').replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+// Market ids are <town>_apmc / <town>_sandhai; zone ids are vellore_<zone>.
+// Stripping the "vellore_" prefix first turns `vellore_apmc` into "Apmc" and
+// loses the town entirely, so the queue showed "Banana - Apmc" for the
+// district's principal mandi. Take the suffix off first; strip the prefix only
+// for the report zones, which have no suffix. Mirrors engine.report_places.
+const titleCase = (s) => s.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+
+export const prettyLocation = (s) => {
+  if (s.endsWith('_sandhai')) return `${titleCase(s.slice(0, -'_sandhai'.length))} Sandhai`
+  if (s.endsWith('_apmc')) return `${titleCase(s.slice(0, -'_apmc'.length))} APMC`
+  return titleCase(s.replace(/^vellore_/, ''))
+}
 
 // Display names come from the data itself (meta.item_labels), so the console
 // shows the source's own wording — "Mint(Pudina)", not "Mint Pudina".

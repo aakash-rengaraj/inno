@@ -158,8 +158,8 @@
   "expected": {
    "rate": 55.0,
    "band": [
-    44.89,
-    65.51
+    44.97,
+    65.82
    ],
    "unit": "per_kg"
   },
@@ -170,7 +170,7 @@
     "A": 21
    }
   },
-  "residual_sd": 0.365,
+  "residual_sd": 0.355,
   "peers_in_band": [
    "kahithapattarai_sandhai",
    "katpadi_sandhai",
@@ -189,51 +189,97 @@
  {
   "flag_id": "FLG-0005",
   "tier": 2,
-  "item": "banana_green",
-  "location": "kahithapattarai_sandhai",
+  "item": "banana",
+  "location": "vellore_apmc",
   "window": {
-   "start": "2026-07-08",
-   "end": "2026-08-19"
+   "start": "2026-07-28",
+   "end": "2026-08-08"
   },
   "detector": "persistence",
   "statistic": {
    "name": "consecutive_days_above_band",
-   "value": 43,
+   "value": 12,
+   "threshold": 10
+  },
+  "expected": {
+   "rate": 55.0,
+   "band": [
+    45.37,
+    65.36
+   ],
+   "unit": "per_kg"
+  },
+  "observed": {
+   "median": 90.0,
+   "n": 12,
+   "tier_mix": {
+    "A": 12
+   }
+  },
+  "residual_sd": 0.627,
+  "peers_in_band": [
+   "kahithapattarai_sandhai",
+   "katpadi_sandhai",
+   "pallikonda_sandhai",
+   "perampet_sandhai"
+  ],
+  "narrative": "Prices stayed above the expected range for 12 consecutive days; median +64% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 2 others remained in-band.",
+  "distinct_sellers": 1,
+  "basis": "model",
+  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
+  "group_id": "vellore_apmc",
+  "group_size": 1,
+  "group_rank": 0,
+  "group_primary": true
+ },
+ {
+  "flag_id": "FLG-0006",
+  "tier": 2,
+  "item": "banana_green",
+  "location": "kahithapattarai_sandhai",
+  "window": {
+   "start": "2026-07-08",
+   "end": "2026-08-20"
+  },
+  "detector": "persistence",
+  "statistic": {
+   "name": "consecutive_days_above_band",
+   "value": 44,
    "threshold": 10
   },
   "expected": {
    "rate": 30.0,
    "band": [
-    23.66,
-    38.15
+    23.54,
+    38.28
    ],
    "unit": "per_kg"
   },
   "observed": {
    "median": 50.0,
-   "n": 43,
+   "n": 44,
    "tier_mix": {
-    "A": 43
+    "A": 44
    }
   },
-  "residual_sd": 0.364,
+  "residual_sd": 0.354,
   "peers_in_band": [
    "gudiyatham_sandhai",
    "katpadi_sandhai",
    "pallikonda_sandhai",
    "vellore_apmc"
   ],
-  "narrative": "Prices stayed above the expected range for 43 consecutive days; median +67% relative to the reference rate while peer locations Gudiyatham Sandhai, Katpadi Sandhai and 2 others remained in-band.",
+  "narrative": "Prices stayed above the expected range for 44 consecutive days; median +67% relative to the reference rate while peer locations Gudiyatham Sandhai, Katpadi Sandhai and 2 others remained in-band.",
   "distinct_sellers": 1,
   "basis": "model",
   "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
   "group_id": "kahithapattarai_sandhai",
-  "group_size": 4,
+  "group_size": 3,
   "group_rank": 1,
   "group_primary": false
  },
  {
-  "flag_id": "FLG-0006",
+  "flag_id": "FLG-0007",
   "tier": 2,
   "item": "cauliflower",
   "location": "katpadi_sandhai",
@@ -250,8 +296,8 @@
   "expected": {
    "rate": 20.0,
    "band": [
-    15.77,
-    24.54
+    15.78,
+    25.23
    ],
    "unit": "per_kg"
   },
@@ -262,11 +308,11 @@
     "A": 11
    }
   },
-  "residual_sd": 2.186,
+  "residual_sd": 2.009,
   "peers_in_band": [
    "vellore_apmc"
   ],
-  "narrative": "Prices stayed above the expected range for 11 consecutive days; median +38% relative to the reference rate while peer location Apmc remained in-band.",
+  "narrative": "Prices stayed above the expected range for 11 consecutive days; median +38% relative to the reference rate while peer location Vellore APMC remained in-band.",
   "distinct_sellers": 1,
   "basis": "model",
   "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
@@ -276,7 +322,7 @@
   "group_primary": false
  },
  {
-  "flag_id": "FLG-0007",
+  "flag_id": "FLG-0008",
   "tier": 2,
   "item": "egg_table",
   "location": "vellore_katpadi",
@@ -322,7 +368,7 @@
   "group_primary": false
  },
  {
-  "flag_id": "FLG-0008",
+  "flag_id": "FLG-0009",
   "tier": 1,
   "item": "egg_table",
   "location": "vellore_ranipet",
@@ -364,7 +410,7 @@
   "evidence_floor": "Downgraded: all 90 observations are field reports from 1 independent locality; 3 required. Nearby reports quoting the same price are counted once."
  },
  {
-  "flag_id": "FLG-0009",
+  "flag_id": "FLG-0010",
   "tier": 2,
   "item": "ginger_green",
   "location": "gudiyatham_sandhai",
@@ -381,8 +427,8 @@
   "expected": {
    "rate": 170.0,
    "band": [
-    147.88,
-    212.74
+    149.09,
+    214.75
    ],
    "unit": "per_kg"
   },
@@ -393,7 +439,7 @@
     "A": 13
    }
   },
-  "residual_sd": 0.487,
+  "residual_sd": 0.483,
   "peers_in_band": [
    "kahithapattarai_sandhai",
    "katpadi_sandhai",
@@ -410,7 +456,7 @@
   "group_primary": false
  },
  {
-  "flag_id": "FLG-0010",
+  "flag_id": "FLG-0011",
   "tier": 2,
   "item": "groundnut",
   "location": "kahithapattarai_sandhai",
@@ -427,8 +473,8 @@
   "expected": {
    "rate": 75.0,
    "band": [
-    66.35,
-    81.86
+    65.74,
+    83.5
    ],
    "unit": "per_kg"
   },
@@ -439,7 +485,7 @@
     "A": 12
    }
   },
-  "residual_sd": 1.184,
+  "residual_sd": 0.959,
   "peers_in_band": [
    "gudiyatham_sandhai",
    "katpadi_sandhai",
@@ -452,12 +498,12 @@
   "basis": "model",
   "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
   "group_id": "kahithapattarai_sandhai",
-  "group_size": 4,
-  "group_rank": 3,
+  "group_size": 3,
+  "group_rank": 2,
   "group_primary": false
  },
  {
-  "flag_id": "FLG-0011",
+  "flag_id": "FLG-0012",
   "tier": 2,
   "item": "lemon",
   "location": "katpadi_sandhai",
@@ -474,8 +520,8 @@
   "expected": {
    "rate": 50.0,
    "band": [
-    36.87,
-    71.2
+    36.81,
+    71.39
    ],
    "unit": "per_kg"
   },
@@ -486,7 +532,7 @@
     "A": 24
    }
   },
-  "residual_sd": 0.511,
+  "residual_sd": 0.477,
   "peers_in_band": [
    "gudiyatham_sandhai",
    "perampet_sandhai"
@@ -501,7 +547,7 @@
   "group_primary": true
  },
  {
-  "flag_id": "FLG-0012",
+  "flag_id": "FLG-0013",
   "tier": 2,
   "item": "mint_pudina",
   "location": "kahithapattarai_sandhai",
@@ -518,8 +564,8 @@
   "expected": {
    "rate": 35.0,
    "band": [
-    21.38,
-    61.34
+    21.68,
+    61.61
    ],
    "unit": "per_kg"
   },
@@ -530,7 +576,7 @@
     "A": 10
    }
   },
-  "residual_sd": 0.597,
+  "residual_sd": 0.641,
   "peers_in_band": [
    "gudiyatham_sandhai",
    "katpadi_sandhai",
@@ -543,12 +589,12 @@
   "basis": "model",
   "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
   "group_id": "kahithapattarai_sandhai",
-  "group_size": 4,
+  "group_size": 3,
   "group_rank": 0,
   "group_primary": true
  },
  {
-  "flag_id": "FLG-0013",
+  "flag_id": "FLG-0014",
   "tier": 2,
   "item": "onion",
   "location": "katpadi_sandhai",
@@ -565,8 +611,8 @@
   "expected": {
    "rate": 27.0,
    "band": [
-    24.87,
-    30.34
+    24.68,
+    30.77
    ],
    "unit": "per_kg"
   },
@@ -577,14 +623,15 @@
     "A": 10
    }
   },
-  "residual_sd": 0.651,
+  "residual_sd": 0.612,
   "peers_in_band": [
+   "gudiyatham_sandhai",
    "kahithapattarai_sandhai",
    "pallikonda_sandhai",
    "perampet_sandhai",
    "vellore_apmc"
   ],
-  "narrative": "Prices stayed above the expected range for 10 consecutive days; median +33% relative to the reference rate while peer locations Kahithapattarai Sandhai, Pallikonda Sandhai and 2 others remained in-band.",
+  "narrative": "Prices stayed above the expected range for 10 consecutive days; median +33% relative to the reference rate while peer locations Gudiyatham Sandhai, Kahithapattarai Sandhai and 3 others remained in-band.",
   "distinct_sellers": 1,
   "basis": "model",
   "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
@@ -594,42 +641,42 @@
   "group_primary": false
  },
  {
-  "flag_id": "FLG-0014",
+  "flag_id": "FLG-0015",
   "tier": 2,
   "item": "onion_green",
   "location": "gudiyatham_sandhai",
   "window": {
-   "start": "2026-06-09",
+   "start": "2026-06-19",
    "end": "2026-08-09"
   },
   "detector": "persistence",
   "statistic": {
    "name": "consecutive_days_above_band",
-   "value": 61,
+   "value": 51,
    "threshold": 10
   },
   "expected": {
    "rate": 45.0,
    "band": [
-    40.02,
-    53.94
+    39.94,
+    53.95
    ],
    "unit": "per_kg"
   },
   "observed": {
    "median": 60.0,
-   "n": 61,
+   "n": 51,
    "tier_mix": {
-    "A": 61
+    "A": 51
    }
   },
-  "residual_sd": 0.358,
+  "residual_sd": 0.357,
   "peers_in_band": [
    "kahithapattarai_sandhai",
    "katpadi_sandhai",
    "pallikonda_sandhai"
   ],
-  "narrative": "Prices stayed above the expected range for 61 consecutive days; median +33% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 1 other remained in-band.",
+  "narrative": "Prices stayed above the expected range for 51 consecutive days; median +33% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 1 other remained in-band.",
   "distinct_sellers": 1,
   "basis": "model",
   "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
@@ -639,43 +686,43 @@
   "group_primary": false
  },
  {
-  "flag_id": "FLG-0015",
+  "flag_id": "FLG-0016",
   "tier": 2,
   "item": "onion_green",
   "location": "perampet_sandhai",
   "window": {
-   "start": "2026-06-19",
+   "start": "2026-06-20",
    "end": "2026-07-02"
   },
   "detector": "persistence",
   "statistic": {
    "name": "consecutive_days_above_band",
-   "value": 13,
+   "value": 12,
    "threshold": 10
   },
   "expected": {
    "rate": 46.25,
    "band": [
-    41.36,
-    54.68
+    40.95,
+    54.96
    ],
    "unit": "per_kg"
   },
   "observed": {
    "median": 60.0,
-   "n": 13,
+   "n": 12,
    "tier_mix": {
-    "A": 13
+    "A": 12
    }
   },
-  "residual_sd": 0.238,
+  "residual_sd": 0.212,
   "peers_in_band": [
    "kahithapattarai_sandhai",
    "katpadi_sandhai",
    "pallikonda_sandhai",
    "vellore_apmc"
   ],
-  "narrative": "Prices stayed above the expected range for 13 consecutive days; median +30% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 2 others remained in-band.",
+  "narrative": "Prices stayed above the expected range for 12 consecutive days; median +30% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 2 others remained in-band.",
   "distinct_sellers": 1,
   "basis": "model",
   "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
@@ -685,13 +732,13 @@
   "group_primary": true
  },
  {
-  "flag_id": "FLG-0016",
+  "flag_id": "FLG-0017",
   "tier": 2,
-  "item": "tamarind_fruit",
-  "location": "kahithapattarai_sandhai",
+  "item": "yam_ratalu",
+  "location": "gudiyatham_sandhai",
   "window": {
-   "start": "2026-06-04",
-   "end": "2026-06-15"
+   "start": "2026-08-08",
+   "end": "2026-08-19"
   },
   "detector": "persistence",
   "statistic": {
@@ -700,69 +747,27 @@
    "threshold": 10
   },
   "expected": {
-   "rate": 100.0,
+   "rate": 47.5,
    "band": [
-    83.91,
-    122.08
-   ],
-   "unit": "per_kg"
-  },
-  "observed": {
-   "median": 160.0,
-   "n": 12,
-   "tier_mix": {
-    "A": 12
-   }
-  },
-  "residual_sd": 0.523,
-  "peers_in_band": [
-   "perampet_sandhai"
-  ],
-  "narrative": "Prices stayed above the expected range for 12 consecutive days; median +60% relative to the reference rate while peer location Perampet Sandhai remained in-band.",
-  "distinct_sellers": 1,
-  "basis": "model",
-  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
-  "group_id": "kahithapattarai_sandhai",
-  "group_size": 4,
-  "group_rank": 2,
-  "group_primary": false
- },
- {
-  "flag_id": "FLG-0017",
-  "tier": 2,
-  "item": "yam_ratalu",
-  "location": "gudiyatham_sandhai",
-  "window": {
-   "start": "2026-07-29",
-   "end": "2026-08-19"
-  },
-  "detector": "persistence",
-  "statistic": {
-   "name": "consecutive_days_above_band",
-   "value": 22,
-   "threshold": 10
-  },
-  "expected": {
-   "rate": 48.12,
-   "band": [
-    41.96,
-    54.42
+    41.61,
+    54.44
    ],
    "unit": "per_kg"
   },
   "observed": {
    "median": 66.0,
-   "n": 22,
+   "n": 12,
    "tier_mix": {
-    "A": 22
+    "A": 12
    }
   },
-  "residual_sd": 0.635,
+  "residual_sd": 0.633,
   "peers_in_band": [
    "kahithapattarai_sandhai",
+   "pallikonda_sandhai",
    "vellore_apmc"
   ],
-  "narrative": "Prices stayed above the expected range for 22 consecutive days; median +37% relative to the reference rate while peer locations Kahithapattarai Sandhai, Apmc remained in-band.",
+  "narrative": "Prices stayed above the expected range for 12 consecutive days; median +39% relative to the reference rate while peer locations Kahithapattarai Sandhai, Pallikonda Sandhai and 1 other remained in-band.",
   "distinct_sellers": 1,
   "basis": "model",
   "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",

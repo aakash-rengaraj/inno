@@ -21,14 +21,14 @@ const BASE_LAYERS = ['waterbody', 'water', 'street', 'minor', 'major', 'rail']
 function colour(dev) {
   const t = Math.max(-1, Math.min(1, dev / CAP))
   if (t >= 0) {
-    // pale slate -> amber -> red
-    const r = Math.round(120 + t * 135)
-    const g = Math.round(140 - t * 105)
-    const b = Math.round(160 - t * 130)
+    // muted blue -> amber -> red
+    const r = Math.round(126 + t * 129)
+    const g = Math.round(155 - t * 120)
+    const b = Math.round(190 - t * 160)
     return `rgb(${r},${g},${b})`
   }
   const u = -t
-  return `rgb(${Math.round(120 - u * 50)},${Math.round(140 + u * 40)},${Math.round(160 + u * 60)})`
+  return `rgb(${Math.round(126 - u * 40)},${Math.round(155 + u * 30)},${Math.round(190 + u * 40)})`
 }
 
 export default function Heatmap({ heatmap }) {

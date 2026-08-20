@@ -15,7 +15,7 @@ export default function FlagDetail({ db, flag, onBack, onCase }) {
 
   return (
     <>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 16 }}>
+      <div className="fd-head">
         <button onClick={onBack}>← Queue</button>
         <span className={`tier t${flag.tier}`}>
           {flag.tier === 3 ? 'Priority' : 'Review'}

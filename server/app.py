@@ -18,6 +18,7 @@ from typing import Literal
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import JSONResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
@@ -26,6 +27,7 @@ from pipeline.contracts import json_safe
 from pipeline.ingest import reports as reports_ingest
 from server import db
 from server.engine import ENGINE
+from pipeline import paths
 
 CONSOLE_TOKEN = os.environ.get("CONSOLE_TOKEN", "vellore-dso-2026")
 
@@ -44,6 +46,17 @@ ITEM_UNITS = {"tomato": "per_kg", "onion": "per_kg",
               "egg_table": "per_piece", "auto_ride": "per_ride"}
 
 app = FastAPI(title="Price Review API", version="1.0")
+
+# Uvicorn serves everything uncompressed. On a modest VPS uplink that made the
+# console pull ~1.2 MB of JS, charts and basemap before it could draw: measured
+# 4.0s for the 585 kB bundle, 4.1s for /api/charts, 3.3s for basemap.json, all
+# at a healthy 0.45s TTFB. It was transfer time, not the server thinking.
+#
+# Applies to StaticFiles as well as the API, since it is middleware and wraps
+# every response. Kept even when Caddy or Cloudflare sits in front, because the
+# origin-to-proxy leg is otherwise still uncompressed.
+app.add_middleware(GZipMiddleware, minimum_size=1024)
+
 app.add_middleware(
     CORSMiddleware, allow_origins=ALLOWED_ORIGINS, allow_methods=["*"],
     allow_headers=["*"], allow_credentials=False,
@@ -121,6 +134,13 @@ def health() -> dict:
 @app.get("/api/public/meta")
 def public_meta() -> dict:
     return json_safe(ENGINE.public_meta())
+
+
+@app.get("/api/public/prices")
+def public_prices() -> dict:
+    """Today's wholesale range per commodity. Unauthenticated, and safe to be:
+    `pipeline.prices` builds it without market names, bands or flags."""
+    return json_safe(ENGINE.artifacts.get("prices", {}))
 
 
 @app.post("/api/reports", status_code=201)
@@ -274,8 +294,8 @@ def recompute() -> dict:
 # one domain, no CORS, and no second host to configure on demo day. They remain
 # separate builds: the public bundle still has no flag data in it.
 
-PUBLIC_DIR = Path("web/dist-public")
-CONSOLE_DIR = Path("web/dist-console")
+PUBLIC_DIR = paths.DIST_PUBLIC
+CONSOLE_DIR = paths.DIST_CONSOLE
 
 
 @app.get("/console", include_in_schema=False)

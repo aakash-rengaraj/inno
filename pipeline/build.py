@@ -13,14 +13,15 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from pipeline import cases, detect, heatmap as heatmap_mod, xml_export
+from pipeline import cases, detect, heatmap as heatmap_mod, prices as prices_mod, xml_export
 from pipeline.contracts import OBSERVATIONS_PATH, json_safe
 from pipeline.expectations import attach_expectations
 from pipeline.generalise import assign_localities, summarise
 from pipeline.ingest import agmarknet_export, gazette, necc_real, qcommerce, reports, ridehail
 from pipeline.model import benchmark_band, fit_band, predict_band
+from pipeline import paths
 
-OUT = Path("web/public/data")
+OUT = paths.WEB_DATA
 
 # Items that do not come from Agmarknet and so have no source-provided name.
 FALLBACK_LABELS = {"auto_ride": "Autorickshaw fares", "egg_table": "Table eggs"}
@@ -40,7 +41,7 @@ def _write(name: str, payload) -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     path = OUT / name
     path.write_text(json.dumps(json_safe(payload), indent=1, sort_keys=False) + "\n")
-    print(f"    wrote {path} ({path.stat().st_size / 1024:.0f} kB)")
+    print(f"    wrote {path.relative_to(paths.ROOT)} ({path.stat().st_size / 1024:.0f} kB)")
 
 
 def parse_sources(verbose: bool = True) -> pd.DataFrame:
@@ -65,7 +66,7 @@ def parse_sources(verbose: bool = True) -> pd.DataFrame:
 def ingest() -> pd.DataFrame:
     print("  ingest")
     obs = parse_sources()
-    Path("data/processed").mkdir(parents=True, exist_ok=True)
+    paths.PROCESSED.mkdir(parents=True, exist_ok=True)
     obs.to_parquet(OBSERVATIONS_PATH, index=False)
     print(f"    -> {OBSERVATIONS_PATH} ({len(obs)} rows)")
     return obs
@@ -266,6 +267,10 @@ def compute(obs: pd.DataFrame, model=None, verbose: bool = True) -> dict:
                         pd.Series([f["tier"] for f in queue]).value_counts().items()},
         "sources": sorted(obs["source"].unique().tolist()),
     }
+    daily = prices_mod.build(obs, labels)
+    log(f"  prices       {len(daily['items'])} commodit(ies) with "
+        f"{prices_mod.MIN_MARKETS}+ markets on {daily['date']}")
+
     grid = heatmap_mod.build(scored, window_days=DETECTION_WINDOW_DAYS)
     log(f"  heatmap      {grid['totals'].get('cells', 0)} cell(s) at "
         f"{heatmap_mod.CELL_M:.0f}m from {grid['totals'].get('reports_shown', 0)} "
@@ -276,7 +281,8 @@ def compute(obs: pd.DataFrame, model=None, verbose: bool = True) -> dict:
         f"{len({f['location'] for f in queue})} market(s) for inspection, "
         f"{len(all_flags) - len(queue)} excluded by the evidence floor")
     return {"queue": queue, "flags": all_flags, "cases": case_files,
-            "charts": charts, "meta": meta, "heatmap": grid, "model": model}
+            "charts": charts, "meta": meta, "heatmap": grid, "prices": daily,
+            "model": model}
 
 
 def _quiet_detect(judged: pd.DataFrame) -> list[dict]:
@@ -290,7 +296,7 @@ def main() -> None:
     print("building (offline; no network access)")
     obs = ingest()
     result = compute(obs)
-    for name in ("queue", "flags", "cases", "charts", "meta", "heatmap"):
+    for name in ("queue", "flags", "cases", "charts", "meta", "heatmap", "prices"):
         _write(f"{name}.json", result[name])
 
     # the same case files as XML, checked against schema/case-file.xsd
@@ -300,7 +306,8 @@ def main() -> None:
     xml_export.validate(xml_text)
     path = OUT / "cases.xml"
     path.write_text(xml_text)
-    print(f"    wrote {path} ({path.stat().st_size / 1024:.0f} kB, schema-valid)")
+    print(f"    wrote {path.relative_to(paths.ROOT)} "
+          f"({path.stat().st_size / 1024:.0f} kB, schema-valid)")
 
 
 if __name__ == "__main__":

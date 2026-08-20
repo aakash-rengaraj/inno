@@ -16,8 +16,9 @@ from __future__ import annotations
 
 from pathlib import Path
 from xml.etree import ElementTree as ET
+from pipeline import paths
 
-SCHEMA_PATH = Path("schema/case-file.xsd")
+SCHEMA_PATH = paths.SCHEMA / "case-file.xsd"
 
 ISSUER = {"office": "Office of the District Supply Officer",
           "district": "Vellore", "state": "Tamil Nadu"}

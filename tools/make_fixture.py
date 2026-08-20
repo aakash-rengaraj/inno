@@ -14,8 +14,9 @@ from datetime import date, timedelta
 from pathlib import Path
 
 import numpy as np
+from pipeline import paths
 
-RAW = Path("data/raw")
+RAW = paths.RAW
 RNG = np.random.default_rng(20260819)
 
 START = date(2025, 1, 1)

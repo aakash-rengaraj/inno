@@ -74,8 +74,13 @@ export default function ActionBoard({ db, onOpen, live = false }) {
         <div>
           <h2 style={{ margin: 0, fontSize: 21, fontWeight: 600 }}>Action board</h2>
           <p className="small muted" style={{ margin: '2px 0 0' }}>
-            What is under review, and what has been done about it. Updates live across
-            open tabs on this device — there is no server behind it.
+            {/* The old copy claimed there was no server, which was true when the
+                board was localStorage-only and is a false statement about where
+                the record lives now that actions are persisted. */}
+            What is under review, and what has been done about it.{' '}
+            {live
+              ? 'Actions are recorded on the review service and shared by everyone signed in.'
+              : 'Actions are held in this browser and shared across open tabs on this device only.'}
           </p>
         </div>
         <span style={{ flex: 1 }} />
@@ -100,6 +105,7 @@ export default function ActionBoard({ db, onOpen, live = false }) {
         <div className="panel">
           <h2>Under review</h2>
           <div className="body" style={{ padding: 0 }}>
+            <div className="grid-scroll">
             <table className="grid">
               <thead>
                 <tr>
@@ -130,6 +136,7 @@ export default function ActionBoard({ db, onOpen, live = false }) {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         </div>
 

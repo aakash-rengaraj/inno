@@ -222,6 +222,14 @@ Step "Service"
 
 New-Item -ItemType Directory -Force -Path (Join-Path $Root "logs") | Out-Null
 
+# A port already in use is the quietest way for this to fail: uvicorn exits
+# instantly, NSSM throttles, and the only symptom is SERVICE_PAUSED.
+$busy = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue
+if ($busy) {
+  $owner = (Get-Process -Id $busy[0].OwningProcess -ErrorAction SilentlyContinue).ProcessName
+  Die "Port $Port is already being listened on by '$owner' (pid $($busy[0].OwningProcess)). Stop it, or re-run with -Port <other>."
+}
+
 if (Get-Service -Name $Service -ErrorAction SilentlyContinue) {
   Log "service '$Service' exists - stopping to reconfigure"
   & $nssm stop $Service | Out-Null
@@ -230,7 +238,12 @@ if (Get-Service -Name $Service -ErrorAction SilentlyContinue) {
   & $nssm install $Service $py | Out-Null
 }
 
-& $nssm set $Service AppParameters "-m uvicorn server.app:app --host 0.0.0.0 --port $Port" | Out-Null
+# --app-dir puts $Root on sys.path explicitly. Without it the import of
+# `server.app` depends on the process's working directory, which for a service is
+# whatever the service manager chose -- the symptom is an import error, or worse,
+# a clean import followed by a crash deep inside the ingest looking for data/raw.
+& $nssm set $Service AppParameters `
+    "-m uvicorn server.app:app --app-dir `"$Root`" --host 0.0.0.0 --port $Port" | Out-Null
 & $nssm set $Service AppDirectory $Root | Out-Null
 & $nssm set $Service AppStdout (Join-Path $Root "logs\out.log") | Out-Null
 & $nssm set $Service AppStderr (Join-Path $Root "logs\err.log") | Out-Null
@@ -280,6 +293,34 @@ if (-not $SkipSync) {
   }
 }
 
+if (-not $SkipSync) {
+  Step "Agmarknet refresh"
+
+  # Machine scope, not the task's arguments: a scheduled task's command line is
+  # readable by anyone who can list tasks, and this is a credential.
+  $key = [Environment]::GetEnvironmentVariable("DATA_GOV_API_KEY", "Machine")
+  if (-not $key) {
+    Warn "DATA_GOV_API_KEY is not set machine-wide - skipping the refresh task."
+    Warn "  [Environment]::SetEnvironmentVariable('DATA_GOV_API_KEY','<key>','Machine')"
+    Warn "  then re-run this script to register it."
+  } else {
+    $rtask = "InnoHack agmarknet refresh"
+    if (Get-ScheduledTask -TaskName $rtask -ErrorAction SilentlyContinue) {
+      Log "task '$rtask' already registered"
+    } else {
+      $refresh = Join-Path $Root "deploy\refresh.ps1"
+      $ra = New-ScheduledTaskAction -Execute "powershell.exe" -Argument `
+        "-NoProfile -ExecutionPolicy Bypass -File `"$refresh`" -Repo `"$Root`" -Service $Service"
+      # 02:15 so it lands well after the portal's daily update and nowhere near
+      # a demo slot. DaysInterval 2 is the "every 2 days" the schedule asks for.
+      $rt = New-ScheduledTaskTrigger -Daily -DaysInterval 2 -At 2:15AM
+      Register-ScheduledTask -TaskName $rtask -Action $ra -Trigger $rt `
+        -User "SYSTEM" -RunLevel Highest -Force | Out-Null
+      Log "refreshing Agmarknet every 2 days at 02:15"
+    }
+  }
+}
+
 Step "Checking it answers"
 
 $ok = $false
@@ -296,7 +337,26 @@ foreach ($i in 1..30) {
 Pop-Location
 
 if (-not $ok) {
-  Warn "no response on :$Port after 60s. Check $Root\logs\err.log and 'nssm status $Service'."
+  Warn "no response on :$Port after 60s."
+  Log  "service status: $(& $nssm status $Service)"
+
+  # "Unexpected status SERVICE_PAUSED in response to START control" means the
+  # app exited faster than NSSM's throttle window, i.e. it crashed on startup.
+  # The reason is in err.log, so print it instead of asking for a second round
+  # trip to go and look.
+  foreach ($name in @("err.log", "out.log")) {
+    $log = Join-Path $Root "logs\$name"
+    if ((Test-Path $log) -and (Get-Item $log).Length -gt 0) {
+      Write-Host "`n--- last 30 lines of $name " -ForegroundColor Yellow
+      Get-Content $log -Tail 30
+    } else {
+      Log "$name is empty or missing"
+    }
+  }
+
+  Write-Host "`nRun it in the foreground to see the failure directly:" -ForegroundColor Yellow
+  Write-Host "  cd $Root"
+  Write-Host "  .venv\Scripts\python.exe -m uvicorn server.app:app --host 0.0.0.0 --port $Port"
   exit 1
 }
 

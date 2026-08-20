@@ -86,6 +86,19 @@ def _peer_phrase(peers: list[str]) -> str:
 
 
 def pretty_location(location: str) -> str:
+    """Market ids are <town>_apmc / <town>_sandhai; zones are vellore_<zone>.
+
+    Stripping the "vellore_" prefix first turns `vellore_apmc` into "Apmc" and
+    loses the town, so a case file for the district's principal mandi named a
+    market that does not exist. Suffix first; prefix only for the zones, which
+    carry no suffix. Mirrors data.js prettyLocation and engine.report_places --
+    all three are read off the same printed page during a demo, and disagreeing
+    about a market's name in a case file is worse than an ugly name.
+    """
+    if location.endswith("_sandhai"):
+        return f"{location[: -len('_sandhai')].replace('_', ' ').title()} Sandhai"
+    if location.endswith("_apmc"):
+        return f"{location[: -len('_apmc')].replace('_', ' ').title()} APMC"
     return location.replace("vellore_", "").replace("_", " ").title()
 
 

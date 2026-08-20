@@ -77,6 +77,37 @@ replace a running executable. It prints `To modify pip, please run ...python.exe
 -m pip`, and because a native command's exit code does not trip PowerShell's
 `$ErrorActionPreference`, a script will sail straight past it.
 
+### `SERVICE_PAUSED in response to START control`
+
+NSSM's throttle. The app started, exited within ~1.5 seconds, and NSSM paused
+rather than restart-looping. It always means uvicorn crashed on startup; it never
+means the service is misconfigured in NSSM itself.
+
+The reason is in `logs\err.log` — `bootstrap.ps1` prints the last 30 lines
+automatically when the health check fails. To see it live:
+
+```powershell
+cd C:\apps\innohack
+.venv\Scripts\python.exe -m uvicorn server.app:app --host 0.0.0.0 --port 8000
+```
+
+Usual causes, in order:
+
+- **Port already in use.** Another uvicorn, or a previous run of this service,
+  still holds 8000. Bootstrap now checks before registering and names the owning
+  process. `Get-NetTCPConnection -LocalPort 8000 -State Listen`
+- **A dependency missing from the venv** — the same failure mode as `xmlschema`.
+  The service runs the venv's python by full path, so a package installed into
+  the system Python is invisible to it.
+- **`data/processed/observations.parquet` absent**, because `pipeline.build` did
+  not finish. The engine parses `data/raw` at startup and exits if it cannot.
+- **An import error for `server`.** The service runs with `--app-dir` so `$Root`
+  is on `sys.path` regardless of the working directory. Running uvicorn by hand
+  from some other folder needs the same flag, or a `cd` to the repo root first.
+
+`nssm status InnoHack` reports the state; `nssm reset InnoHack` clears a paused
+one so it can be started again.
+
 ### Things that go wrong on Windows specifically
 
 **`winget` is missing.** Common on Windows Server images. Install App Installer
@@ -126,6 +157,134 @@ The build artifacts under `web/public/data/` are committed, so a pull normally
 brings them along; `sync.ps1` only re-runs `pipeline.build` when something under
 `pipeline/`, `tools/` or `data/raw/` actually moved, and only rebuilds the
 frontends when `web/src` or the Vite config did.
+
+## Putting it on a domain (Cloudflare)
+
+The app listens on 8000, and **Cloudflare's proxy does not support that port** —
+proxied HTTP is 80, 8080, 8880, 2052, 2082, 2086, 2095 only. An orange-clouded
+record pointing at :8000 will not reach it. Rather than move the app to 8080 and
+run unencrypted behind the proxy, put Caddy on 443 in front of it, which is what
+the TLS note below asks for anyway.
+
+**1. Install Caddy on the VPS**
+
+```powershell
+winget install --id CaddyServer.Caddy --exact --silent
+```
+
+**2. Use `deploy/Caddyfile`** (edit the hostname if it is not `inno.aakashr.com`)
+
+```powershell
+Copy-Item C:\apps\innohack\deploy\Caddyfile C:\caddy\Caddyfile -Force
+caddy run --config C:\caddy\Caddyfile      # foreground, to watch it get a cert
+```
+
+Once it works, register it as a service so it survives reboots:
+
+```powershell
+nssm install Caddy "C:\Program Files\Caddy\caddy.exe"
+nssm set Caddy AppParameters "run --config C:\caddy\Caddyfile"
+nssm set Caddy Start SERVICE_AUTO_START
+nssm start Caddy
+```
+
+**3. Open 80 and 443** — 80 is not optional, Let's Encrypt validates over it.
+
+```powershell
+New-NetFirewallRule -DisplayName "HTTP"  -Direction Inbound -Protocol TCP -LocalPort 80  -Action Allow
+New-NetFirewallRule -DisplayName "HTTPS" -Direction Inbound -Protocol TCP -LocalPort 443 -Action Allow
+```
+
+Your VPS provider's own firewall needs the same two rules.
+
+**4. DNS in the Cloudflare dashboard** — `aakashr.com` > DNS > Add record
+
+| | |
+|---|---|
+| Type | `A` |
+| Name | `inno` |
+| IPv4 | `84.54.33.44` |
+| Proxy | **DNS only (grey) at first**, orange once the certificate is issued |
+
+Grey-cloud for the first run. With the proxy on, Cloudflare answers the HTTP-01
+challenge path itself and Caddy can fail to validate; issuing first over a direct
+connection avoids a confusing loop. Flip to orange straight after.
+
+**5. SSL/TLS mode: Full (strict)**
+
+Under SSL/TLS > Overview. `Flexible` would leave Cloudflare-to-origin on plain
+HTTP, which puts the console passphrase back in cleartext for the longest leg of
+the journey. Caddy has a real certificate, so `Full (strict)` just works.
+
+**6. Close the back door**
+
+With the domain live, `http://84.54.33.44:8000` is still open, unencrypted, and
+bypasses Cloudflare entirely. Bind the app to loopback and shut the port:
+
+```powershell
+nssm set InnoHack AppParameters "-m uvicorn server.app:app --host 127.0.0.1 --port 8000"
+nssm restart InnoHack
+Remove-NetFirewallRule -DisplayName "InnoHack 8000"
+```
+
+`ALLOWED_ORIGINS` can stay unset — the app serves both surfaces itself, so every
+request is same-origin.
+
+## Keeping Agmarknet current
+
+The committed export is a snapshot. Detection runs on the last 90 days, so a
+stale export slowly empties the queue — the data does not go wrong, it goes
+quiet, which is worse. `tools/refresh_agmarknet.py` tops it up from the
+data.gov.in open-data API.
+
+```powershell
+[Environment]::SetEnvironmentVariable('DATA_GOV_API_KEY','<key>','Machine')
+```
+
+Machine scope, not a task argument: a scheduled task's command line is readable
+by anyone who can list tasks, and this is a credential. Set it, then re-run
+`bootstrap.ps1` and it registers `deploy/refresh.ps1` to run **every 2 days at
+02:15** as SYSTEM. Run it by hand any time:
+
+```powershell
+.venv\Scripts\python.exe -m tools.refresh_agmarknet --dry-run   # fetch, report, write nothing
+.venv\Scripts\python.exe -m tools.refresh_agmarknet
+```
+
+What one run looks like:
+
+```
+Vellore page 1: 346 rows      392 of 523 rows are markets the panel already models
+Ranipet page 1: 99 rows       +392 rows -> 247,274 total, through 2026-08-20
+Thirupathur page 1: 78 rows
+```
+
+**The resource only serves current prices, not history.** Each run captures a few
+days and the committed file accumulates the rest. A run that is missed is data
+that cannot be fetched later — which is the argument for a schedule rather than
+doing it by hand before the demo.
+
+**`refresh.ps1` restarts the service, but only if the export changed.** The
+server fits its band model once at startup and reuses it for per-report
+recomputes, so new source data is invisible until it restarts. Nothing changed
+means no restart and no rebuild, which is what makes a 2-day schedule cheap.
+
+**Fetching stays separate from building.** The refresh writes to `data/raw` and
+stops there; `pipeline.build` still reads only from disk and opens no socket. The
+offline guarantee is intact — verify with the wifi off.
+
+### Two things the API does that look like network faults
+
+**It stalls on the default `python-httpx` User-Agent.** The request is accepted
+and then never answered, so it surfaces as `ReadTimeout` rather than a 403.
+Measured: default httpx timed out at 15s three times; `curl/8.7.1` and the UA
+this module sends both returned 200 in under a second.
+
+**Under load it answers `200` with `{"message": "No query was recieved",
+"records": []}`**, which is indistinguishable from a genuinely empty result. An
+earlier version read that as end-of-data and reported a successful run having
+fetched nothing. It now backs off and retries, and fails loudly rather than
+quietly succeeding.
 
 ## Before it faces the internet
 

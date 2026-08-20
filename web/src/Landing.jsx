@@ -16,11 +16,21 @@ const STEPS = [
   ['Evidence floor', 'A pattern resting on fewer than three independent sellers is withheld, not published. Thin evidence is not an inspection target.'],
 ]
 
-export default function Landing({ meta, onReport }) {
+export default function Landing({ meta, onReport, onPrices }) {
   return (
-    <div className="lp">
+    <div className="lp-page">
+      {/* A masthead, so the page announces which office it belongs to before it
+          says anything else -- the landing page previously opened straight onto
+          a headline with no institutional frame. */}
+      <div className="lp-masthead">
+        <div className="lp-masthead-inner">
+          <span className="lp-mast-name">Office of the District Supply Officer</span>
+          <span className="lp-mast-sub">Vellore District &middot; Tamil Nadu</span>
+        </div>
+      </div>
+
+      <div className="lp">
       <section className="lp-hero">
-        <div className="lp-eyebrow">Vellore District · Tamil Nadu</div>
         <h1 className="lp-title">Price Review</h1>
         <p className="lp-lede">
           A screening tool that compares what people are charged against what the
@@ -28,7 +38,8 @@ export default function Landing({ meta, onReport }) {
           survive scrutiny into case files an officer can act on.
         </p>
         <div className="lp-actions">
-          <button className="primary" onClick={onReport}>Report a price</button>
+          <button className="primary" onClick={onPrices}>See today&apos;s prices</button>
+          <button onClick={onReport}>Report a price</button>
         </div>
       </section>
 
@@ -102,6 +113,7 @@ export default function Landing({ meta, onReport }) {
           Data through {meta.data_through} · {meta.sources.join(' · ')}
         </span>
       </footer>
+      </div>
     </div>
   )
 }

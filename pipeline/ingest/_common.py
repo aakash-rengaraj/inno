@@ -6,8 +6,9 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from pipeline import paths
 
-RAW = Path("data/raw")
+RAW = paths.RAW
 
 # ~50m grid. Reports identify *locations*, never named traders.
 GRID_DEG = 0.00045

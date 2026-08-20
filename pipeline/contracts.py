@@ -9,6 +9,7 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
+from pipeline import paths
 
 # --- 4.1 Observation -------------------------------------------------------
 
@@ -35,7 +36,7 @@ REF_SOURCES = {"necc", "tn_gazette", "agmarknet_wholesale"}
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 _ID_RE = re.compile(r"^[a-z0-9_]+$")
 
-OBSERVATIONS_PATH = "data/processed/observations.parquet"
+OBSERVATIONS_PATH = str(paths.OBSERVATIONS)
 
 
 def empty_observations() -> pd.DataFrame:

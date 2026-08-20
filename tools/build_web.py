@@ -12,8 +12,9 @@ import os
 import shutil
 import subprocess
 from pathlib import Path
+from pipeline import paths
 
-WEB = Path("web")
+WEB = paths.WEB
 
 # Vite copies the whole of web/public into every dist, so the public build was
 # shipping flags.json, cases.json, cases.xml, charts.json and heatmap.json as
@@ -21,7 +22,10 @@ WEB = Path("web")
 # renders. The live server already projects `meta` down to a whitelist in
 # `engine.public_meta`; this does the same to the offline build, so the static
 # fallback and the served surface withhold the same things.
-PUBLIC_ARTIFACTS = {"meta.json"}
+# prices.json joins meta.json on the public side: pipeline.prices builds it
+# without market names, modelled bands, flags or thresholds, so it carries
+# nothing the enforcement surface withholds.
+PUBLIC_ARTIFACTS = {"meta.json", "prices.json"}
 
 
 def _npx() -> str:

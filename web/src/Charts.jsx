@@ -5,15 +5,19 @@ import {
 } from 'recharts'
 import { shortDate } from './data.js'
 
-const AXIS = { stroke: '#6b7681', fontSize: 11, fontFamily: 'ui-monospace, Menlo, monospace' }
-const GRID = '#e3e6e9'
-const BAND = '#c9d3da'
-const OBSERVED = '#1f3a4d'
-const ACCENT = '#a8201a'
+// Recharts needs literal colours, so the palette is duplicated here rather than
+// read from CSS variables. Keep these in step with :root in theme.css -- a chart
+// in the old slate against a blue page is the most visible way for the two to
+// drift apart.
+const AXIS = { stroke: '#64768c', fontSize: 11, fontFamily: 'ui-monospace, Menlo, monospace' }
+const GRID = '#dde7f2'
+const BAND = '#bcd4ec'
+const OBSERVED = '#07396c'
+const ACCENT = '#b3261e'
 
 const tip = {
   contentStyle: {
-    background: '#fff', border: '1px solid #9aa3ad', borderRadius: 2,
+    background: '#fff', border: '1px solid #8ba6c4', borderRadius: 2,
     fontSize: 12, fontFamily: 'ui-monospace, Menlo, monospace',
   },
 }
@@ -26,8 +30,8 @@ export function BandChart({ chart }) {
       <ComposedChart data={data} margin={{ top: 8, right: 16, bottom: 4, left: 0 }}>
         <CartesianGrid stroke={GRID} vertical={false} />
         <XAxis dataKey="date" tick={AXIS} tickFormatter={shortDate} minTickGap={40}
-               stroke="#9aa3ad" />
-        <YAxis tick={AXIS} stroke="#9aa3ad" width={52}
+               stroke="#8ba6c4" />
+        <YAxis tick={AXIS} stroke="#8ba6c4" width={52}
                tickFormatter={(v) => `₹${v.toFixed(0)}`} domain={['auto', 'auto']} />
         <Tooltip {...tip} formatter={(v, n) =>
           Array.isArray(v) ? [`₹${v[0].toFixed(2)} – ₹${v[1].toFixed(2)}`, 'Expected range']
@@ -55,8 +59,8 @@ export function SpreadChart({ chart }) {
       <ComposedChart data={data} margin={{ top: 8, right: 16, bottom: 4, left: 0 }}>
         <CartesianGrid stroke={GRID} vertical={false} />
         <XAxis dataKey="date" tick={AXIS} tickFormatter={shortDate} minTickGap={40}
-               stroke="#9aa3ad" />
-        <YAxis tick={AXIS} stroke="#9aa3ad" width={52}
+               stroke="#8ba6c4" />
+        <YAxis tick={AXIS} stroke="#8ba6c4" width={52}
                tickFormatter={(v) => `₹${v.toFixed(1)}`} domain={['auto', 'auto']} />
         <Tooltip {...tip} formatter={(v, n) =>
           Array.isArray(v) ? [`₹${(v[1] - v[0]).toFixed(2)}`, 'Gap over declared']
@@ -66,11 +70,11 @@ export function SpreadChart({ chart }) {
                        strokeOpacity={0.3} strokeDasharray="3 3" />
         <Area dataKey="gap" stroke="none" fill={ACCENT} fillOpacity={0.13}
               isAnimationActive={false} name="Gap over declared rate" />
-        <Line dataKey="declared" stroke="#2f4858" strokeWidth={1.8} dot={false}
+        <Line dataKey="declared" stroke="#0b5cab" strokeWidth={1.8} dot={false}
               isAnimationActive={false} name="NECC declared rate" />
         <Line dataKey="listed" stroke={ACCENT} strokeWidth={1.6} dot={false}
               isAnimationActive={false} name="Commercial listings" />
-        <Line dataKey="reported" stroke="#6b7681" strokeWidth={1.2} dot={false}
+        <Line dataKey="reported" stroke="#64768c" strokeWidth={1.2} dot={false}
               strokeDasharray="4 3" isAnimationActive={false} name="Field reports" />
         <Legend wrapperStyle={{ fontSize: 11, paddingTop: 4 }} iconType="plainline" />
       </ComposedChart>
@@ -85,18 +89,18 @@ export function ScatterFareChart({ chart }) {
     <ResponsiveContainer width="100%" height={300}>
       <ComposedChart margin={{ top: 8, right: 16, bottom: 34, left: 0 }}>
         <CartesianGrid stroke={GRID} />
-        <XAxis type="number" dataKey="km" tick={AXIS} stroke="#9aa3ad"
+        <XAxis type="number" dataKey="km" tick={AXIS} stroke="#8ba6c4"
                domain={[0, 9]} tickFormatter={(v) => `${v} km`}
                label={{ value: 'Trip distance', position: 'insideBottom', offset: -24,
-                        fontSize: 11, fill: '#6b7681' }} />
-        <YAxis type="number" dataKey="fare" tick={AXIS} stroke="#9aa3ad" width={52}
+                        fontSize: 11, fill: '#64768c' }} />
+        <YAxis type="number" dataKey="fare" tick={AXIS} stroke="#8ba6c4" width={52}
                tickFormatter={(v) => `₹${v}`} domain={[0, 'auto']} />
         <Tooltip {...tip} cursor={{ strokeDasharray: '3 3' }}
                  formatter={(v, n) => [n === 'km' ? `${v} km` : `₹${Number(v).toFixed(0)}`,
                                         n === 'km' ? 'Distance' : 'Fare']} />
         <Scatter data={pts} fill={ACCENT} fillOpacity={0.42} name="Quoted fare"
                  isAnimationActive={false} />
-        <Line data={chart.gazette_line} dataKey="fare" stroke="#2f4858" strokeWidth={2}
+        <Line data={chart.gazette_line} dataKey="fare" stroke="#0b5cab" strokeWidth={2}
               dot={false} isAnimationActive={false} name="Notified fare" type="linear" />
         <Legend wrapperStyle={{ fontSize: 11, paddingTop: 2 }} iconType="plainline"
                 verticalAlign="top" align="right" />

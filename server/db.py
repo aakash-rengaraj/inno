@@ -9,8 +9,9 @@ from __future__ import annotations
 import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
+from pipeline import paths
 
-DB_PATH = Path("server/data/review.db")
+DB_PATH = paths.SERVER_DATA / "review.db"
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS reports (

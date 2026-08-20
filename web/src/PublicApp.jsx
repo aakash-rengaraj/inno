@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { apiAvailable, apiGet } from './api.js'
 import { loadAll } from './data.js'
 import Landing from './Landing.jsx'
+import Prices from './Prices.jsx'
 import ReportForm from './ReportForm.jsx'
 
 // The public surface. It is a separate build with a separate entry point, and
@@ -31,21 +32,30 @@ export default function PublicApp() {
 
   if (!meta) return <div style={{ padding: 32 }} className="muted">Loading…</div>
 
-  if (view === 'report') {
+  if (view === 'report' || view === 'prices') {
     return (
       <div className="app">
         <header className="topbar">
           <h1 onClick={() => setView('landing')} style={{ cursor: 'pointer' }}>Price Review</h1>
           <span className="sub">Vellore District</span>
+          <nav className="topnav">
+            <button className={view === 'prices' ? 'on' : ''}
+                    onClick={() => setView('prices')}>Today&apos;s prices</button>
+            <button className={view === 'report' ? 'on' : ''}
+                    onClick={() => setView('report')}>Report a price</button>
+          </nav>
           <span className="spacer" />
           <span className="sub mono">data through {meta.data_through}</span>
         </header>
         <main>
-          <ReportForm online={online} meta={meta} onBack={() => setView('landing')} />
+          {view === 'report'
+            ? <ReportForm online={online} meta={meta} onBack={() => setView('landing')} />
+            : <Prices online={online} onBack={() => setView('landing')} />}
         </main>
       </div>
     )
   }
 
-  return <Landing meta={meta} onReport={() => setView('report')} />
+  return <Landing meta={meta} onReport={() => setView('report')}
+                  onPrices={() => setView('prices')} />
 }

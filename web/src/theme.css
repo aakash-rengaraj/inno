@@ -1,27 +1,45 @@
 /* One palette, one type scale, everything derived from these.
    This is an instrument for an enforcement officer: dense, tabular, quiet.
    The accent is spent only on tier-3 flags, so severity is the one thing that
-   draws the eye. */
+   draws the eye.
+
+   Blue and white, in the register of a government notice board: a saturated
+   official blue for chrome and structure, white paper for content, and ruled
+   lines rather than shadows or rounded corners. Headings are set in a serif
+   because that is what makes an administrative document read as a document
+   rather than as an app -- and the stack is all system fonts, since a strict
+   offline build cannot fetch a webfont.
+
+   Red survives the change and is still spent only on tier 3. On a blue page it
+   is the one colour that means something, and diluting it across the interface
+   would cost the priority row its only signal. */
 
 :root {
-  --paper:       #eef0f2;
+  /* White is white. The blue is spent on chrome -- masthead, rules, links,
+     buttons -- and never bled into the page as a tint, so the content reads as
+     printed paper rather than as a coloured panel. Greys are neutral for the
+     same reason: a blue-tinted grey next to pure white reads as a mistake. */
+  --paper:       #ffffff;
   --surface:     #ffffff;
-  --surface-alt: #f7f8f9;
-  --rule:        #d3d7dc;
-  --rule-strong: #9aa3ad;
+  --surface-alt: #f5f5f5;
+  --rule:        #d9d9d9;
+  --rule-strong: #a6a6a6;
 
-  --ink:         #14181d;
-  --ink-2:       #414a54;
-  --ink-3:       #6b7681;
+  --ink:         #111111;
+  --ink-2:       #3d3d3d;
+  --ink-3:       #6e6e6e;
 
-  --steel:       #2f4858;   /* structure: headers, links, chrome */
-  --accent:      #a8201a;   /* tier 3 ONLY */
-  --accent-soft: #f2dedd;
-  --band:        #c9d3da;   /* expected range on charts */
-  --observed:    #1f3a4d;
+  --steel:       #0b5cab;   /* structure: headers, links, chrome */
+  --steel-dark:  #07396c;   /* masthead, rules under the bar */
+  --steel-soft:  #eef4fb;   /* the one permitted tint: hover/selected rows */
+  --accent:      #b3261e;   /* tier 3 ONLY */
+  --accent-soft: #fbe4e2;
+  --band:        #cfe0f1;   /* expected range on charts */
+  --observed:    #07396c;
 
   --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --serif: Georgia, "Times New Roman", "Nimbus Roman", serif;
 
   --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px;
   --s5: 24px; --s6: 32px; --s7: 48px;
@@ -68,7 +86,7 @@ button {
 }
 button:hover { background: var(--surface-alt); }
 button.primary { background: var(--steel); color: #fff; border-color: var(--steel); }
-button.primary:hover { background: #24384a; }
+button.primary:hover { background: var(--steel-dark); }
 
 .label {
   font-size: var(--t-micro);
@@ -85,12 +103,16 @@ button.primary:hover { background: #24384a; }
 .topbar {
   display: flex; align-items: baseline; gap: var(--s4);
   padding: var(--s3) var(--s5);
-  background: var(--steel); color: #eef2f5;
-  border-bottom: 3px solid #22333f;
+  background: var(--steel); color: #ffffff;
+  border-bottom: 3px solid var(--steel-dark);
 }
-.topbar h1 { font-size: var(--t-head); margin: 0; font-weight: 600; letter-spacing: -0.01em; }
-.topbar .sub { font-size: var(--t-small); color: #a9bcc9; }
+.topbar h1 {
+  font-family: var(--serif);
+  font-size: 19px; margin: 0; font-weight: 700; letter-spacing: 0;
+}
+.topbar .sub { font-size: var(--t-small); color: #cfe2f6; }
 .topbar .spacer { flex: 1; }
+
 
 .framing {
   padding: var(--s3) var(--s5);
@@ -98,7 +120,7 @@ button.primary:hover { background: #24384a; }
   border-bottom: 1px solid var(--rule);
   display: flex; align-items: baseline; gap: var(--s5);
 }
-.framing .line { font-size: var(--t-head); }
+.framing .line { font-size: var(--t-head); font-family: var(--serif); }
 .framing .line strong { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 
 main { padding: var(--s5); flex: 1; }
@@ -108,9 +130,9 @@ main { padding: var(--s5); flex: 1; }
 table.grid { width: 100%; border-collapse: collapse; background: var(--surface); }
 table.grid th {
   text-align: left; font-size: var(--t-micro); letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--ink-3); font-weight: 600;
-  padding: var(--s2) var(--s3); border-bottom: 1px solid var(--rule-strong);
-  white-space: nowrap; background: var(--surface-alt);
+  text-transform: uppercase; color: var(--steel-dark); font-weight: 700;
+  padding: var(--s2) var(--s3); border-bottom: 2px solid var(--steel);
+  white-space: nowrap; background: var(--surface);
 }
 table.grid td {
   padding: 7px var(--s3); border-bottom: 1px solid var(--rule);
@@ -139,6 +161,7 @@ tr.t3 td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
 .split { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: var(--s5); }
 .panel { background: var(--surface); border: 1px solid var(--rule); }
 .panel > h2 {
+  font-family: var(--serif);
   margin: 0; padding: var(--s3) var(--s4);
   font-size: var(--t-small); letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--ink-2); border-bottom: 1px solid var(--rule); background: var(--surface-alt);
@@ -162,7 +185,7 @@ dl.kv dd { margin: 0; font-family: var(--mono); font-variant-numeric: tabular-nu
 
 .topnav { display: flex; gap: 2px; margin-left: var(--s4); }
 .topnav button {
-  background: transparent; border: 1px solid transparent; color: #b9cbd6;
+  background: transparent; border: 1px solid transparent; color: #cfe2f6;
   padding: 3px 10px; font-size: var(--t-small); border-radius: 2px;
 }
 .topnav button:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
@@ -173,13 +196,30 @@ dl.kv dd { margin: 0; font-family: var(--mono); font-variant-numeric: tabular-nu
 
 /* ---- landing ---- */
 
-.lp { max-width: 900px; margin: 0 auto; padding: var(--s7) var(--s5) var(--s7); }
-.lp-hero { padding-bottom: var(--s5); border-bottom: 2px solid var(--ink); }
+.lp-page { min-height: 100%; }
+
+.lp-masthead {
+  background: var(--steel); color: #fff;
+  border-bottom: 3px solid var(--steel-dark);
+}
+.lp-masthead-inner {
+  max-width: 900px; margin: 0 auto; padding: var(--s3) var(--s5);
+  display: flex; align-items: baseline; gap: var(--s3); flex-wrap: wrap;
+}
+.lp-mast-name { font-family: var(--serif); font-size: var(--t-head); font-weight: 700; }
+.lp-mast-sub { font-size: var(--t-small); color: #cfe2f6; }
+
+.lp { max-width: 900px; margin: 0 auto; padding: var(--s6) var(--s5) var(--s7); }
+.lp-hero { padding-bottom: var(--s5); border-bottom: 2px solid var(--steel-dark); }
 .lp-eyebrow {
   font-size: var(--t-micro); letter-spacing: 0.13em; text-transform: uppercase;
   color: var(--ink-3); font-weight: 700;
 }
-.lp-title { font-size: 42px; margin: 10px 0 12px; font-weight: 600; letter-spacing: -0.025em; }
+.lp-title {
+  font-family: var(--serif);
+  font-size: 42px; margin: 0 0 12px; font-weight: 700; letter-spacing: -0.01em;
+  color: var(--steel-dark);
+}
 .lp-lede { font-size: 17px; line-height: 1.55; max-width: 62ch; color: var(--ink-2); margin: 0; }
 .lp-actions { display: flex; gap: var(--s3); margin-top: var(--s5); }
 .lp-actions button { padding: 8px 16px; }
@@ -240,6 +280,14 @@ dl.kv dd { margin: 0; font-family: var(--mono); font-variant-numeric: tabular-nu
 /* ---- action board ---- */
 
 .ab-head { display: flex; align-items: flex-start; gap: var(--s4); margin-bottom: var(--s4); }
+
+/* Was an inline style, which meant it could not be made to wrap for a narrow
+   viewport -- the "Open case file" button was pushed past the right edge and
+   was the last thing scrolling the console sideways on a phone. */
+.fd-head {
+  display: flex; align-items: baseline; gap: var(--s3);
+  margin-bottom: var(--s4);
+}
 .ab-officer { display: flex; flex-direction: column; gap: 3px; }
 .ab-officer select {
   font: inherit; font-family: var(--mono); padding: 5px 8px;
@@ -424,4 +472,104 @@ circle.hm-place.market { fill: var(--steel); }
 .hm-attrib {
   font-family: var(--sans); font-size: 8.5px; fill: var(--ink-3);
   text-anchor: end; opacity: .8;
+}
+
+/* ---- public: today's commodity prices ---------------------------------- */
+.prices { padding: var(--s4); }
+.pr-head { display: flex; align-items: flex-start; gap: var(--s4); flex-wrap: wrap; }
+.pr-head h2 { margin: 0 0 var(--s1); font-size: var(--t-head); }
+.pr-head p { margin: 0; max-width: 60ch; }
+
+.pr-search {
+  margin-left: auto; font: inherit; font-size: var(--t-small);
+  padding: 5px 9px; min-width: 180px;
+  border: 1px solid var(--rule-strong); background: var(--surface); color: var(--ink);
+}
+
+/* Capped, not full-width. Stretched across 1280px the numbers sit ~700px from
+   the commodity they belong to and the eye loses the row; a price list is read
+   by scanning down a column, not across a hall. */
+.pr-table { width: 100%; max-width: 760px; border-collapse: collapse; margin-top: var(--s4); }
+.pr-table th {
+  text-align: left; font-size: var(--t-micro); letter-spacing: .06em;
+  text-transform: uppercase; color: var(--steel-dark); font-weight: 700;
+  padding: 0 var(--s3) var(--s2); border-bottom: 2px solid var(--steel);
+}
+.pr-table td { padding: 7px var(--s3); border-bottom: 1px solid var(--rule); }
+.pr-table .num { text-align: right; }
+.pr-table .strong { font-weight: 600; }
+.pr-table tbody tr:hover { background: var(--surface-alt); }
+
+.pr-note { margin: var(--s4) 0 0; max-width: 72ch; }
+
+@media (max-width: 620px) {
+  .pr-search { margin-left: 0; width: 100%; }
+  .pr-table th, .pr-table td { padding-left: var(--s2); padding-right: var(--s2); }
+  /* Five columns do not fit a phone. The mandi count is the one a shopper does
+     not need, so it goes rather than letting the prices scroll off the edge.
+     The remaining four still overflow at body size, so the table steps down a
+     size and long commodity names wrap instead of widening the row. */
+  .pr-table th:last-child, .pr-table td:last-child { display: none; }
+  .pr-table { font-size: var(--t-small); }
+  .pr-table th { font-size: 9.5px; }
+  .pr-table td:first-child { word-break: break-word; }
+  .pr-table th, .pr-table td { padding-left: 6px; padding-right: 6px; }
+}
+
+/* ---- narrow viewports --------------------------------------------------
+   Must stay at the end of the file: a media query adds no specificity, so
+   placed earlier these lose to the base rules they are meant to override. */
+@media (max-width: 760px) {
+  /* The topbar was the one thing on either surface forcing a horizontal
+     scroll on a phone -- title, subtitle, nav, observation count and status
+     pill in one fixed row measured 625px against a 375px viewport. It wraps
+     now, and the two labels that are context rather than navigation stand
+     down first: an officer on a phone needs the tabs, not the row count. */
+  .topbar {
+    flex-wrap: wrap; align-items: center;
+    gap: var(--s2) var(--s3); padding: var(--s2) var(--s3);
+  }
+  .topbar .spacer { display: none; }
+  .topbar > .sub { display: none; }
+  .topbar .topnav { order: 3; width: 100%; margin-left: 0; }
+
+  .framing { padding: var(--s2) var(--s3); gap: var(--s1) var(--s3); flex-wrap: wrap; }
+  .framing .line { font-size: var(--t-body); }
+  /* The flex spacer pushes the withheld-count to the right margin, which once
+     wrapped reads as a stray right-aligned line rather than a footnote. */
+  .framing > .spacer { display: none; }
+
+  main { padding: var(--s3); }
+
+  /* The queue is ten columns and measured 857px on a 375px phone, scrolling the
+     whole page sideways. Two changes rather than one: the table scrolls inside
+     its own box so the page body never does, and the four columns that are
+     corroborating detail rather than triage -- reference rate, duration,
+     observation count, and the finding label -- stand down. What is left is
+     what an officer triages on: priority, ref, item, market, observed, gap. */
+  .grid-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table.grid { min-width: 0; }
+  table.grid th:nth-child(5), table.grid td:nth-child(5),   /* Finding    */
+  table.grid th:nth-child(7), table.grid td:nth-child(7),   /* Reference  */
+  table.grid th:nth-child(9), table.grid td:nth-child(9),   /* Days       */
+  table.grid th:nth-child(10), table.grid td:nth-child(10) { /* Obs       */
+    display: none;
+  }
+  table.grid th, table.grid td { padding-left: var(--s2); padding-right: var(--s2); }
+
+  /* Two-pane layouts (flag detail beside evidence, board beside activity log)
+     hard-code a 340px sidebar, which on a 375px phone leaves ~20px for the
+     content. Stack them instead of squeezing. */
+  .split { grid-template-columns: minmax(0, 1fr); gap: var(--s4); }
+
+  /* Four stat tiles across a phone gives each ~90px, and the counts are the
+     headline number on both surfaces. */
+  .ab-stats, .lp-stats { grid-template-columns: 1fr 1fr; }
+
+  .ab-head { flex-wrap: wrap; gap: var(--s2); }
+  .ab-head > span[style] { display: none; }   /* the flex spacer */
+
+  .fd-head { flex-wrap: wrap; gap: var(--s2); }
+  .fd-head > span[style] { display: none; }
+  .fd-head h2 { font-size: var(--t-head) !important; width: 100%; order: 4; }
 }

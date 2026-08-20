@@ -39,6 +39,7 @@ export default function Queue({ db, onOpen }) {
         ))}
       </div>
 
+      <div className="grid-scroll">
       <table className="grid">
         <thead>
           <tr>
@@ -103,6 +104,7 @@ export default function Queue({ db, onOpen }) {
           })}
         </tbody>
       </table>
+      </div>
 
       <p className="small muted" style={{ marginTop: 12, maxWidth: 760 }}>
         One row per market, strongest finding first &mdash; an inspection is a visit, not

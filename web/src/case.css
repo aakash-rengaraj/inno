@@ -142,3 +142,16 @@
   .cf-foot { break-inside: avoid; }
   .cf-citation, .cf-caveat { background: #fff; border: 1px solid #999; }
 }
+
+/* The case file is designed for A4 and prints correctly; on a phone the meta
+   row's fixed columns and nowrap values pushed it past the viewport. Screen
+   only -- the print rules above are what the officer's copy uses, and they are
+   deliberately untouched. */
+@media screen and (max-width: 760px) {
+  .cf-grid { grid-template-columns: 1fr 1fr; }
+  .cf-field { padding-right: var(--s2); }
+  .cf-field-value { white-space: normal; overflow-wrap: anywhere; }
+  .cf-sheet { padding: var(--s4); }
+  .cf-toolbar { flex-wrap: wrap; gap: var(--s2); }
+  .cf-table { font-size: var(--t-small); }
+}

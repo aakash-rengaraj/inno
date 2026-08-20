@@ -9,10 +9,11 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from pipeline import paths
 
-WEB = Path("web")
+WEB = paths.WEB
 DATA = WEB / "public" / "data"
-OUT = Path("web/dist/standalone.html")
+OUT = paths.WEB / "dist" / "standalone.html"
 
 NAMES = ["queue", "flags", "cases", "charts", "meta"]
 

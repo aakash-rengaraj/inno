@@ -1,42 +1,42 @@
 {
  "data_through": "2026-08-20",
  "data_from": "2020-04-15",
- "observations": 216732,
- "locations_monitored": 22,
- "items_monitored": 108,
+ "observations": 217072,
+ "locations_monitored": 23,
+ "items_monitored": 109,
  "rejected_reports": 29,
  "flags_total": 18,
  "flags_in_queue": 17,
- "inspections": 5,
+ "inspections": 6,
  "flags_excluded_evidence_floor": 1,
  "model": {
-  "pinball_p10": 1.6324,
-  "pinball_p50": 3.6706,
-  "pinball_p90": 2.2547,
-  "band_coverage": 0.7891,
-  "band_width_inr": 24.422,
+  "pinball_p10": 1.6285,
+  "pinball_p50": 3.6724,
+  "pinball_p90": 2.248,
+  "band_coverage": 0.7902,
+  "band_width_inr": 24.363,
   "n_train": 102134,
-  "n_valid": 94689,
+  "n_valid": 95021,
   "split_date": "2025-08-22"
  },
  "model_benchmark": {
   "quantile_model": {
-   "coverage": 0.7891,
-   "pinball": 2.5192,
-   "band_width_inr": 24.42
+   "coverage": 0.7902,
+   "pinball": 2.5163,
+   "band_width_inr": 24.36
   },
   "baseline_per_commodity_quantiles": {
-   "coverage": 0.8116,
-   "pinball": 2.5362,
+   "coverage": 0.8114,
+   "pinball": 2.5369,
    "band_width_inr": 25.91
   },
   "baseline_single_band": {
-   "coverage": 0.8384,
-   "pinball": 2.5752,
+   "coverage": 0.8382,
+   "pinball": 2.5758,
    "band_width_inr": 24.96
   },
-  "pinball_improvement_vs_best_baseline": 0.0067,
-  "n_valid": 94689
+  "pinball_improvement_vs_best_baseline": 0.0081,
+  "n_valid": 95021
  },
  "thresholds": {
   "variance_collapse": {
@@ -79,7 +79,6 @@
   "banana": "Banana",
   "ginger_green": "Ginger(Green)",
   "carrot": "Carrot",
-  "tamarind_fruit": "Tamarind Fruit",
   "potato": "Potato",
   "banana_green": "Banana - Green",
   "tomato": "Tomato",

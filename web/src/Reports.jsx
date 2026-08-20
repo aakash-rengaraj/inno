@@ -56,6 +56,7 @@ export default function Reports() {
               No reports submitted yet.
             </p>
           ) : (
+            <div className="grid-scroll">
             <table className="grid">
               <thead>
                 <tr>
@@ -95,6 +96,7 @@ export default function Reports() {
                 ))}
               </tbody>
             </table>
+            </div>
           )}
         </div>
       </div>

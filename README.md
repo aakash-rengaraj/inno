@@ -47,6 +47,7 @@ state, and serving flags/cases/charts.
 |---|---|
 | `POST /api/reports` | citizen submission; validated through the real ingest, stored, then detection re-runs |
 | `GET /api/public/meta` | aggregate counts only — no thresholds, no flags |
+| `GET /api/public/prices` | today's wholesale range per commodity |
 
 **Console, requires `X-Console-Token`**
 
@@ -268,7 +269,18 @@ Screens, public surface:
 
 1. **Landing** — what the system compares, how a flag is made, and what it
    explicitly does not claim.
-2. **Report a price** — a citizen submits what they were charged. Emits exactly
+2. **Today's prices** — one row per commodity: lowest, typical, highest across
+   the district's mandis, per kg. 53 commodities on the current build.
+   `pipeline/prices.py` builds it to be public-safe *by construction*, not by
+   filtering at render time: no market names (a price beside a named market,
+   next to a queue of flagged markets, is a way of pointing at someone), no
+   modelled band (it is what the detectors trigger against, so publishing it
+   says how far one may go before anything fires), no flags or thresholds. A
+   commodity is listed only when 3+ mandis reported it — fewer is not a range.
+   Wholesale only, and labelled as such: mixing mandi wholesale with retail
+   listings would span two different markets in the economic sense, and a reader
+   would fairly assume the low end was a price they could go and pay.
+3. **Report a price** — a citizen submits what they were charged. Emits exactly
    the CSV row `pipeline/ingest/reports.py` parses, downloadable as
    `field_reports.csv`. Verified round-trip: the form's output parses cleanly,
    rejects rows lacking a geotag or timestamp, and pseudonymises to a ~50m grid.
@@ -306,6 +318,27 @@ One further pattern (Ranipet, eggs) is detected and **withheld**: it rests on
 field reports from 2 independent locations, below the 3-seller evidence floor.
 It is downgraded to tier 1 and excluded from the queue by an assertion in
 `cases.apply_evidence_floor`, not by convention.
+
+## Interface
+
+Blue and white, in the register of a government notice board. One saturated
+official blue (`#0b5cab`) carries every piece of chrome — masthead, rules, links,
+buttons — and **is never bled into the page as a tint**: paper is pure `#ffffff`
+and the greys are neutral, because a blue-tinted grey beside pure white reads as
+a mistake rather than a choice. Headings are set in a system serif, which is what
+makes an administrative screen read as a document; no webfont, because the build
+is offline.
+
+Red survives the palette change and is still spent **only on tier 3**. On a blue
+page it is the one colour that means something, and spreading it would cost the
+priority row its only signal.
+
+Charts duplicate the palette as literals (Recharts needs real colours, not CSS
+variables) — `web/src/Charts.jsx` carries a note to keep them in step.
+
+Both surfaces are usable on a phone. The console's ten-column queue scrolls
+inside its own box rather than scrolling the page, and the four columns that are
+corroborating detail rather than triage stand down below 760px.
 
 ## Layout
 

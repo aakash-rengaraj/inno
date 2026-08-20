@@ -18,6 +18,7 @@ import json
 from pathlib import Path
 
 from pipeline.heatmap import FRAME
+from pipeline import paths
 
 # The heatmap viewBox. The frame never pans or zooms, so the projection is known
 # at build time and the basemap ships as six merged path strings rather than
@@ -26,8 +27,8 @@ from pipeline.heatmap import FRAME
 VIEW_W, VIEW_H = 1000.0, 372.0
 
 # 6.6 MB of Overpass JSON, committed gzipped -- same as the Agmarknet exports.
-RAW = Path("data/raw/basemap/overpass_raw.json.gz")
-OUT = Path("web/public/data/basemap.json")
+RAW = paths.RAW / "basemap" / "overpass_raw.json.gz"
+OUT = paths.WEB_DATA / "basemap.json"
 
 ATTRIBUTION = "(c) OpenStreetMap contributors, ODbL"
 

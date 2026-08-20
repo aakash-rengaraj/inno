@@ -198,8 +198,8 @@
    "basis": "Modelled competitive range from wholesale mandi prices",
    "rate": 55.0,
    "band": [
-    44.89,
-    65.51
+    44.97,
+    65.82
    ],
    "unit": "per kg",
    "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
@@ -226,7 +226,7 @@
    "extra": {},
    "explanation": "Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock."
   },
-  "residual_sd": 0.365,
+  "residual_sd": 0.355,
   "peers_in_band": [
    "Kahithapattarai Sandhai",
    "Katpadi Sandhai",
@@ -238,37 +238,37 @@
  },
  "FLG-0005": {
   "flag_id": "FLG-0005",
-  "title": "Banana - Green \u2014 Kahithapattarai Sandhai",
+  "title": "Banana \u2014 Vellore APMC",
   "status": "Flagged for investigation",
   "tier": 2,
   "tier_label": "Review",
   "finding": "Sustained gap above the reference rate",
-  "narrative": "Prices stayed above the expected range for 43 consecutive days; median +67% relative to the reference rate while peer locations Gudiyatham Sandhai, Katpadi Sandhai and 2 others remained in-band.",
+  "narrative": "Prices stayed above the expected range for 12 consecutive days; median +64% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 2 others remained in-band.",
   "window": {
-   "start": "2026-07-08",
-   "end": "2026-08-19"
+   "start": "2026-07-28",
+   "end": "2026-08-08"
   },
-  "duration_days": 43,
+  "duration_days": 12,
   "reference": {
    "basis": "Modelled competitive range from wholesale mandi prices",
-   "rate": 30.0,
+   "rate": 55.0,
    "band": [
-    23.66,
-    38.15
+    45.37,
+    65.36
    ],
    "unit": "per kg",
    "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
   },
   "observed": {
-   "median": 50.0,
+   "median": 90.0,
    "unit": "per kg",
-   "n": 43,
-   "pct_vs_reference": 66.7,
+   "n": 12,
+   "pct_vs_reference": 63.6,
    "provenance": [
     {
      "tier": "A",
      "label": "authoritative",
-     "n": 43
+     "n": 12
     }
    ],
    "distinct_localities": 1
@@ -276,29 +276,84 @@
   "measure": {
    "detector": "persistence",
    "name": "consecutive_days_above_band",
-   "value": 43,
+   "value": 12,
    "threshold": 10,
    "extra": {},
    "explanation": "Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock."
   },
-  "residual_sd": 0.364,
+  "residual_sd": 0.627,
   "peers_in_band": [
-   "Gudiyatham Sandhai",
+   "Kahithapattarai Sandhai",
    "Katpadi Sandhai",
    "Pallikonda Sandhai",
-   "Apmc"
+   "Perampet Sandhai"
   ],
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
  "FLG-0006": {
   "flag_id": "FLG-0006",
+  "title": "Banana - Green \u2014 Kahithapattarai Sandhai",
+  "status": "Flagged for investigation",
+  "tier": 2,
+  "tier_label": "Review",
+  "finding": "Sustained gap above the reference rate",
+  "narrative": "Prices stayed above the expected range for 44 consecutive days; median +67% relative to the reference rate while peer locations Gudiyatham Sandhai, Katpadi Sandhai and 2 others remained in-band.",
+  "window": {
+   "start": "2026-07-08",
+   "end": "2026-08-20"
+  },
+  "duration_days": 44,
+  "reference": {
+   "basis": "Modelled competitive range from wholesale mandi prices",
+   "rate": 30.0,
+   "band": [
+    23.54,
+    38.28
+   ],
+   "unit": "per kg",
+   "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
+  },
+  "observed": {
+   "median": 50.0,
+   "unit": "per kg",
+   "n": 44,
+   "pct_vs_reference": 66.7,
+   "provenance": [
+    {
+     "tier": "A",
+     "label": "authoritative",
+     "n": 44
+    }
+   ],
+   "distinct_localities": 1
+  },
+  "measure": {
+   "detector": "persistence",
+   "name": "consecutive_days_above_band",
+   "value": 44,
+   "threshold": 10,
+   "extra": {},
+   "explanation": "Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock."
+  },
+  "residual_sd": 0.354,
+  "peers_in_band": [
+   "Gudiyatham Sandhai",
+   "Katpadi Sandhai",
+   "Pallikonda Sandhai",
+   "Vellore APMC"
+  ],
+  "series": [],
+  "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
+ },
+ "FLG-0007": {
+  "flag_id": "FLG-0007",
   "title": "Cauliflower \u2014 Katpadi Sandhai",
   "status": "Flagged for investigation",
   "tier": 2,
   "tier_label": "Review",
   "finding": "Sustained gap above the reference rate",
-  "narrative": "Prices stayed above the expected range for 11 consecutive days; median +38% relative to the reference rate while peer location Apmc remained in-band.",
+  "narrative": "Prices stayed above the expected range for 11 consecutive days; median +38% relative to the reference rate while peer location Vellore APMC remained in-band.",
   "window": {
    "start": "2026-07-15",
    "end": "2026-07-25"
@@ -308,8 +363,8 @@
    "basis": "Modelled competitive range from wholesale mandi prices",
    "rate": 20.0,
    "band": [
-    15.77,
-    24.54
+    15.78,
+    25.23
    ],
    "unit": "per kg",
    "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
@@ -336,15 +391,15 @@
    "extra": {},
    "explanation": "Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock."
   },
-  "residual_sd": 2.186,
+  "residual_sd": 2.009,
   "peers_in_band": [
-   "Apmc"
+   "Vellore APMC"
   ],
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0007": {
-  "flag_id": "FLG-0007",
+ "FLG-0008": {
+  "flag_id": "FLG-0008",
   "title": "Table eggs \u2014 Katpadi",
   "status": "Flagged for investigation",
   "tier": 2,
@@ -402,8 +457,8 @@
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0009": {
-  "flag_id": "FLG-0009",
+ "FLG-0010": {
+  "flag_id": "FLG-0010",
   "title": "Ginger(Green) \u2014 Gudiyatham Sandhai",
   "status": "Flagged for investigation",
   "tier": 2,
@@ -419,8 +474,8 @@
    "basis": "Modelled competitive range from wholesale mandi prices",
    "rate": 170.0,
    "band": [
-    147.88,
-    212.74
+    149.09,
+    214.75
    ],
    "unit": "per kg",
    "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
@@ -447,18 +502,18 @@
    "extra": {},
    "explanation": "Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock."
   },
-  "residual_sd": 0.487,
+  "residual_sd": 0.483,
   "peers_in_band": [
    "Kahithapattarai Sandhai",
    "Katpadi Sandhai",
    "Pallikonda Sandhai",
-   "Apmc"
+   "Vellore APMC"
   ],
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0010": {
-  "flag_id": "FLG-0010",
+ "FLG-0011": {
+  "flag_id": "FLG-0011",
   "title": "Groundnut \u2014 Kahithapattarai Sandhai",
   "status": "Flagged for investigation",
   "tier": 2,
@@ -474,8 +529,8 @@
    "basis": "Modelled competitive range from wholesale mandi prices",
    "rate": 75.0,
    "band": [
-    66.35,
-    81.86
+    65.74,
+    83.5
    ],
    "unit": "per kg",
    "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
@@ -502,19 +557,19 @@
    "extra": {},
    "explanation": "Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock."
   },
-  "residual_sd": 1.184,
+  "residual_sd": 0.959,
   "peers_in_band": [
    "Gudiyatham Sandhai",
    "Katpadi Sandhai",
    "Pallikonda Sandhai",
    "Perampet Sandhai",
-   "Apmc"
+   "Vellore APMC"
   ],
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0011": {
-  "flag_id": "FLG-0011",
+ "FLG-0012": {
+  "flag_id": "FLG-0012",
   "title": "Lemon \u2014 Katpadi Sandhai",
   "status": "Flagged for investigation",
   "tier": 2,
@@ -530,8 +585,8 @@
    "basis": "Modelled competitive range from wholesale mandi prices",
    "rate": 50.0,
    "band": [
-    36.87,
-    71.2
+    36.81,
+    71.39
    ],
    "unit": "per kg",
    "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
@@ -558,7 +613,7 @@
    "extra": {},
    "explanation": "Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock."
   },
-  "residual_sd": 0.511,
+  "residual_sd": 0.477,
   "peers_in_band": [
    "Gudiyatham Sandhai",
    "Perampet Sandhai"
@@ -566,8 +621,8 @@
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0012": {
-  "flag_id": "FLG-0012",
+ "FLG-0013": {
+  "flag_id": "FLG-0013",
   "title": "Mint(Pudina) \u2014 Kahithapattarai Sandhai",
   "status": "Flagged for investigation",
   "tier": 2,
@@ -583,8 +638,8 @@
    "basis": "Modelled competitive range from wholesale mandi prices",
    "rate": 35.0,
    "band": [
-    21.38,
-    61.34
+    21.68,
+    61.61
    ],
    "unit": "per kg",
    "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
@@ -611,25 +666,25 @@
    "extra": {},
    "explanation": "Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock."
   },
-  "residual_sd": 0.597,
+  "residual_sd": 0.641,
   "peers_in_band": [
    "Gudiyatham Sandhai",
    "Katpadi Sandhai",
    "Pallikonda Sandhai",
    "Perampet Sandhai",
-   "Apmc"
+   "Vellore APMC"
   ],
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0013": {
-  "flag_id": "FLG-0013",
+ "FLG-0014": {
+  "flag_id": "FLG-0014",
   "title": "Onion \u2014 Katpadi Sandhai",
   "status": "Flagged for investigation",
   "tier": 2,
   "tier_label": "Review",
   "finding": "Sustained gap above the reference rate",
-  "narrative": "Prices stayed above the expected range for 10 consecutive days; median +33% relative to the reference rate while peer locations Kahithapattarai Sandhai, Pallikonda Sandhai and 2 others remained in-band.",
+  "narrative": "Prices stayed above the expected range for 10 consecutive days; median +33% relative to the reference rate while peer locations Gudiyatham Sandhai, Kahithapattarai Sandhai and 3 others remained in-band.",
   "window": {
    "start": "2026-06-19",
    "end": "2026-06-28"
@@ -639,8 +694,8 @@
    "basis": "Modelled competitive range from wholesale mandi prices",
    "rate": 27.0,
    "band": [
-    24.87,
-    30.34
+    24.68,
+    30.77
    ],
    "unit": "per kg",
    "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
@@ -667,35 +722,36 @@
    "extra": {},
    "explanation": "Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock."
   },
-  "residual_sd": 0.651,
+  "residual_sd": 0.612,
   "peers_in_band": [
+   "Gudiyatham Sandhai",
    "Kahithapattarai Sandhai",
    "Pallikonda Sandhai",
    "Perampet Sandhai",
-   "Apmc"
+   "Vellore APMC"
   ],
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0014": {
-  "flag_id": "FLG-0014",
+ "FLG-0015": {
+  "flag_id": "FLG-0015",
   "title": "Onion Green \u2014 Gudiyatham Sandhai",
   "status": "Flagged for investigation",
   "tier": 2,
   "tier_label": "Review",
   "finding": "Sustained gap above the reference rate",
-  "narrative": "Prices stayed above the expected range for 61 consecutive days; median +33% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 1 other remained in-band.",
+  "narrative": "Prices stayed above the expected range for 51 consecutive days; median +33% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 1 other remained in-band.",
   "window": {
-   "start": "2026-06-09",
+   "start": "2026-06-19",
    "end": "2026-08-09"
   },
-  "duration_days": 62,
+  "duration_days": 52,
   "reference": {
    "basis": "Modelled competitive range from wholesale mandi prices",
    "rate": 45.0,
    "band": [
-    40.02,
-    53.94
+    39.94,
+    53.95
    ],
    "unit": "per kg",
    "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
@@ -703,13 +759,13 @@
   "observed": {
    "median": 60.0,
    "unit": "per kg",
-   "n": 61,
+   "n": 51,
    "pct_vs_reference": 33.3,
    "provenance": [
     {
      "tier": "A",
      "label": "authoritative",
-     "n": 61
+     "n": 51
     }
    ],
    "distinct_localities": 1
@@ -717,12 +773,12 @@
   "measure": {
    "detector": "persistence",
    "name": "consecutive_days_above_band",
-   "value": 61,
+   "value": 51,
    "threshold": 10,
    "extra": {},
    "explanation": "Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock."
   },
-  "residual_sd": 0.358,
+  "residual_sd": 0.357,
   "peers_in_band": [
    "Kahithapattarai Sandhai",
    "Katpadi Sandhai",
@@ -731,25 +787,25 @@
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0015": {
-  "flag_id": "FLG-0015",
+ "FLG-0016": {
+  "flag_id": "FLG-0016",
   "title": "Onion Green \u2014 Perampet Sandhai",
   "status": "Flagged for investigation",
   "tier": 2,
   "tier_label": "Review",
   "finding": "Sustained gap above the reference rate",
-  "narrative": "Prices stayed above the expected range for 13 consecutive days; median +30% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 2 others remained in-band.",
+  "narrative": "Prices stayed above the expected range for 12 consecutive days; median +30% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 2 others remained in-band.",
   "window": {
-   "start": "2026-06-19",
+   "start": "2026-06-20",
    "end": "2026-07-02"
   },
-  "duration_days": 14,
+  "duration_days": 13,
   "reference": {
    "basis": "Modelled competitive range from wholesale mandi prices",
    "rate": 46.25,
    "band": [
-    41.36,
-    54.68
+    40.95,
+    54.96
    ],
    "unit": "per kg",
    "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
@@ -757,63 +813,8 @@
   "observed": {
    "median": 60.0,
    "unit": "per kg",
-   "n": 13,
-   "pct_vs_reference": 29.7,
-   "provenance": [
-    {
-     "tier": "A",
-     "label": "authoritative",
-     "n": 13
-    }
-   ],
-   "distinct_localities": 1
-  },
-  "measure": {
-   "detector": "persistence",
-   "name": "consecutive_days_above_band",
-   "value": 13,
-   "threshold": 10,
-   "extra": {},
-   "explanation": "Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock."
-  },
-  "residual_sd": 0.238,
-  "peers_in_band": [
-   "Kahithapattarai Sandhai",
-   "Katpadi Sandhai",
-   "Pallikonda Sandhai",
-   "Apmc"
-  ],
-  "series": [],
-  "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
- },
- "FLG-0016": {
-  "flag_id": "FLG-0016",
-  "title": "Tamarind Fruit \u2014 Kahithapattarai Sandhai",
-  "status": "Flagged for investigation",
-  "tier": 2,
-  "tier_label": "Review",
-  "finding": "Sustained gap above the reference rate",
-  "narrative": "Prices stayed above the expected range for 12 consecutive days; median +60% relative to the reference rate while peer location Perampet Sandhai remained in-band.",
-  "window": {
-   "start": "2026-06-04",
-   "end": "2026-06-15"
-  },
-  "duration_days": 12,
-  "reference": {
-   "basis": "Modelled competitive range from wholesale mandi prices",
-   "rate": 100.0,
-   "band": [
-    83.91,
-    122.08
-   ],
-   "unit": "per kg",
-   "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
-  },
-  "observed": {
-   "median": 160.0,
-   "unit": "per kg",
    "n": 12,
-   "pct_vs_reference": 60.0,
+   "pct_vs_reference": 29.7,
    "provenance": [
     {
      "tier": "A",
@@ -831,9 +832,12 @@
    "extra": {},
    "explanation": "Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock."
   },
-  "residual_sd": 0.523,
+  "residual_sd": 0.212,
   "peers_in_band": [
-   "Perampet Sandhai"
+   "Kahithapattarai Sandhai",
+   "Katpadi Sandhai",
+   "Pallikonda Sandhai",
+   "Vellore APMC"
   ],
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
@@ -845,18 +849,18 @@
   "tier": 2,
   "tier_label": "Review",
   "finding": "Sustained gap above the reference rate",
-  "narrative": "Prices stayed above the expected range for 22 consecutive days; median +37% relative to the reference rate while peer locations Kahithapattarai Sandhai, Apmc remained in-band.",
+  "narrative": "Prices stayed above the expected range for 12 consecutive days; median +39% relative to the reference rate while peer locations Kahithapattarai Sandhai, Pallikonda Sandhai and 1 other remained in-band.",
   "window": {
-   "start": "2026-07-29",
+   "start": "2026-08-08",
    "end": "2026-08-19"
   },
-  "duration_days": 22,
+  "duration_days": 12,
   "reference": {
    "basis": "Modelled competitive range from wholesale mandi prices",
-   "rate": 48.12,
+   "rate": 47.5,
    "band": [
-    41.96,
-    54.42
+    41.61,
+    54.44
    ],
    "unit": "per kg",
    "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
@@ -864,13 +868,13 @@
   "observed": {
    "median": 66.0,
    "unit": "per kg",
-   "n": 22,
-   "pct_vs_reference": 37.2,
+   "n": 12,
+   "pct_vs_reference": 38.9,
    "provenance": [
     {
      "tier": "A",
      "label": "authoritative",
-     "n": 22
+     "n": 12
     }
    ],
    "distinct_localities": 1
@@ -878,15 +882,16 @@
   "measure": {
    "detector": "persistence",
    "name": "consecutive_days_above_band",
-   "value": 22,
+   "value": 12,
    "threshold": 10,
    "extra": {},
    "explanation": "Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock."
   },
-  "residual_sd": 0.635,
+  "residual_sd": 0.633,
   "peers_in_band": [
    "Kahithapattarai Sandhai",
-   "Apmc"
+   "Pallikonda Sandhai",
+   "Vellore APMC"
   ],
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
