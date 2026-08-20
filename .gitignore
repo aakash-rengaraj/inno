@@ -19,3 +19,6 @@ server/data/
 #   data/raw/**               scrape output (currently synthetic fixtures)
 #   data/processed/*.parquet  the shared observation table
 #   web/public/data/*.json    built artifacts the static fallback serves
+
+# editor/agent tooling config
+.claude/

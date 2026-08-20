@@ -1,6 +1,6 @@
 """Real Agmarknet portal export (Vellore district).
 
-The portal's CSV differs from the report format CLAUDE.md 5.1 described, and in
+The portal's CSV differs from the report format SPEC.md 5.1 described, and in
 two ways that matter:
 
   * **No arrivals column.** Section 5.1 calls arrivals load-bearing, and it is

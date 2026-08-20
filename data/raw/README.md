@@ -9,4 +9,4 @@ Replace file-by-file with real scrape output as it lands. Nothing downstream
 needs to change when you do.
 
 Note: agmarknet.gov.in has been rebuilt as a SPA whose API is captcha-gated;
-the `__VIEWSTATE` postback flow described in CLAUDE.md 5.1 no longer exists.
+the `__VIEWSTATE` postback flow described in SPEC.md 5.1 no longer exists.

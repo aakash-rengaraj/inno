@@ -1,6 +1,6 @@
 """Frozen data contracts. Everything downstream depends on these.
 
-Do not change after hour 4 of day 1. See CLAUDE.md section 4.
+Do not change after hour 4 of day 1. See SPEC.md section 4.
 """
 from __future__ import annotations
 

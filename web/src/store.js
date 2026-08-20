@@ -1,7 +1,7 @@
 // Local persistence for the two things the static artifacts cannot hold:
 // citizen reports, and what the regulator has actually done about a flag.
 //
-// There is no server (CLAUDE.md section 0), so this is localStorage. It is live
+// There is no server (SPEC.md section 0), so this is localStorage. It is live
 // across tabs via the browser's own `storage` event, which fires in every OTHER
 // tab on the same origin — so two people on one machine see each other's actions
 // immediately. It is not networked, and nothing here pretends otherwise.

@@ -28,7 +28,7 @@ brew install libomp          # macOS only — LightGBM links against OpenMP
 
 ## API server
 
-A departure from CLAUDE.md sections 0 and 8, which rule out any HTTP server —
+A departure from SPEC.md sections 0 and 8, which rule out any HTTP server —
 requested explicitly, because without one a citizen report can only reach the
 console via a manual CSV drop and rebuild. `python -m pipeline.build` still
 produces the static artifacts, so **the demo retains a path that works with the

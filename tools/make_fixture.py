@@ -366,7 +366,7 @@ def main() -> None:
         "Replace file-by-file with real scrape output as it lands. Nothing downstream\n"
         "needs to change when you do.\n\n"
         "Note: agmarknet.gov.in has been rebuilt as a SPA whose API is captcha-gated;\n"
-        "the `__VIEWSTATE` postback flow described in CLAUDE.md 5.1 no longer exists.\n"
+        "the `__VIEWSTATE` postback flow described in SPEC.md 5.1 no longer exists.\n"
     )
     print("done.")
 

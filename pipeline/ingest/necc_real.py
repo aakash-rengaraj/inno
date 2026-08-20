@@ -2,7 +2,7 @@
 
 `necc.coop` does not resolve; the live site is e2necc.com. The daily-rate page is
 a plain POST form (`ddlMonth`, `ddlYear`, `rblReportType`) with no captcha and no
-VIEWSTATE — ironically the pattern CLAUDE.md 5.1 expected of Agmarknet.
+VIEWSTATE — ironically the pattern SPEC.md 5.1 expected of Agmarknet.
 
 `fetch()` walks a month range and writes one tidy CSV. Run it once, commit the
 output, never call it again: the demo path must not touch the network.

@@ -1,6 +1,6 @@
 """HTTP API for the review system.
 
-Deliberate departure from CLAUDE.md sections 0 and 8, which rule out any server.
+Deliberate departure from SPEC.md sections 0 and 8, which rule out any server.
 Requested explicitly: without one, a citizen report can only reach the console by
 a manual CSV drop and rebuild. The static build in web/public/data remains valid
 and is still what `python -m pipeline.build` produces, so the demo has a path

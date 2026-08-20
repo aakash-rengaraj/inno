@@ -5,7 +5,7 @@ backbone — the only source with enough history. The band answers "what should
 this price have been, given the regional level, supply and season?", which is
 what every detector compares an observation against.
 
-Two deliberate deviations from CLAUDE.md 5.2, both load-bearing:
+Two deliberate deviations from SPEC.md 5.2, both load-bearing:
 
 1.  The target is log(price / regional peer level), not price. Fitted on price
     directly, the model learns the direction of the training period's trend and
