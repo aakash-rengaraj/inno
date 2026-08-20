@@ -1,0 +1,66 @@
+{
+ "data_through": "2026-08-10",
+ "data_from": "2025-01-01",
+ "observations": 14307,
+ "locations_monitored": 10,
+ "items_monitored": 4,
+ "rejected_reports": 29,
+ "flags_total": 6,
+ "flags_in_queue": 5,
+ "flags_excluded_evidence_floor": 1,
+ "model": {
+  "pinball_p10": 0.4673,
+  "pinball_p50": 1.0408,
+  "pinball_p90": 0.5802,
+  "band_coverage": 0.6706,
+  "band_width_inr": 4.863,
+  "n_train": 3752,
+  "n_valid": 944,
+  "split_date": "2026-04-15"
+ },
+ "thresholds": {
+  "variance_collapse": {
+   "cv_max": 0.03,
+   "min_days": 14,
+   "min_sellers": 3,
+   "min_out_of_band_share": 0.5
+  },
+  "cost_correlation": {
+   "peer_min": 0.55,
+   "cost_max": 0.3,
+   "gap_min": 0.4,
+   "window": 21,
+   "min_days": 30
+  },
+  "persistence": {
+   "residual_min": 1.5,
+   "min_consecutive_days": 10
+  },
+  "quantisation": {
+   "round_mass_min": 0.6,
+   "r2_max": 0.35,
+   "min_obs": 30,
+   "round_to": 10,
+   "roll_days": 14,
+   "min_days": 21
+  }
+ },
+ "generaliser": {
+  "radius_m": 150.0,
+  "price_tolerance": 0.03,
+  "report_points": 673,
+  "report_localities": 237,
+  "collapsed": 436
+ },
+ "tier_counts": {
+  "3": 3,
+  "2": 2
+ },
+ "sources": [
+  "agmarknet",
+  "necc",
+  "qcommerce",
+  "report",
+  "ridehail"
+ ]
+}

@@ -1,0 +1,102 @@
+import React, { useCallback, useEffect, useState } from 'react'
+import { apiAvailable, apiGet, clearToken, getToken } from './api.js'
+import { loadAll } from './data.js'
+import TokenGate from './TokenGate.jsx'
+import ActionBoard from './ActionBoard.jsx'
+import CaseFile from './CaseFile.jsx'
+import FlagDetail from './FlagDetail.jsx'
+import Queue from './Queue.jsx'
+
+const CONSOLE_VIEWS = ['queue', 'board', 'detail']
+
+export default function ConsoleApp() {
+  const [db, setDb] = useState(null)
+  const [selected, setSelected] = useState(null)
+  const [view, setView] = useState('queue')
+  const [mode, setMode] = useState('checking')   // checking | gate | live | static
+
+  const loadLive = useCallback(async () => {
+    const [queue, flags, cases, charts, meta] = await Promise.all([
+      apiGet('/api/queue', true), apiGet('/api/flags', true), apiGet('/api/cases', true),
+      apiGet('/api/charts', true), apiGet('/api/meta', true),
+    ])
+    setDb({ queue, flags, cases, charts, meta })
+  }, [])
+
+  const boot = useCallback(async () => {
+    if (await apiAvailable()) {
+      if (!getToken()) { setMode('gate'); return }
+      try { await loadLive(); setMode('live'); return }
+      catch { clearToken(); setMode('gate'); return }
+    }
+    // no server: fall back to the artifacts built into the page
+    setDb(await loadAll())
+    setMode('static')
+  }, [loadLive])
+
+  useEffect(() => { boot() }, [boot])
+
+  if (mode === 'gate') {
+    return <TokenGate onUnlocked={async () => { await loadLive(); setMode('live') }} />
+  }
+  if (!db) return <div style={{ padding: 32 }} className="muted">Loading case data…</div>
+
+  const flag = db.queue.find((f) => f.flag_id === selected) || null
+  const open = (id) => { setSelected(id); setView('detail') }
+
+  if (view === 'case' && flag) {
+    return <CaseFile caseFile={db.cases[flag.flag_id]} onBack={() => setView('detail')} />
+  }
+
+  const inConsole = CONSOLE_VIEWS.includes(view)
+
+  return (
+    <div className="app">
+      <header className="topbar">
+        <h1 onClick={() => setView('queue')} style={{ cursor: 'pointer' }}>Price Review</h1>
+        <span className="sub">Vellore District · Supply &amp; Enforcement</span>
+        <nav className="topnav">
+          {[['queue', 'Queue'], ['board', 'Action board']]
+            .map(([v, label]) => (
+              <button key={v} className={view === v ? 'on' : ''}
+                      onClick={() => setView(v)}>{label}</button>
+            ))}
+        </nav>
+        <span className="spacer" />
+        <span className="sub mono">
+          data through {db.meta.data_through} · {db.meta.observations.toLocaleString('en-IN')} observations
+        </span>
+        <span className={`conn ${mode}`} title={mode === 'live'
+          ? 'Connected to the review service' : 'Reading the build shipped with this page'}>
+          {mode === 'live' ? 'Live' : 'Static build'}
+        </span>
+      </header>
+
+      {inConsole && (
+        <div className="framing">
+          <div className="line">
+            <strong>{db.meta.locations_monitored}</strong> locations monitored,{' '}
+            <strong>{db.meta.flags_in_queue}</strong> flagged for investigation
+            {' '}— here are the {db.meta.flags_in_queue}.
+          </div>
+          <span className="spacer" style={{ flex: 1 }} />
+          {db.meta.flags_excluded_evidence_floor > 0 && (
+            <div className="small muted">
+              {db.meta.flags_excluded_evidence_floor} pattern
+              {db.meta.flags_excluded_evidence_floor > 1 ? 's' : ''} withheld — evidence floor not met
+            </div>
+          )}
+        </div>
+      )}
+
+      <main>
+        {view === 'queue' && <Queue db={db} onOpen={open} />}
+        {view === 'board' && <ActionBoard db={db} onOpen={open} live={mode === 'live'} />}
+        {view === 'detail' && (
+          <FlagDetail db={db} flag={flag} onBack={() => setView('queue')}
+                      onCase={() => setView('case')} />
+        )}
+      </main>
+    </div>
+  )
+}

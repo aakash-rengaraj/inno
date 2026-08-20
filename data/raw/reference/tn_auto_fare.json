@@ -1,0 +1,10 @@
+{
+  "source": "tn_gazette",
+  "citation": "Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept \u2014 Vellore district schedule",
+  "effective_from": "2025-01-01",
+  "currency": "INR",
+  "minimum_fare": 25.0,
+  "minimum_fare_included_km": 1.8,
+  "per_km_after": 12.0,
+  "waiting_per_15_min": 7.5
+}

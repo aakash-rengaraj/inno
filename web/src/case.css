@@ -1,0 +1,144 @@
+/* The case file is the signature element: it should look like something that
+   could be filed. Everything around it stays quiet. */
+
+.cf-page { background: var(--paper); min-height: 100%; padding: var(--s5) 0 var(--s7); }
+
+.cf-toolbar {
+  display: flex; align-items: center; gap: var(--s3);
+  max-width: 860px; margin: 0 auto var(--s4);
+}
+
+.cf-sheet {
+  max-width: 860px; margin: 0 auto; background: #fff;
+  border: 1px solid var(--rule-strong);
+  box-shadow: 0 1px 0 rgba(20, 24, 29, 0.05), 0 12px 28px rgba(20, 24, 29, 0.09);
+  padding: 56px 64px 40px;
+  color: var(--ink);
+}
+
+/* --- masthead --- */
+
+.cf-head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding-bottom: var(--s3); border-bottom: 2px solid var(--ink);
+}
+.cf-issuer-name { font-size: 15px; font-weight: 700; letter-spacing: 0.01em; }
+.cf-issuer-sub { font-size: var(--t-small); color: var(--ink-2); margin-top: 2px; }
+.cf-ref { text-align: right; }
+.cf-ref-id {
+  font-family: var(--mono); font-size: 17px; font-weight: 600;
+  font-variant-numeric: tabular-nums; letter-spacing: 0.02em;
+}
+
+.cf-title-block { padding: var(--s5) 0 var(--s4); border-bottom: 1px solid var(--rule); }
+.cf-doctype {
+  font-size: var(--t-micro); letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--ink-3); font-weight: 700;
+}
+.cf-title { font-size: 27px; margin: 8px 0 6px; font-weight: 600; letter-spacing: -0.015em; }
+.cf-finding { font-size: 15px; color: var(--ink-2); }
+
+/* --- summary grid --- */
+
+.cf-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-bottom: 1px solid var(--rule);
+}
+.cf-field { padding: var(--s3) var(--s4) var(--s3) 0; }
+.cf-field.wide { grid-column: span 2; }
+.cf-field-label {
+  font-size: var(--t-micro); letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--ink-3); font-weight: 600; margin-bottom: 3px;
+}
+.cf-field-value {
+  font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12.5px;
+  white-space: nowrap;
+}
+
+/* --- sections --- */
+
+.cf-section { padding: var(--s5) 0 var(--s4); border-bottom: 1px solid var(--rule); }
+.cf-section h2 {
+  font-size: var(--t-micro); letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--ink-3); font-weight: 700; margin: 0 0 var(--s3);
+}
+
+.cf-rate-row { display: flex; align-items: baseline; gap: var(--s5); flex-wrap: wrap; }
+.cf-rate { display: flex; align-items: baseline; gap: var(--s2); }
+.cf-rate-value {
+  font-family: var(--mono); font-size: 30px; font-weight: 600;
+  font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+}
+.cf-rate-value.accent { color: var(--accent); }
+.cf-rate-unit { font-size: var(--t-small); color: var(--ink-3); }
+.cf-rate-band {
+  font-family: var(--mono); font-size: var(--t-small); color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.cf-rate-band.accent { color: var(--accent); font-weight: 600; }
+
+.cf-basis { margin-top: var(--s3); font-size: var(--t-body); }
+.cf-citation {
+  margin: var(--s2) 0 0; padding: var(--s3) var(--s4);
+  background: var(--surface-alt); border-left: 3px solid var(--steel);
+  font-size: var(--t-small); color: var(--ink-2); font-style: normal;
+}
+
+.cf-table { width: 100%; border-collapse: collapse; margin-top: var(--s4); }
+.cf-table th {
+  text-align: left; font-size: var(--t-micro); letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-3); font-weight: 600;
+  border-bottom: 1px solid var(--rule-strong); padding: var(--s2) var(--s3) var(--s2) 0;
+}
+.cf-table td { padding: 6px var(--s3) 6px 0; border-bottom: 1px solid var(--rule); }
+.cf-table .right { text-align: right; }
+.cf-table .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.cf-table tr.cf-total td { font-weight: 700; border-bottom: none; }
+
+.cf-measure { display: flex; align-items: flex-start; gap: var(--s7); flex-wrap: wrap; }
+.cf-measure-stat { display: flex; flex-direction: column; }
+.cf-measure-value {
+  font-family: var(--mono); font-size: 25px; font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.cf-measure-thr { font-size: var(--t-small); color: var(--ink-3); font-family: var(--mono); }
+.cf-measure-extra { list-style: none; margin: 0; padding: 0; font-size: var(--t-small); }
+.cf-measure-extra li { display: flex; gap: var(--s3); justify-content: space-between; }
+.cf-measure-extra span { color: var(--ink-3); }
+
+.cf-explain { font-size: var(--t-body); color: var(--ink-2); margin: var(--s4) 0 0; max-width: 66ch; }
+.cf-body-text { font-size: var(--t-body); margin: 0 0 var(--s2); max-width: 66ch; }
+.cf-narrative {
+  font-size: 15px; line-height: 1.65; margin: 0; max-width: 68ch;
+  border-left: 2px solid var(--ink); padding-left: var(--s4);
+}
+
+/* --- foot --- */
+
+.cf-foot { padding-top: var(--s5); }
+.cf-caveat {
+  font-size: var(--t-small); color: var(--ink-2); max-width: 70ch;
+  padding: var(--s3) var(--s4); background: var(--surface-alt);
+  border: 1px solid var(--rule);
+}
+.cf-sign { display: flex; gap: var(--s7); margin-top: var(--s7); }
+.cf-sign-line {
+  flex: 1; border-top: 1px solid var(--ink-3); padding-top: 5px;
+  font-size: var(--t-micro); letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* --- print --- */
+
+@media print {
+  @page { size: A4; margin: 16mm 14mm; }
+  body { background: #fff; }
+  .no-print { display: none !important; }
+  .cf-page { padding: 0; background: #fff; }
+  .cf-sheet {
+    max-width: none; margin: 0; border: none; box-shadow: none; padding: 0;
+  }
+  .cf-section { break-inside: avoid; }
+  .cf-foot { break-inside: avoid; }
+  .cf-citation, .cf-caveat { background: #fff; border: 1px solid #999; }
+}

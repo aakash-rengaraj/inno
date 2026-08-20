@@ -1,0 +1,305 @@
+{
+ "FLG-0001": {
+  "flag_id": "FLG-0001",
+  "title": "Table eggs \u2014 Katpadi",
+  "status": "Flagged for investigation",
+  "tier": 3,
+  "tier_label": "Priority",
+  "finding": "Prices stopped varying between sellers",
+  "narrative": "Prices from 348 observations across the location stayed within 0.2% of one another for 71 days, against a 3.0% threshold; median +28% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
+  "window": {
+   "start": "2026-06-01",
+   "end": "2026-08-10"
+  },
+  "duration_days": 71,
+  "reference": {
+   "basis": "NECC declared daily egg rate",
+   "rate": 7.94,
+   "band": [
+    6.89,
+    8.98
+   ],
+   "unit": "per piece",
+   "citation": "National Egg Coordination Committee \u2014 declared daily egg rate, Chennai zone"
+  },
+  "observed": {
+   "median": 10.2,
+   "unit": "per piece",
+   "n": 348,
+   "pct_vs_reference": 28.5,
+   "provenance": [
+    {
+     "tier": "B",
+     "label": "commercial listing",
+     "n": 213
+    },
+    {
+     "tier": "C",
+     "label": "field report",
+     "n": 135
+    }
+   ],
+   "distinct_localities": 10
+  },
+  "measure": {
+   "detector": "variance_collapse",
+   "name": "median_daily_cv_across_sellers",
+   "value": 0.002,
+   "threshold": 0.03,
+   "extra": {
+    "days_collapsed": 71
+   },
+   "explanation": "Independent sellers facing the same costs still disagree on price, because they buy at different times and carry different stock. This measure is the day-to-day spread of prices across sellers in one location. A spread that stays near zero for weeks is what a single repeated price looks like."
+  },
+  "residual_sd": 0.391,
+  "peers_in_band": [
+   "Bagayam",
+   "Sathuvachari",
+   "Thorapadi"
+  ],
+  "series": [],
+  "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
+ },
+ "FLG-0002": {
+  "flag_id": "FLG-0002",
+  "title": "Table eggs \u2014 Katpadi",
+  "status": "Flagged for investigation",
+  "tier": 3,
+  "tier_label": "Priority",
+  "finding": "Prices track each other, not costs",
+  "narrative": "Listed prices follow one another (correlation 0.98) far more closely than they follow the reference rate (correlation -0.20); median +27% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
+  "window": {
+   "start": "2026-06-14",
+   "end": "2026-08-02"
+  },
+  "duration_days": 50,
+  "reference": {
+   "basis": "NECC declared daily egg rate",
+   "rate": 7.96,
+   "band": [
+    6.91,
+    9.02
+   ],
+   "unit": "per piece",
+   "citation": "National Egg Coordination Committee \u2014 declared daily egg rate, Chennai zone"
+  },
+  "observed": {
+   "median": 10.14,
+   "unit": "per piece",
+   "n": 253,
+   "pct_vs_reference": 27.4,
+   "provenance": [
+    {
+     "tier": "B",
+     "label": "commercial listing",
+     "n": 150
+    },
+    {
+     "tier": "C",
+     "label": "field report",
+     "n": 103
+    }
+   ],
+   "distinct_localities": 9
+  },
+  "measure": {
+   "detector": "cost_correlation",
+   "name": "peer_corr_minus_cost_corr",
+   "value": 1.182,
+   "threshold": 0.4,
+   "extra": {
+    "peer_correlation": 0.983,
+    "cost_correlation": -0.199
+   },
+   "explanation": "A competitive price moves when costs move. This measure compares how closely each seller's price follows its neighbours' prices against how closely it follows the published reference rate. A price that follows the neighbours and ignores the reference rate is the pattern this system exists to surface."
+  },
+  "residual_sd": 0.324,
+  "peers_in_band": [
+   "Bagayam",
+   "Sathuvachari",
+   "Thorapadi"
+  ],
+  "series": [],
+  "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
+ },
+ "FLG-0003": {
+  "flag_id": "FLG-0003",
+  "title": "Table eggs \u2014 Katpadi",
+  "status": "Flagged for investigation",
+  "tier": 2,
+  "tier_label": "Review",
+  "finding": "Sustained gap above the reference rate",
+  "narrative": "Prices stayed above the expected range for 50 consecutive days; median +30% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
+  "window": {
+   "start": "2026-06-01",
+   "end": "2026-07-20"
+  },
+  "duration_days": 50,
+  "reference": {
+   "basis": "NECC declared daily egg rate",
+   "rate": 7.87,
+   "band": [
+    6.83,
+    8.91
+   ],
+   "unit": "per piece",
+   "citation": "National Egg Coordination Committee \u2014 declared daily egg rate, Chennai zone"
+  },
+  "observed": {
+   "median": 10.25,
+   "unit": "per piece",
+   "n": 249,
+   "pct_vs_reference": 30.2,
+   "provenance": [
+    {
+     "tier": "B",
+     "label": "commercial listing",
+     "n": 150
+    },
+    {
+     "tier": "C",
+     "label": "field report",
+     "n": 99
+    }
+   ],
+   "distinct_localities": 9
+  },
+  "measure": {
+   "detector": "persistence",
+   "name": "consecutive_days_above_band",
+   "value": 50,
+   "threshold": 10,
+   "extra": {},
+   "explanation": "Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock."
+  },
+  "residual_sd": 0.404,
+  "peers_in_band": [
+   "Bagayam",
+   "Sathuvachari",
+   "Thorapadi"
+  ],
+  "series": [],
+  "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
+ },
+ "FLG-0005": {
+  "flag_id": "FLG-0005",
+  "title": "Tomato \u2014 Vaniyambadi",
+  "status": "Flagged for investigation",
+  "tier": 2,
+  "tier_label": "Review",
+  "finding": "Sustained gap above the reference rate",
+  "narrative": "Prices stayed above the expected range for 25 consecutive days; median +31% relative to the reference rate while peer locations Arakkonam, Gudiyatham and 1 other remained in-band.",
+  "window": {
+   "start": "2026-07-01",
+   "end": "2026-07-25"
+  },
+  "duration_days": 25,
+  "reference": {
+   "basis": "Modelled competitive range from wholesale mandi prices",
+   "rate": 23.21,
+   "band": [
+    20.37,
+    27.2
+   ],
+   "unit": "per kg",
+   "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
+  },
+  "observed": {
+   "median": 30.5,
+   "unit": "per kg",
+   "n": 95,
+   "pct_vs_reference": 31.4,
+   "provenance": [
+    {
+     "tier": "A",
+     "label": "authoritative",
+     "n": 25
+    },
+    {
+     "tier": "C",
+     "label": "field report",
+     "n": 70
+    }
+   ],
+   "distinct_localities": 6
+  },
+  "measure": {
+   "detector": "persistence",
+   "name": "consecutive_days_above_band",
+   "value": 25,
+   "threshold": 10,
+   "extra": {},
+   "explanation": "Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock."
+  },
+  "residual_sd": 0.74,
+  "peers_in_band": [
+   "Arakkonam",
+   "Gudiyatham",
+   "Market"
+  ],
+  "series": [],
+  "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
+ },
+ "FLG-0006": {
+  "flag_id": "FLG-0006",
+  "title": "Autorickshaw fares \u2014 Katpadi",
+  "status": "Flagged for investigation",
+  "tier": 3,
+  "tier_label": "Priority",
+  "finding": "Fares cluster at round values",
+  "narrative": "Quoted fares cluster at round values (93% of quotes) with weak distance sensitivity (R\u00b2 0.21); median +26% relative to the notified rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
+  "window": {
+   "start": "2026-05-26",
+   "end": "2026-08-10"
+  },
+  "duration_days": 77,
+  "reference": {
+   "basis": "Notified autorickshaw fare schedule",
+   "rate": 63.25,
+   "band": [
+    55.0,
+    71.5
+   ],
+   "unit": "per ride",
+   "citation": "Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept \u2014 Vellore district schedule"
+  },
+  "observed": {
+   "median": 80.0,
+   "unit": "per ride",
+   "n": 1069,
+   "pct_vs_reference": 26.5,
+   "provenance": [
+    {
+     "tier": "B",
+     "label": "commercial listing",
+     "n": 924
+    },
+    {
+     "tier": "C",
+     "label": "field report",
+     "n": 145
+    }
+   ],
+   "distinct_localities": 25
+  },
+  "measure": {
+   "detector": "quantisation",
+   "name": "modal_mass_at_round_values",
+   "value": 0.929,
+   "threshold": 0.6,
+   "extra": {
+    "distance_r2": 0.207,
+    "distance_r2_threshold": 0.35
+   },
+   "explanation": "A metered fare varies continuously with distance. This measure reports the share of quoted fares landing on round multiples, together with how much of the fare is explained by distance at all. Round numbers with weak distance response describe a fare that was set rather than measured."
+  },
+  "residual_sd": 4.806,
+  "peers_in_band": [
+   "Bagayam",
+   "Sathuvachari",
+   "Thorapadi"
+  ],
+  "series": [],
+  "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
+ }
+}
