@@ -18,7 +18,7 @@ from typing import Literal
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
@@ -219,6 +219,19 @@ def recompute() -> dict:
 
 PUBLIC_DIR = Path("web/dist-public")
 CONSOLE_DIR = Path("web/dist-console")
+
+
+@app.get("/console", include_in_schema=False)
+def _console_slash() -> RedirectResponse:
+    """Send /console to /console/.
+
+    Starlette would normally redirect a mount path missing its trailing slash,
+    but "/" is mounted as a catch-all for the public page and is matched first,
+    so /console lands in the public StaticFiles and 404s looking for a file
+    called "console". This route runs before the mounts and settles it.
+    """
+    return RedirectResponse(url="/console/", status_code=307)
+
 
 if CONSOLE_DIR.is_dir():
     app.mount("/console", StaticFiles(directory=CONSOLE_DIR, html=True), name="console")

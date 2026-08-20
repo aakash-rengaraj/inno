@@ -17,11 +17,15 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from pipeline.ingest import gazette, necc
+from pipeline.ingest import gazette, necc_real as necc
 
 # Retail margin ranges. Not fudge factors — the range a competitive retailer is
 # expected to sit in above the published rate.
-EGG_RETAIL_BAND = (1.15, 1.50)   # x NECC declared rate
+# x NECC declared rate. Calibrated against observed Vellore retail: a single
+# egg sells at about Rs 7 while the declared rate sits near Rs 5.90, so the
+# typical markup is ~1.2x. The earlier (1.15, 1.50) put the top of the band at
+# Rs 8.80, above anything actually seen on the street.
+EGG_RETAIL_BAND = (1.05, 1.30)
 AUTO_FARE_BAND = (1.00, 1.30)    # x notified fare for the distance
 
 BASIS_CITATION = {

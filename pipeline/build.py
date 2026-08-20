@@ -17,11 +17,23 @@ from pipeline import cases, detect
 from pipeline.contracts import OBSERVATIONS_PATH, json_safe
 from pipeline.expectations import attach_expectations
 from pipeline.generalise import assign_localities, summarise
-from pipeline.ingest import agmarknet, gazette, necc, qcommerce, reports, ridehail
+from pipeline.ingest import agmarknet_export, gazette, necc_real, qcommerce, reports, ridehail
 from pipeline.model import fit_band, predict_band
 
 OUT = Path("web/public/data")
-SOURCES = [agmarknet, necc, qcommerce, ridehail, reports]
+
+# Items that do not come from Agmarknet and so have no source-provided name.
+FALLBACK_LABELS = {"auto_ride": "Autorickshaw fares", "egg_table": "Table eggs"}
+
+# The model learns from all the history there is; detection runs only on the
+# recent window. An officer inspects what is happening now — a run of high
+# prices in 2022 is not an inspection target, and with six years of data every
+# series eventually has one. Without this the queue reached 48 flags, which is
+# not a queue.
+DETECTION_WINDOW_DAYS = 90
+# Real sources for the reference rates, synthetic observations for the q-commerce,
+# ride-hail and field-report tiers. Swap those three as real collection lands.
+SOURCES = [agmarknet_export, necc_real, qcommerce, ridehail, reports]
 
 
 def _write(name: str, payload) -> None:
@@ -31,14 +43,28 @@ def _write(name: str, payload) -> None:
     print(f"    wrote {path} ({path.stat().st_size / 1024:.0f} kB)")
 
 
-def ingest() -> pd.DataFrame:
-    print("  ingest")
+def parse_sources(verbose: bool = True) -> pd.DataFrame:
+    """Parse every source into one frame.
+
+    The single parse path. The API server calls this too — when it had its own
+    copy the two drifted, and the server served a different queue from the one
+    `pipeline.build` wrote.
+    """
+    log = print if verbose else (lambda *a, **k: None)
     frames = []
     for mod in SOURCES:
-        df = mod.parse()
-        print(f"    {mod.__name__.split('.')[-1]:11s} {len(df):6d} observations")
+        # the real Agmarknet export is ingested in full: the band model is better
+        # for the wider cross-section, and the three commodities section 8 allows
+        # produce no flags at all on real data
+        df = mod.parse(demo_only=False) if mod is agmarknet_export else mod.parse()
+        log(f"    {mod.__name__.split('.')[-1]:11s} {len(df):6d} observations")
         frames.append(df)
-    obs = pd.concat(frames, ignore_index=True)
+    return pd.concat(frames, ignore_index=True)
+
+
+def ingest() -> pd.DataFrame:
+    print("  ingest")
+    obs = parse_sources()
     Path("data/processed").mkdir(parents=True, exist_ok=True)
     obs.to_parquet(OBSERVATIONS_PATH, index=False)
     print(f"    -> {OBSERVATIONS_PATH} ({len(obs)} rows)")
@@ -47,8 +73,23 @@ def ingest() -> pd.DataFrame:
 
 def build_references(obs: pd.DataFrame) -> pd.DataFrame:
     dates = sorted(obs["date"].unique())
-    return pd.concat([necc.references(), gazette.references(dates),
-                      agmarknet.references(obs)], ignore_index=True)
+    egg_zones = sorted(obs.loc[obs["item"] == "egg_table", "location"].unique())
+    egg_zones = [z for z in egg_zones if z != "necc_declared"]
+    return pd.concat([necc_real.references(egg_zones), gazette.references(dates),
+                      agmarknet_export.references(obs)], ignore_index=True)
+
+
+# How much history to draw either side of a flagged window. Enough to judge
+# whether the flagged period is unusual; not so much that a 10-day finding
+# becomes an invisible sliver against two years of chart.
+CHART_CONTEXT_DAYS = 45
+
+
+def _clip_to_context(g: pd.DataFrame, window: dict[str, str]) -> pd.DataFrame:
+    start = (pd.Timestamp(window["start"]) - pd.Timedelta(days=CHART_CONTEXT_DAYS))
+    end = (pd.Timestamp(window["end"]) + pd.Timedelta(days=CHART_CONTEXT_DAYS))
+    d = pd.to_datetime(g["date"])
+    return g[(d >= start) & (d <= end)]
 
 
 def _daily_band(g: pd.DataFrame) -> list[dict]:
@@ -60,11 +101,13 @@ def _daily_band(g: pd.DataFrame) -> list[dict]:
     return d.to_dict("records")
 
 
-def _egg_spread(df: pd.DataFrame, location: str) -> dict:
+def _egg_spread(df: pd.DataFrame, location: str, window: dict | None = None) -> dict:
     """Three lines: the declared rate, commercial listings, field reports."""
     declared = (df[df["source"] == "necc"].groupby("date")["price"].median()
                 .rename("declared"))
     zone = df[(df["item"] == "egg_table") & (df["location"] == location)]
+    if window is not None:
+        zone = _clip_to_context(zone, window)
     listed = zone[zone["tier"] == "B"].groupby("date")["price"].median().rename("listed")
     field = zone[zone["tier"] == "C"].groupby("date")["price"].median().rename("reported")
     merged = pd.concat([declared, listed, field], axis=1).dropna(subset=["declared"])
@@ -73,11 +116,13 @@ def _egg_spread(df: pd.DataFrame, location: str) -> dict:
             .to_dict("records")}
 
 
-def _auto_scatter(df: pd.DataFrame, location: str) -> dict:
+def _auto_scatter(df: pd.DataFrame, location: str, window: dict | None = None) -> dict:
     """Fare against distance, with the notified schedule overlaid."""
     sched = gazette.schedule()
     z = df[(df["item"] == "auto_ride") & (df["location"] == location)
            & df["distance_km"].notna()]
+    if window is not None:
+        z = _clip_to_context(z, window)
     pts = (z[["distance_km", "price", "tier", "date"]]
            .rename(columns={"distance_km": "km"}).to_dict("records"))
     km = np.arange(1.0, 8.51, 0.5)
@@ -94,13 +139,14 @@ def _auto_scatter(df: pd.DataFrame, location: str) -> dict:
 def chart_for(df: pd.DataFrame, flag: dict) -> dict:
     item, location = flag["item"], flag["location"]
     g = df[(df["item"] == item) & (df["location"] == location)]
+    g = _clip_to_context(g, flag["window"])
     payload = {"kind": "band", "window": flag["window"], "daily": _daily_band(g)}
     if item == "egg_table":
         payload["kind"] = "spread"
-        payload.update(_egg_spread(df, location))
+        payload.update(_egg_spread(df, location, flag["window"]))
     elif item == "auto_ride":
         payload["kind"] = "scatter"
-        payload.update(_auto_scatter(df, location))
+        payload.update(_auto_scatter(df, location, flag["window"]))
     return payload
 
 
@@ -138,10 +184,20 @@ def compute(obs: pd.DataFrame, model=None, verbose: bool = True) -> dict:
     scored = attach_expectations(banded)
     judged = scored[~scored["is_reference_series"]]
 
-    log("  detect")
-    flags = detect.run_all(judged) if verbose else _quiet_detect(judged)
+    cutoff = (pd.to_datetime(judged["date"].max())
+              - pd.Timedelta(days=DETECTION_WINDOW_DAYS)).strftime("%Y-%m-%d")
+    recent = judged[judged["date"] >= cutoff]
+    log(f"  detect       window {cutoff} -> {judged['date'].max()} "
+        f"({len(recent)} of {len(judged)} observations)")
+    flags = detect.run_all(recent) if verbose else _quiet_detect(recent)
 
     log("  cases")
+    labels = dict(FALLBACK_LABELS)
+    try:
+        labels.update(agmarknet_export.display_labels())
+    except Exception as exc:                      # never let labelling break a build
+        log(f"    display labels unavailable: {exc}")
+    cases.set_item_labels(labels)
     queue, all_flags, case_files, charts = [], [], {}, {}
     for flag in flags:
         w = judged[(judged["item"] == flag["item"])
@@ -182,6 +238,9 @@ def compute(obs: pd.DataFrame, model=None, verbose: bool = True) -> dict:
         "model": model.metrics,
         "thresholds": detect.THRESHOLDS,
         "generaliser": gen,
+        "item_labels": {k: v for k, v in labels.items()
+                        if k in {f["item"] for f in all_flags}
+                        | {"tomato", "onion", "potato", "brinjal", "carrot"}},
         "tier_counts": {str(k): int(v) for k, v in
                         pd.Series([f["tier"] for f in queue]).value_counts().items()},
         "sources": sorted(obs["source"].unique().tolist()),

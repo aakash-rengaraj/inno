@@ -11,7 +11,7 @@ import time
 
 import pandas as pd
 
-from pipeline.build import SOURCES, compute
+from pipeline.build import compute, parse_sources
 from pipeline.ingest import reports as reports_ingest
 from pipeline.model import fit_band
 
@@ -33,8 +33,7 @@ class Engine:
 
     def start(self) -> None:
         t0 = time.perf_counter()
-        frames = [mod.parse() for mod in SOURCES]
-        self.base = pd.concat(frames, ignore_index=True)
+        self.base = parse_sources(verbose=False)
         self.model = fit_band(self.base)
         print(f"  band model fitted on {self.model.metrics['n_train']} rows "
               f"(coverage {self.model.metrics['band_coverage']})")
@@ -76,9 +75,52 @@ class Engine:
     # --- views -------------------------------------------------------------
 
     def public_meta(self) -> dict:
-        """Aggregate counts only. No thresholds, no model internals, no flags."""
+        """Aggregate counts only. No thresholds, no model internals, no flags.
+
+        Also carries the places and items a citizen may report against, so the
+        public form is driven by the data rather than a hardcoded list that
+        silently drifts out of step with the ingest.
+        """
         meta = self.artifacts.get("meta", {})
-        return {k: meta[k] for k in PUBLIC_META_FIELDS if k in meta}
+        out = {k: meta[k] for k in PUBLIC_META_FIELDS if k in meta}
+        out["report_places"] = self.report_places()
+        out["report_items"] = self.report_items(meta)
+        return out
+
+    def report_places(self) -> list[dict]:
+        from pipeline.ingest.reports import MARKET_LOCATIONS, ZONE_LOCATIONS
+
+        def label(key: str) -> str:
+            base = key.replace("vellore_", "").replace("_apmc", "").replace("_sandhai", "")
+            name = base.replace("_", " ").title()
+            if key.endswith("_sandhai"):
+                return f"{name} (Uzhavar Sandhai)"
+            if key.endswith("_apmc"):
+                return f"{name} (APMC)"
+            return name
+
+        places = [{"id": k, "label": label(k), "lat": v[0], "lng": v[1], "kind": "market"}
+                  for k, v in sorted(MARKET_LOCATIONS.items())]
+        places += [{"id": k, "label": label(k), "lat": v[0], "lng": v[1], "kind": "zone"}
+                   for k, v in sorted(ZONE_LOCATIONS.items())]
+        return places
+
+    def report_items(self, meta: dict) -> list[dict]:
+        """Items a citizen can report. Commodities are the ones actually present
+        in the panel, so a report always has something to be compared against."""
+        labels = meta.get("item_labels", {})
+        present = set()
+        if self.base is not None:
+            present = set(self.base.loc[self.base["source"] == "agmarknet", "item"].unique())
+        wanted = [i for i in ("tomato", "onion", "potato", "brinjal", "carrot")
+                  if i in present]
+        items = [{"id": i, "label": labels.get(i, i.title()),
+                  "unit": "per_kg", "kind": "market"} for i in wanted]
+        items.append({"id": "egg_table", "label": "Table eggs",
+                      "unit": "per_piece", "kind": "zone"})
+        items.append({"id": "auto_ride", "label": "Autorickshaw fare",
+                      "unit": "per_ride", "kind": "zone"})
+        return items
 
 
 ENGINE = Engine()

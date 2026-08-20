@@ -89,9 +89,17 @@ def pretty_location(location: str) -> str:
     return location.replace("vellore_", "").replace("_", " ").title()
 
 
+ITEM_LABELS: dict[str, str] = {}
+
+
+def set_item_labels(labels: dict[str, str]) -> None:
+    """Display names, supplied by the ingest layer from the source data."""
+    ITEM_LABELS.clear()
+    ITEM_LABELS.update(labels)
+
+
 def pretty_item(item: str) -> str:
-    return {"auto_ride": "Autorickshaw fares", "egg_table": "Table eggs",
-            "tomato": "Tomato", "onion": "Onion"}.get(item, item.replace("_", " ").title())
+    return ITEM_LABELS.get(item, item.replace("_", " ").title())
 
 
 def narrate(flag: dict[str, Any]) -> str:

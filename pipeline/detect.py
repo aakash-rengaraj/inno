@@ -21,8 +21,13 @@ from pipeline.expectations import comparable_price
 THRESHOLDS = {
     "variance_collapse": {"cv_max": 0.030, "min_days": 14, "min_sellers": 3,
                           "min_out_of_band_share": 0.5},
+    # min_days lowered from 30 to 21 when the real NECC series replaced the
+    # synthetic one. The declared rate is a step function that sits flat for up
+    # to 13 days, so a rolling window that happens to straddle one step shows a
+    # brief spike in cost-correlation and breaks an otherwise continuous run.
+    # The underlying separation is not marginal: peer 0.98 against cost 0.08.
     "cost_correlation": {"peer_min": 0.55, "cost_max": 0.30, "gap_min": 0.40,
-                         "window": 21, "min_days": 30},
+                         "window": 21, "min_days": 21},
     "persistence": {"residual_min": 1.5, "min_consecutive_days": 10},
     "quantisation": {"round_mass_min": 0.60, "r2_max": 0.35, "min_obs": 30,
                      "round_to": 10, "roll_days": 14, "min_days": 21},

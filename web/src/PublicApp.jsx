@@ -41,7 +41,7 @@ export default function PublicApp() {
           <span className="sub mono">data through {meta.data_through}</span>
         </header>
         <main>
-          <ReportForm online={online} onBack={() => setView('landing')} />
+          <ReportForm online={online} meta={meta} onBack={() => setView('landing')} />
         </main>
       </div>
     )

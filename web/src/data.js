@@ -20,9 +20,18 @@ export const pct = (v, dp = 0) =>
 export const prettyLocation = (s) =>
   s.replace('vellore_', '').replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
 
+// Display names come from the data itself (meta.item_labels), so the console
+// shows the source's own wording — "Mint(Pudina)", not "Mint Pudina".
+const ITEM_LABELS = {}
+
+export function setItemLabels(labels) {
+  Object.keys(ITEM_LABELS).forEach((k) => delete ITEM_LABELS[k])
+  Object.assign(ITEM_LABELS, labels || {})
+}
+
 export const prettyItem = (s) =>
-  ({ auto_ride: 'Autorickshaw fares', egg_table: 'Table eggs',
-     tomato: 'Tomato', onion: 'Onion' }[s] || s)
+  ITEM_LABELS[s] || ({ auto_ride: 'Autorickshaw fares', egg_table: 'Table eggs' }[s]
+    || s.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()))
 
 export const UNIT = { per_kg: 'per kg', per_piece: 'per piece',
                       per_ride: 'per ride', per_km: 'per km' }

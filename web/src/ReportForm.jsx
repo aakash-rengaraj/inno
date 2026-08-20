@@ -2,34 +2,30 @@ import React, { useEffect, useState } from 'react'
 import { ApiError, apiPost } from './api.js'
 import { REPORT_COLUMNS, addReport, getReports, reportsToCsv, subscribe } from './store.js'
 
-// Coordinates for people who decline location access. Chosen from the same
-// canonical locations the pipeline knows about.
-const PLACES = {
-  vellore_katpadi: [12.9698, 79.1325],
-  vellore_bagayam: [12.9060, 79.0930],
-  vellore_sathuvachari: [12.9340, 79.1560],
-  vellore_thorapadi: [12.9010, 79.1420],
-  vellore_market: [12.9165, 79.1325],
-  vellore_gudiyatham: [12.9450, 78.8700],
-  vellore_vaniyambadi: [12.6820, 78.6200],
-  vellore_arakkonam: [13.0830, 79.6700],
-}
+// Fallback only. The real list comes from the server, so the form cannot drift
+// out of step with the places and commodities the pipeline actually knows.
+const FALLBACK_ITEMS = [
+  { id: 'egg_table', label: 'Table eggs', unit: 'per_piece', kind: 'zone' },
+  { id: 'auto_ride', label: 'Autorickshaw fare', unit: 'per_ride', kind: 'zone' },
+]
+const FALLBACK_PLACES = [
+  { id: 'vellore_katpadi', label: 'Katpadi', lat: 12.9698, lng: 79.1325, kind: 'zone' },
+  { id: 'vellore_bagayam', label: 'Bagayam', lat: 12.906, lng: 79.093, kind: 'zone' },
+  { id: 'vellore_sathuvachari', label: 'Sathuvachari', lat: 12.934, lng: 79.156, kind: 'zone' },
+  { id: 'vellore_thorapadi', label: 'Thorapadi', lat: 12.901, lng: 79.142, kind: 'zone' },
+]
 
-const ITEMS = {
-  tomato: { label: 'Tomato', unit: 'per_kg', hint: '₹ per kg' },
-  onion: { label: 'Onion', unit: 'per_kg', hint: '₹ per kg' },
-  egg_table: { label: 'Table eggs', unit: 'per_piece', hint: '₹ per egg' },
-  auto_ride: { label: 'Autorickshaw fare', unit: 'per_ride', hint: '₹ for the trip' },
-}
+const UNIT_HINT = { per_kg: '\u20b9 per kg', per_piece: '\u20b9 per egg',
+                    per_ride: '\u20b9 for the trip' }
 
-const pretty = (s) => s.replace('vellore_', '').replace(/_/g, ' ')
-  .replace(/\b\w/g, (c) => c.toUpperCase())
+export default function ReportForm({ onBack, online = false, meta = null }) {
+  const allItems = meta?.report_items?.length ? meta.report_items : FALLBACK_ITEMS
+  const allPlaces = meta?.report_places?.length ? meta.report_places : FALLBACK_PLACES
 
-export default function ReportForm({ onBack, online = false }) {
-  const [item, setItem] = useState('egg_table')
+  const [item, setItem] = useState(allItems[0]?.id || 'egg_table')
   const [price, setPrice] = useState('')
   const [distance, setDistance] = useState('')
-  const [place, setPlace] = useState('vellore_katpadi')
+  const [place, setPlace] = useState('')
   const [coords, setCoords] = useState(null)
   const [geoState, setGeoState] = useState('idle')
   const [note, setNote] = useState('')
@@ -51,8 +47,13 @@ export default function ReportForm({ onBack, online = false }) {
     )
   }
 
-  const effective = coords || PLACES[place]
-  const spec = ITEMS[item]
+  const spec = allItems.find((i) => i.id === item) || allItems[0]
+
+  // A market report belongs at a market and a zone report in a zone: the egg
+  // vertical has no reference rate at a mandi, and vice versa.
+  const places = allPlaces.filter((p) => p.kind === (spec?.kind || 'zone'))
+  const chosen = places.find((p) => p.id === place) || places[0]
+  const effective = coords || (chosen ? [chosen.lat, chosen.lng] : null)
   const priceOk = price !== '' && Number(price) > 0
   const distanceOk = item !== 'auto_ride' || (distance !== '' && Number(distance) > 0)
   const canSubmit = priceOk && distanceOk && effective
@@ -118,14 +119,13 @@ export default function ReportForm({ onBack, online = false }) {
             <form onSubmit={submit} className="rp-form">
               <label>
                 <span className="label">Item</span>
-                <select value={item} onChange={(e) => setItem(e.target.value)}>
-                  {Object.entries(ITEMS).map(([k, v]) =>
-                    <option key={k} value={k}>{v.label}</option>)}
+                <select value={item} onChange={(e) => { setItem(e.target.value); setPlace('') }}>
+                  {allItems.map((i) => <option key={i.id} value={i.id}>{i.label}</option>)}
                 </select>
               </label>
 
               <label>
-                <span className="label">Price paid — {spec.hint}</span>
+                <span className="label">{`Price paid \u2014 ${UNIT_HINT[spec?.unit] || '\u20b9'}`}</span>
                 <input type="number" step="0.01" min="0" value={price} inputMode="decimal"
                        onChange={(e) => setPrice(e.target.value)} placeholder="0.00" />
               </label>
@@ -140,10 +140,10 @@ export default function ReportForm({ onBack, online = false }) {
 
               <label>
                 <span className="label">Where</span>
-                <select value={place} onChange={(e) => { setPlace(e.target.value); setCoords(null) }}
+                <select value={chosen?.id || ''}
+                        onChange={(e) => { setPlace(e.target.value); setCoords(null) }}
                         disabled={!!coords}>
-                  {Object.keys(PLACES).map((k) =>
-                    <option key={k} value={k}>{pretty(k)}</option>)}
+                  {places.map((p) => <option key={p.id} value={p.id}>{p.label}</option>)}
                 </select>
               </label>
 
@@ -234,7 +234,7 @@ export default function ReportForm({ onBack, online = false }) {
                     <tbody>
                       {rows.slice(0, 6).map((r, i) => (
                         <tr key={i}>
-                          <td>{ITEMS[r.item]?.label || r.item}</td>
+                          <td>{allItems.find((i) => i.id === r.item)?.label || r.item}</td>
                           <td className="num right">₹{Number(r.price_inr).toFixed(2)}</td>
                           <td className="muted small">{r.submitted_at.slice(0, 10)}</td>
                         </tr>

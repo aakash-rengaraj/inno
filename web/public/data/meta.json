@@ -1,22 +1,22 @@
 {
- "data_through": "2026-08-10",
- "data_from": "2025-01-01",
- "observations": 14307,
- "locations_monitored": 10,
- "items_monitored": 4,
+ "data_through": "2026-08-20",
+ "data_from": "2020-04-15",
+ "observations": 216732,
+ "locations_monitored": 22,
+ "items_monitored": 108,
  "rejected_reports": 29,
- "flags_total": 6,
- "flags_in_queue": 5,
+ "flags_total": 18,
+ "flags_in_queue": 17,
  "flags_excluded_evidence_floor": 1,
  "model": {
-  "pinball_p10": 0.4673,
-  "pinball_p50": 1.0408,
-  "pinball_p90": 0.5802,
-  "band_coverage": 0.6706,
-  "band_width_inr": 4.863,
-  "n_train": 3752,
-  "n_valid": 944,
-  "split_date": "2026-04-15"
+  "pinball_p10": 1.6324,
+  "pinball_p50": 3.6706,
+  "pinball_p90": 2.2547,
+  "band_coverage": 0.7891,
+  "band_width_inr": 24.422,
+  "n_train": 102134,
+  "n_valid": 94689,
+  "split_date": "2025-08-22"
  },
  "thresholds": {
   "variance_collapse": {
@@ -30,7 +30,7 @@
    "cost_max": 0.3,
    "gap_min": 0.4,
    "window": 21,
-   "min_days": 30
+   "min_days": 21
   },
   "persistence": {
    "residual_min": 1.5,
@@ -48,13 +48,32 @@
  "generaliser": {
   "radius_m": 150.0,
   "price_tolerance": 0.03,
-  "report_points": 673,
-  "report_localities": 233,
-  "collapsed": 440
+  "report_points": 349,
+  "report_localities": 119,
+  "collapsed": 230
+ },
+ "item_labels": {
+  "auto_ride": "Autorickshaw fares",
+  "egg_table": "Table eggs",
+  "groundnut": "Groundnut",
+  "banana": "Banana",
+  "ginger_green": "Ginger(Green)",
+  "carrot": "Carrot",
+  "tamarind_fruit": "Tamarind Fruit",
+  "potato": "Potato",
+  "banana_green": "Banana - Green",
+  "tomato": "Tomato",
+  "onion_green": "Onion Green",
+  "lemon": "Lemon",
+  "mint_pudina": "Mint(Pudina)",
+  "onion": "Onion",
+  "brinjal": "Brinjal",
+  "cauliflower": "Cauliflower",
+  "yam_ratalu": "Yam (Ratalu)"
  },
  "tier_counts": {
-  "3": 3,
-  "2": 2
+  "2": 14,
+  "3": 3
  },
  "sources": [
   "agmarknet",

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { apiAvailable, apiGet, clearToken, getToken } from './api.js'
-import { loadAll } from './data.js'
+import { loadAll, setItemLabels } from './data.js'
 import TokenGate from './TokenGate.jsx'
 import ActionBoard from './ActionBoard.jsx'
 import CaseFile from './CaseFile.jsx'
@@ -20,6 +20,7 @@ export default function ConsoleApp() {
       apiGet('/api/queue', true), apiGet('/api/flags', true), apiGet('/api/cases', true),
       apiGet('/api/charts', true), apiGet('/api/meta', true),
     ])
+    setItemLabels(meta.item_labels)
     setDb({ queue, flags, cases, charts, meta })
   }, [])
 
@@ -30,7 +31,9 @@ export default function ConsoleApp() {
       catch { clearToken(); setMode('gate'); return }
     }
     // no server: fall back to the artifacts built into the page
-    setDb(await loadAll())
+    const local = await loadAll()
+    setItemLabels(local.meta?.item_labels)
+    setDb(local)
     setMode('static')
   }, [loadLive])
 

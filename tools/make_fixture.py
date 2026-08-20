@@ -114,23 +114,34 @@ def gen_agmarknet() -> None:
 
 # --- 2. NECC declared egg rate (the reference rate for eggs) ----------------
 
-def necc_rate(d: date) -> float:
-    """Rs per 100 eggs, declared daily."""
-    base = 560 + 55 * np.sin(2 * np.pi * (d.timetuple().tm_yday / 365.25) + 3.9)
-    return float(np.round(base + RNG.normal(0, 6)))
-
-
-NECC = {}
+NECC: dict[date, float] = {}
 
 
 def gen_necc() -> None:
-    lines = ["Date,Zone,Rate (Rs./100 eggs)"]
+    """Load the REAL NECC declared rates rather than inventing them.
+
+    The synthetic q-commerce and shop prices below are built as a markup over
+    this series, so they must sit on the same rates the pipeline will later
+    compare them against. Generating a second, fictional declared series would
+    make every markup look like noise.
+    """
+    import pandas as pd
+
+    real = pd.read_csv(RAW / "necc_real" / "necc_daily.csv")
+    real = real[real["zone"] == "Namakkal"]
+    by_date = {date.fromisoformat(r.date): float(r.rate_per_100)
+               for r in real.itertuples()}
+
+    last = None
     for d in DAYS:
-        r = necc_rate(d)
-        NECC[d] = r
-        lines.append(f"{d.strftime('%d-%m-%Y')},Chennai,{r:.0f}")
-    (RAW / "necc" / "necc_declared_rates.csv").write_text("\n".join(lines) + "\n")
-    print(f"  necc/necc_declared_rates.csv: {len(DAYS)} rows")
+        if d in by_date:
+            last = by_date[d]
+        if last is not None:
+            NECC[d] = last          # carry the last declared rate over any gap
+    missing = [d for d in DAYS if d not in NECC]
+    assert not missing, f"no real NECC rate on or before {missing[0]}"
+    print(f"  necc: {len(NECC)} days of REAL declared rates "
+          f"({min(NECC.values()):.0f}-{max(NECC.values()):.0f} Rs/100)")
 
 
 # --- 3. q-commerce catalogue snapshots (eggs) ------------------------------
@@ -138,22 +149,39 @@ def gen_necc() -> None:
 PACKS = {"6 pcs": 6, "12 pcs": 12, "30 pcs": 30}
 
 
+# Ground truth from local observation: a single egg sells at about Rs 7, and the
+# highest price anyone has reported is Rs 10. The fixture must not exceed it —
+# an anomaly nobody has ever paid is not evidence of anything.
+OBSERVED_EGG_CEILING = 10.0
+
 EGG_ANCHOR: dict[date, float] = {}
 
 
 def _build_egg_anchor() -> None:
-    """A focal price the suspect zone settles on, drifting on its own schedule
-    and not following the declared rate."""
-    level = NECC[EVENT_START] / 100.0 * 1.58
+    """A focal price the suspect zone settles on and then holds, while the
+    declared rate moves underneath it.
+
+    Pinned to the *highest* declared rate in the window rather than the rate on
+    the day it starts. The real NECC series is a step function that rose ~14%
+    through July and fell again in August; an anchor pinned to the opening rate
+    drifts back inside the expected band as the declared rate climbs, and the
+    pattern stops being a pattern.
+    """
+    # Held at roughly Rs 10 — the top of what has actually been reported locally.
+    # A higher anchor is easier to detect but is not a price anyone has paid.
+    peak = max(NECC[d] for d in DEMO_DAYS) / 100.0
+    level = min(peak * 1.45, OBSERVED_EGG_CEILING * 0.98)
     for d in DEMO_DAYS:
-        level *= float(np.exp(RNG.normal(0, 0.014)))
-        EGG_ANCHOR[d] = level
+        level *= float(np.exp(RNG.normal(0, 0.010)))
+        # never quote a price nobody has actually been charged locally
+        EGG_ANCHOR[d] = min(level, OBSERVED_EGG_CEILING * 0.98)
 
 
 def gen_qcommerce() -> None:
     _build_egg_anchor()
     for plat in QC_PLATFORMS:
-        markup = {"qc_alpha": 1.34, "qc_beta": 1.31, "qc_gamma": 1.37}[plat]
+        # normal retail markup over the declared rate: about Rs 7 an egg
+        markup = {"qc_alpha": 1.19, "qc_beta": 1.16, "qc_gamma": 1.22}[plat]
         with (RAW / "qcommerce" / f"{plat}.jsonl").open("w") as fh:
             for d in DEMO_DAYS:
                 declared = NECC[d] / 100.0  # Rs per egg
@@ -246,18 +274,12 @@ def jitter(v: float, m: float = 0.0009) -> float:
 def gen_reports() -> None:
     cols = ["submitted_at", "lat", "lng", "item", "price_inr", "unit", "distance_km", "note"]
     rows = []
+    # NOTE: commodity field reports are no longer generated. The commodities
+    # vertical now runs on the real Agmarknet export, whose market names are the
+    # actual Vellore mandis. Synthetic tomato reports sat at invented mandi names
+    # and produced flags for markets that do not exist in the live ingest.
+    # Eggs and autos stay synthetic only because no real observations exist yet.
     for d in DEMO_DAYS:
-        # tomato retail reports at the mandi towns
-        for mandi, (lat, lng) in MANDIS.items():
-            for _ in range(RNG.integers(2, 5)):
-                base = 26.0 + 8 * np.sin(2 * np.pi * (d.timetuple().tm_yday / 365.25) + 0.4)
-                if mandi == SUSPECT_MANDI and d >= EVENT_START:
-                    price = base * 1.45 * np.exp(RNG.normal(0, 0.012))
-                else:
-                    price = base * np.exp(RNG.normal(0, 0.11))
-                rows.append([f"{d.isoformat()}T10:05:00+05:30", round(jitter(lat), 6),
-                             round(jitter(lng), 6), "tomato", round(price, 1), "per_kg", "",
-                             "retail shop"])
         # egg + auto reports in the zones
         for zone, (lat, lng) in ZONES.items():
             for _ in range(RNG.integers(1, 4)):
@@ -265,7 +287,7 @@ def gen_reports() -> None:
                 if zone == SUSPECT_ZONE and d >= EVENT_START:
                     price = EGG_ANCHOR[d] * RNG.uniform(0.997, 1.003)
                 else:
-                    price = declared * RNG.uniform(1.25, 1.45) * RNG.uniform(0.97, 1.03)
+                    price = declared * RNG.uniform(1.10, 1.30) * RNG.uniform(0.97, 1.03)
                 rows.append([f"{d.isoformat()}T18:40:00+05:30", round(jitter(lat), 6),
                              round(jitter(lng), 6), "egg_table",
                              round(price, 2), "per_piece", "", "local shop"])
@@ -286,7 +308,8 @@ def gen_reports() -> None:
         declared = NECC[d] / 100.0
         for lat, lng in [(12.95000, 79.33000), (12.95040, 79.33050)]:
             rows.append([f"{d.isoformat()}T17:20:00+05:30", lat, lng, "egg_table",
-                         round(declared * 1.78 * RNG.uniform(0.99, 1.01), 2),
+                         round(min(declared * 1.48, OBSERVED_EGG_CEILING)
+                               * RNG.uniform(0.99, 1.01), 2),
                          "per_piece", "", "single-source zone"])
 
     # dirty rows the parser must reject: no geotag, no timestamp
