@@ -19,8 +19,12 @@ npm --prefix web run dev     # http://localhost:5173
 `pipeline.build` reads only `data/raw` and never opens a socket. The frontend
 reads static JSON from `web/public/data`. There is no API server.
 
-Python deps live in `.venv` (`pandas`, `lightgbm`, `pyarrow`, `numpy`, `httpx`).
-LightGBM needs OpenMP on macOS: `brew install libomp`.
+Setup:
+
+```bash
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+brew install libomp          # macOS only — LightGBM links against OpenMP
+```
 
 ## API server
 

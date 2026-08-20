@@ -198,6 +198,13 @@ def gazetted_fare(km: float) -> float:
     return GAZETTE_MIN_FARE + max(0.0, km - GAZETTE_INCLUDED_KM) * GAZETTE_PER_KM
 
 
+# What a driver normally asks over the notified fare: roughly 20%, and crucially
+# *proportional* to the fare, so it still scales with distance. This is the
+# honest baseline, not the anomaly — a surcharge that tracks distance is
+# behaving like a cost, and the detectors are built not to flag it.
+NORMAL_PREMIUM = (1.14, 1.26)   # ~20% on average
+
+
 def gen_ridehail() -> None:
     for plat in RH_PLATFORMS:
         with (RAW / "ridehail" / f"{plat}.jsonl").open("w") as fh:
@@ -212,7 +219,7 @@ def gen_ridehail() -> None:
                             raw = 76 + 2.0 * km + RNG.normal(0, 6)
                             fare = float(np.round(raw / 10.0) * 10)
                         else:
-                            fare = gazetted_fare(km) * RNG.uniform(1.02, 1.22)
+                            fare = gazetted_fare(km) * RNG.uniform(*NORMAL_PREMIUM)
                             fare = float(np.round(fare))
                         fh.write(json.dumps({
                             "captured_at": f"{d.isoformat()}T09:30:00+05:30",
@@ -267,7 +274,7 @@ def gen_reports() -> None:
                 if zone == SUSPECT_ZONE and d >= EVENT_START:
                     fare = float(np.round((76 + 2.0 * km + RNG.normal(0, 6)) / 10.0) * 10)
                 else:
-                    fare = float(np.round(gazetted_fare(km) * RNG.uniform(1.0, 1.25)))
+                    fare = float(np.round(gazetted_fare(km) * RNG.uniform(*NORMAL_PREMIUM)))
                 rows.append([f"{d.isoformat()}T19:10:00+05:30", round(jitter(lat), 6),
                              round(jitter(lng), 6), "auto_ride", fare, "per_ride", km,
                              "street quote"])

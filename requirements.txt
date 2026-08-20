@@ -1,0 +1,12 @@
+# Pipeline
+pandas==3.0.5
+numpy==2.5.2
+pyarrow==25.0.1
+lightgbm==4.7.0
+
+# Scrapes (offline only — the demo path never opens a socket)
+httpx==0.28.1
+
+# API server
+fastapi==0.141.1
+uvicorn[standard]==0.52.4

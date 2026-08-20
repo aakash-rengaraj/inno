@@ -49,8 +49,8 @@
   "radius_m": 150.0,
   "price_tolerance": 0.03,
   "report_points": 673,
-  "report_localities": 237,
-  "collapsed": 436
+  "report_localities": 233,
+  "collapsed": 440
  },
  "tier_counts": {
   "3": 3,

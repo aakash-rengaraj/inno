@@ -247,7 +247,7 @@
   "tier": 3,
   "tier_label": "Priority",
   "finding": "Fares cluster at round values",
-  "narrative": "Quoted fares cluster at round values (93% of quotes) with weak distance sensitivity (R\u00b2 0.21); median +26% relative to the notified rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
+  "narrative": "Quoted fares cluster at round values (94% of quotes) with weak distance sensitivity (R\u00b2 0.23); median +26% relative to the notified rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
   "window": {
    "start": "2026-05-26",
    "end": "2026-08-10"
@@ -280,20 +280,20 @@
      "n": 145
     }
    ],
-   "distinct_localities": 25
+   "distinct_localities": 24
   },
   "measure": {
    "detector": "quantisation",
    "name": "modal_mass_at_round_values",
-   "value": 0.929,
+   "value": 0.936,
    "threshold": 0.6,
    "extra": {
-    "distance_r2": 0.207,
+    "distance_r2": 0.228,
     "distance_r2_threshold": 0.35
    },
    "explanation": "A metered fare varies continuously with distance. This measure reports the share of quoted fares landing on round multiples, together with how much of the fare is explained by distance at all. Round numbers with weak distance response describe a fare that was set rather than measured."
   },
-  "residual_sd": 4.806,
+  "residual_sd": 4.771,
   "peers_in_band": [
    "Bagayam",
    "Sathuvachari",
