@@ -10,3 +10,9 @@ httpx==0.28.1
 # API server
 fastapi==0.141.1
 uvicorn[standard]==0.52.4
+pydantic==2.13.4      # imported directly by server/app.py, not just via fastapi
+
+# Case-file XML validation against schema/case-file.xsd. Required by
+# pipeline.build, which validates every document it emits -- a missing
+# xmlschema fails the build, it does not silently skip the check.
+xmlschema==4.3.2

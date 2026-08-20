@@ -8,6 +8,7 @@ be mounted at / and /console.
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import subprocess
 from pathlib import Path
@@ -23,11 +24,27 @@ WEB = Path("web")
 PUBLIC_ARTIFACTS = {"meta.json"}
 
 
+def _npx() -> str:
+    """Resolve npx to a full path.
+
+    On Windows npx is `npx.cmd`, and CreateProcess does not apply PATHEXT, so a
+    bare "npx" matches no file and raises FileNotFoundError. `shutil.which` does
+    consult PATHEXT and returns the real name; CreateProcess then recognises the
+    .cmd extension and runs it through the command interpreter itself.
+    """
+    found = shutil.which("npx")
+    if not found:
+        raise SystemExit(
+            "npx not found on PATH. Install Node.js (https://nodejs.org) and, on "
+            "Windows, open a new shell afterwards so PATH is picked up."
+        )
+    return found
+
+
 def build(surface: str, outdir: str, entry: str) -> None:
     print(f"building {surface} -> {outdir}")
-    subprocess.run(["npx", "vite", "build", "--outDir", outdir],
-                   cwd=WEB, check=True, env={**__import__("os").environ,
-                                             "SURFACE": surface})
+    subprocess.run([_npx(), "vite", "build", "--outDir", outdir],
+                   cwd=WEB, check=True, env={**os.environ, "SURFACE": surface})
     out = WEB / outdir
     # StaticFiles(html=True) serves index.html; the public entry is report.html
     if entry != "index.html":

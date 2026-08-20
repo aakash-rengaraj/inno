@@ -19,66 +19,98 @@ instantly. At a 2-minute interval that has never mattered for a demo.
 
 [gh]: https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners#self-hosted-runner-security
 
-## One-time setup
+## Setup
 
-Install Git, Python 3.12, Node 20, and [NSSM](https://nssm.cc/) (to run uvicorn
-as a service — Windows has no `systemd`, and a scheduled task at logon dies with
-the session).
+From an **elevated** PowerShell on a fresh VPS:
 
 ```powershell
-git clone https://github.com/aakash-rengaraj/inno C:\apps\innohack
-cd C:\apps\innohack
-python -m venv .venv
-.venv\Scripts\pip install -r requirements.txt
-npm --prefix web ci
-.venv\Scripts\python -m pipeline.build
-.venv\Scripts\python -m tools.build_web
+Set-ExecutionPolicy Bypass -Scope Process -Force
+irm https://raw.githubusercontent.com/aakash-rengaraj/inno/main/deploy/bootstrap.ps1 -OutFile bootstrap.ps1
+.\bootstrap.ps1
 ```
 
-LightGBM's Windows wheel bundles its own OpenMP, so there is no `libomp` step
-like on macOS. It does need the Visual C++ 2015-2022 redistributable, which most
-Windows Server images already carry.
+`bootstrap.ps1` does the whole thing: installs Git, Python 3.12, Node LTS, the
+VC++ redistributable and NSSM; clones to `C:\apps\innohack`; creates the venv;
+`npm ci`; runs `pipeline.build` and `tools.build_web`; registers the service with
+its environment; opens the firewall port; schedules the sync task; then polls
+`/api/health` and refuses to report success until the app actually answers.
 
-### Register the service
+It is **safe to re-run** — every step checks for what it is about to create, so a
+run that fails halfway can just be run again.
+
+Options:
 
 ```powershell
-nssm install InnoHack C:\apps\innohack\.venv\Scripts\python.exe
-nssm set InnoHack AppParameters "-m uvicorn server.app:app --host 0.0.0.0 --port 8000"
-nssm set InnoHack AppDirectory C:\apps\innohack
-nssm set InnoHack AppEnvironmentExtra CONSOLE_TOKEN=vellore-dso-2026 REPORTS_PER_HOUR=30
-nssm set InnoHack AppStdout C:\apps\innohack\logs\out.log
-nssm set InnoHack AppStderr C:\apps\innohack\logs\err.log
-nssm set InnoHack AppExit Default Restart
-nssm start InnoHack
+.\bootstrap.ps1 -Port 80 -Token 'something-else' -Root 'D:\innohack'
+.\bootstrap.ps1 -SkipSync        # no auto-deploy task
 ```
+
+| | default |
+|---|---|
+| `-RepoUrl` | `https://github.com/aakash-rengaraj/inno` |
+| `-Root` | `C:\apps\innohack` |
+| `-Port` | `8000` |
+| `-Token` | `vellore-dso-2026` (`CONSOLE_TOKEN`) |
+| `-RateLimit` | `30` (`REPORTS_PER_HOUR`) |
+| `-Origins` | `*` (`ALLOWED_ORIGINS`) |
 
 Sizing: idle is ~46 MB, but a recompute peaks around **645 MB** — the band model
 fit plus 216k observations in pandas. Give the box at least 2 GB.
 
-### Register the sync task
+### Installing into the venv, not the system Python
 
-Every 2 minutes, whether or not anyone is logged in:
-
-```powershell
-$action  = New-ScheduledTaskAction -Execute "powershell.exe" `
-  -Argument "-NoProfile -ExecutionPolicy Bypass -File C:\apps\innohack\deploy\sync.ps1"
-$trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) `
-  -RepetitionInterval (New-TimeSpan -Minutes 2)
-Register-ScheduledTask -TaskName "InnoHack sync" -Action $action -Trigger $trigger `
-  -User "SYSTEM" -RunLevel Highest
-```
-
-Check it: `Get-ScheduledTaskInfo "InnoHack sync"`, and run
-`powershell -File deploy\sync.ps1` by hand once to confirm it reaches GitHub.
-
-### Open the port
+Use `python.exe -m pip`, with the venv's interpreter by full path:
 
 ```powershell
-New-NetFirewallRule -DisplayName "InnoHack 8000" -Direction Inbound `
-  -Protocol TCP -LocalPort 8000 -Action Allow
+C:\apps\innohack\.venv\Scripts\python.exe -m pip install <package>
 ```
 
-Your VPS provider's own firewall usually needs the same rule separately.
+Being *inside* `.venv\Scripts` does not help — PowerShell does not search the
+current directory, so a bare `pip` resolves from `PATH` to the system install and
+the package lands in global site-packages where the venv will never see it. The
+symptom is `Requirement already satisfied` followed by `ModuleNotFoundError` for
+the same package. `bootstrap.ps1` now asserts that the venv resolves
+`site-packages` inside `$Root` before it builds anything.
+
+`pip.exe install --upgrade pip` also fails on Windows by design — pip cannot
+replace a running executable. It prints `To modify pip, please run ...python.exe
+-m pip`, and because a native command's exit code does not trip PowerShell's
+`$ErrorActionPreference`, a script will sail straight past it.
+
+### Things that go wrong on Windows specifically
+
+**`winget` is missing.** Common on Windows Server images. Install App Installer
+from <https://aka.ms/getwinget>, or install Git, Python 3.12 and Node 20 by hand
+and re-run — the script detects each one and skips what is already there.
+
+**`python` is the Microsoft Store stub.** Windows ships a `python.exe` that only
+opens the Store. It is on `PATH` and answers `Get-Command`, so a naive presence
+check passes while every later call silently does nothing. The script runs
+`python --version` and refuses to continue if it does not see a real 3.11+.
+Fix under *Settings > Apps > Advanced app settings > App execution aliases*.
+
+**LightGBM will not import.** Almost always the missing VC++ 2015-2022 x64
+redistributable — <https://aka.ms/vs/17/release/vc_redist.x64.exe>. The Windows
+wheel bundles its own OpenMP, so there is no `libomp` step like on macOS. The
+script installs the redistributable and then verifies the import, so this fails
+loudly at setup rather than at the first request.
+
+**`npx` not found from Python.** `tools.build_web` shells out to npx, which on
+Windows is `npx.cmd`. `CreateProcess` does not apply `PATHEXT`, so a bare `"npx"`
+matches no file and raises `FileNotFoundError: [WinError 2]`. Resolved with
+`shutil.which`, which does consult `PATHEXT`. Nothing to do on the VPS beyond
+having Node on `PATH` — noted because the traceback points at `subprocess` and
+says nothing about Node.
+
+**Service environment.** NSSM does not inherit this shell's variables, so
+`CONSOLE_TOKEN` has to be set with `AppEnvironmentExtra`. Setting `$env:` before
+starting the service would silently do nothing.
+
+### Doing it by hand
+
+If you would rather not run a script, `bootstrap.ps1` reads top to bottom as the
+manual procedure — each `Step` is one stage, and the `nssm set` and
+`Register-ScheduledTask` calls can be pasted as-is.
 
 ## What survives a deploy
 

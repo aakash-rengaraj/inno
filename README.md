@@ -91,6 +91,11 @@ this app (vite on :5173 during development). Defaults to `*`.
 
 ### Deploying to a Windows VPS
 
+`deploy/bootstrap.ps1` sets up a fresh VPS in one elevated run — prerequisites,
+clone, venv, both builds, the service, the firewall rule and the sync task —
+then polls `/api/health` and refuses to claim success until the app answers. It
+is idempotent, so a half-finished run can simply be run again.
+
 `deploy/sync.ps1` plus `deploy/README.md`. A scheduled task polls `main` every
 two minutes, rebuilds only what changed, and restarts the service; NSSM keeps
 uvicorn running. No inbound port is needed for deployment and no webhook or

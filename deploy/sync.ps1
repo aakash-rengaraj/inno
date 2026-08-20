@@ -35,12 +35,14 @@ $changed = git diff --name-only $local $remote
 # server/data/ is gitignored, so the citizen reports and the action board survive.
 git reset --hard "origin/$Branch" --quiet
 
-$py  = Join-Path $Repo ".venv\Scripts\python.exe"
-$pip = Join-Path $Repo ".venv\Scripts\pip.exe"
+$py = Join-Path $Repo ".venv\Scripts\python.exe"
 
 if ($changed -match '^requirements\.txt$') {
+  # `python -m pip`, never pip.exe: a bare `pip` resolves from PATH to the
+  # system install, and the packages would land outside the venv.
   Log "requirements changed - installing"
-  & $pip install -q -r requirements.txt
+  & $py -m pip install -q -r requirements.txt
+  if ($LASTEXITCODE -ne 0) { Log "ERROR: pip install failed - not restarting"; exit 1 }
 }
 if ($changed -match '^web/package(-lock)?\.json$') {
   Log "npm manifest changed - installing"
