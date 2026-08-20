@@ -18,6 +18,36 @@ const FALLBACK_PLACES = [
 const UNIT_HINT = { per_kg: '\u20b9 per kg', per_piece: '\u20b9 per egg',
                     per_ride: '\u20b9 for the trip' }
 
+// Beyond this from every known market, the report is outside the district this
+// system covers. Attributing it to the "nearest" market anyway would file it
+// against somewhere the reporter has never been.
+const MAX_DISTANCE_KM = 30
+
+const distanceKm = (aLat, aLng, bLat, bLng) => {
+  const R = 6371
+  const rad = (d) => (d * Math.PI) / 180
+  const dLat = rad(bLat - aLat)
+  const dLng = rad(bLng - aLng)
+  const h = Math.sin(dLat / 2) ** 2
+    + Math.cos(rad(aLat)) * Math.cos(rad(bLat)) * Math.sin(dLng / 2) ** 2
+  return 2 * R * Math.asin(Math.sqrt(h))
+}
+
+// The list arrives sorted alphabetically, so places[0] is "Ambur" — 51km from
+// Vellore town and wrong for almost every reporter. Default to the district
+// headquarters instead, and let a real position fix override it.
+const defaultPlace = (list) =>
+  list.find((p) => p.id === 'vellore_apmc')
+  || list.find((p) => p.id === 'vellore_katpadi')
+  || list.find((p) => p.id.startsWith('vellore'))
+  || list[0]
+
+const nearestPlace = (places, lat, lng) =>
+  places.reduce((best, p) => {
+    const d = distanceKm(lat, lng, p.lat, p.lng)
+    return !best || d < best.km ? { place: p, km: d } : best
+  }, null)
+
 export default function ReportForm({ onBack, online = false, meta = null }) {
   const allItems = meta?.report_items?.length ? meta.report_items : FALLBACK_ITEMS
   const allPlaces = meta?.report_places?.length ? meta.report_places : FALLBACK_PLACES
@@ -27,6 +57,8 @@ export default function ReportForm({ onBack, online = false, meta = null }) {
   const [distance, setDistance] = useState('')
   const [place, setPlace] = useState('')
   const [coords, setCoords] = useState(null)
+  const [accuracy, setAccuracy] = useState(null)
+  const [geoInfo, setGeoInfo] = useState(null)
   const [geoState, setGeoState] = useState('idle')
   const [note, setNote] = useState('')
   const [saved, setSaved] = useState(null)
@@ -37,22 +69,72 @@ export default function ReportForm({ onBack, online = false, meta = null }) {
 
   useEffect(() => subscribe(() => setRows(getReports())), [])
 
-  const useMyLocation = () => {
-    if (!navigator.geolocation) { setGeoState('unavailable'); return }
-    setGeoState('locating')
-    navigator.geolocation.getCurrentPosition(
-      (p) => { setCoords([p.coords.latitude, p.coords.longitude]); setGeoState('ok') },
-      () => setGeoState('denied'),
-      { timeout: 8000 }
-    )
-  }
-
   const spec = allItems.find((i) => i.id === item) || allItems[0]
 
   // A market report belongs at a market and a zone report in a zone: the egg
   // vertical has no reference rate at a mandi, and vice versa.
   const places = allPlaces.filter((p) => p.kind === (spec?.kind || 'zone'))
-  const chosen = places.find((p) => p.id === place) || places[0]
+  const chosen = places.find((p) => p.id === place) || defaultPlace(places)
+
+  const useMyLocation = () => {
+    // Geolocation is only available in a secure context. Opened over plain HTTP
+    // on a LAN address it fails silently, which looks like a broken button.
+    if (!window.isSecureContext) { setGeoState('insecure'); return }
+    if (!navigator.geolocation) { setGeoState('unavailable'); return }
+
+    setGeoState('locating')
+    navigator.geolocation.getCurrentPosition(
+      (p) => {
+        const { latitude, longitude, accuracy } = p.coords
+        const near = nearestPlace(places, latitude, longitude)
+        if (near && near.km > MAX_DISTANCE_KM) {
+          // Keep the dropdown rather than file the report against a market
+          // tens of kilometres from where the reporter actually stood.
+          setCoords(null)
+          setGeoState('outside')
+          setGeoInfo({ km: near.km, label: near.place.label })
+          return
+        }
+        setCoords([latitude, longitude])
+        setAccuracy(accuracy)
+        setGeoInfo(near ? { km: near.km, label: near.place.label } : null)
+        // Move the dropdown to the market the report will actually be filed
+        // against, so the screen agrees with what gets submitted.
+        if (near) setPlace(near.place.id)
+        setGeoState('ok')
+      },
+      (err) => {
+        // Distinguish the three cases: one is permanent, two are worth retrying.
+        const byCode = { 1: 'denied', 2: 'unavailable', 3: 'timeout' }
+        setGeoState(byCode[err.code] || 'unavailable')
+      },
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 60000 }
+    )
+  }
+
+  const clearLocation = () => {
+    setCoords(null)
+    setAccuracy(null)
+    setGeoInfo(null)
+    setGeoState('idle')
+  }
+
+  const GEO_MESSAGE = {
+    idle: 'Optional. More precise reports carry further.',
+    locating: 'Waiting for a position fix\u2026',
+    denied: 'Location permission is blocked. Allow it in your browser settings, '
+      + 'or just pick the area below.',
+    timeout: 'Could not get a fix in time. Try again, or pick the area below.',
+    unavailable: 'Your device could not provide a position. Pick the area below.',
+    insecure: 'Location needs a secure connection (https or localhost). '
+      + 'Pick the area below.',
+    outside: geoInfo
+      ? `You appear to be ${geoInfo.km.toFixed(0)} km from the nearest covered `
+        + `market (${geoInfo.label}). This service covers Vellore district only \u2014 `
+        + 'pick an area below if you are reporting on its behalf.'
+      : 'You appear to be outside the covered district.',
+  }
+
   const effective = coords || (chosen ? [chosen.lat, chosen.lng] : null)
   const priceOk = price !== '' && Number(price) > 0
   const distanceOk = item !== 'auto_ride' || (distance !== '' && Number(distance) > 0)
@@ -148,17 +230,37 @@ export default function ReportForm({ onBack, online = false, meta = null }) {
               </label>
 
               <div className="rp-geo">
-                <button type="button" onClick={useMyLocation} disabled={geoState === 'locating'}>
-                  {coords ? 'Location captured' : geoState === 'locating'
-                    ? 'Locating…' : 'Use my exact location'}
-                </button>
-                <span className="small muted">
-                  {coords
-                    ? `${coords[0].toFixed(5)}, ${coords[1].toFixed(5)}`
-                    : geoState === 'denied' ? 'Denied — using the selected area instead'
-                    : geoState === 'unavailable' ? 'Unavailable — using the selected area'
-                    : 'Optional. More precise reports carry further.'}
-                </span>
+                {coords ? (
+                  <button type="button" onClick={clearLocation}>Use the area instead</button>
+                ) : (
+                  <button type="button" onClick={useMyLocation}
+                          disabled={geoState === 'locating'}>
+                    {geoState === 'locating' ? 'Locating\u2026'
+                      : geoState === 'idle' ? 'Use my exact location'
+                      : 'Try location again'}
+                  </button>
+                )}
+                {coords ? (
+                  <span className="small">
+                    <strong>Location captured.</strong>{' '}
+                    <span className="mono">
+                      {coords[0].toFixed(5)}, {coords[1].toFixed(5)}
+                    </span>
+                    {accuracy != null && (
+                      <span className="muted"> &plusmn;{Math.round(accuracy)}m</span>
+                    )}
+                    {geoInfo && (
+                      <span className="muted">
+                        {' '}&middot; filed against {geoInfo.label} ({geoInfo.km.toFixed(1)} km)
+                      </span>
+                    )}
+                  </span>
+                ) : (
+                  <span className={`small ${geoState === 'idle' || geoState === 'locating'
+                    ? 'muted' : 'rp-warn'}`}>
+                    {GEO_MESSAGE[geoState]}
+                  </span>
+                )}
               </div>
 
               <label>
@@ -181,9 +283,16 @@ export default function ReportForm({ onBack, online = false, meta = null }) {
             {saved && (
               <div className="rp-receipt">
                 {receipt && (
-                  <p className="small" style={{ marginTop: 0 }}>
-                    <strong>Report #{receipt.id} received.</strong> {receipt.message}
-                  </p>
+                  <>
+                    <div className="rp-reference">
+                      <span className="label">Your reference</span>
+                      <span className="rp-reference-id">{receipt.reference}</span>
+                    </div>
+                    <p className="small" style={{ marginTop: 0 }}>
+                      {receipt.message} Quote this reference if you contact the
+                      district office about it.
+                    </p>
+                  </>
                 )}
                 <div className="label" style={{ marginBottom: 6 }}>Recorded as</div>
                 <div className="mono small rp-csv">

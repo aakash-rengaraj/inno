@@ -6,6 +6,7 @@ import ActionBoard from './ActionBoard.jsx'
 import CaseFile from './CaseFile.jsx'
 import FlagDetail from './FlagDetail.jsx'
 import Queue from './Queue.jsx'
+import Reports from './Reports.jsx'
 
 const CONSOLE_VIEWS = ['queue', 'board', 'detail']
 
@@ -48,7 +49,8 @@ export default function ConsoleApp() {
   const open = (id) => { setSelected(id); setView('detail') }
 
   if (view === 'case' && flag) {
-    return <CaseFile caseFile={db.cases[flag.flag_id]} onBack={() => setView('detail')} />
+    return <CaseFile caseFile={db.cases[flag.flag_id]} live={mode === 'live'}
+                     onBack={() => setView('detail')} />
   }
 
   const inConsole = CONSOLE_VIEWS.includes(view)
@@ -59,7 +61,8 @@ export default function ConsoleApp() {
         <h1 onClick={() => setView('queue')} style={{ cursor: 'pointer' }}>Price Review</h1>
         <span className="sub">Vellore District · Supply &amp; Enforcement</span>
         <nav className="topnav">
-          {[['queue', 'Queue'], ['board', 'Action board']]
+          {[['queue', 'Queue'], ['board', 'Action board'],
+            ...(mode === 'live' ? [['reports', 'Citizen reports']] : [])]
             .map(([v, label]) => (
               <button key={v} className={view === v ? 'on' : ''}
                       onClick={() => setView(v)}>{label}</button>
@@ -79,8 +82,13 @@ export default function ConsoleApp() {
         <div className="framing">
           <div className="line">
             <strong>{db.meta.locations_monitored}</strong> locations monitored,{' '}
-            <strong>{db.meta.flags_in_queue}</strong> flagged for investigation
-            {' '}— here are the {db.meta.flags_in_queue}.
+            <strong>{db.meta.inspections ?? db.meta.flags_in_queue}</strong> flagged for
+            inspection — here are the {db.meta.inspections ?? db.meta.flags_in_queue}.
+            {db.meta.inspections != null && (
+              <span className="muted small" style={{ marginLeft: 8 }}>
+                {db.meta.flags_in_queue} findings in total
+              </span>
+            )}
           </div>
           <span className="spacer" style={{ flex: 1 }} />
           {db.meta.flags_excluded_evidence_floor > 0 && (
@@ -95,6 +103,7 @@ export default function ConsoleApp() {
       <main>
         {view === 'queue' && <Queue db={db} onOpen={open} />}
         {view === 'board' && <ActionBoard db={db} onOpen={open} live={mode === 'live'} />}
+        {view === 'reports' && <Reports />}
         {view === 'detail' && (
           <FlagDetail db={db} flag={flag} onBack={() => setView('queue')}
                       onCase={() => setView('case')} />

@@ -18,7 +18,7 @@ from typing import Literal
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.responses import JSONResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
@@ -114,6 +114,7 @@ class ActionIn(BaseModel):
 @app.get("/api/health")
 def health() -> dict:
     return {"ok": True, "flags_in_queue": len(ENGINE.artifacts.get("queue", [])),
+            "recomputing": ENGINE.busy, "state": ENGINE.state,
             "last_recompute": ENGINE.last_recompute}
 
 
@@ -146,16 +147,17 @@ def submit_report(body: ReportIn) -> dict:
         raise HTTPException(422, "Report rejected: missing geotag or timestamp.")
 
     report_id = db.insert_report(CONN, row)
-    # A report counts as evidence on arrival, so detection re-runs now. What
-    # stops one reporter manufacturing a flag is not review but the evidence
-    # floor plus locality generalisation: nearby reports quoting the same price
-    # collapse to a single locality and corroborate nothing.
-    stats = ENGINE.recompute(db.all_reports(CONN))
+    # Acknowledge immediately and recompute behind the response. A report counts
+    # as evidence on arrival; what stops one reporter manufacturing a flag is not
+    # review but the evidence floor plus locality generalisation — nearby reports
+    # quoting the same price collapse to one locality and corroborate nothing.
+    ENGINE.request_recompute(lambda: db.all_reports(CONN))
     return {
         "id": report_id,
+        "reference": db.reference(report_id),
         "location": str(normalised["location"].iloc[0]),
         "seller_id": str(normalised["seller_id"].iloc[0]),
-        "recompute": stats,
+        "recomputing": True,
         "message": ("Recorded as a tier C observation. Your coordinates are stored "
                     "as a ~50m grid cell, never an address."),
     }
@@ -189,6 +191,54 @@ def meta() -> dict:
     m["reports_received"] = db.report_count(CONN)
     m["last_recompute"] = ENGINE.last_recompute
     return json_safe(m)
+
+
+@app.get("/api/reports", dependencies=[Depends(console_auth)])
+def list_reports() -> list:
+    """Every citizen report, newest first, with the comment the reporter left.
+
+    Attribution is resolved here rather than stored, so the console shows the
+    market a report is actually filed against — not just its raw coordinates.
+    """
+    from pipeline.ingest.reports import _nearest_location
+
+    rows = db.list_reports(CONN)
+    for r in rows:
+        try:
+            r["attributed_to"] = _nearest_location(r["lat"], r["lng"], r["item"])
+        except Exception:
+            r["attributed_to"] = None
+    return json_safe(rows)
+
+
+@app.get("/api/cases.xml", dependencies=[Depends(console_auth)])
+def cases_xml() -> Response:
+    """Every case file as one schema-valid XML document, for exchange with a
+    back-office system that cannot read our JSON."""
+    from pipeline import xml_export
+
+    art = ENGINE.artifacts
+    generated = str(art.get("meta", {}).get("data_through", ""))
+    tree = xml_export.build_case_set(art.get("cases", {}), art.get("flags", []), generated)
+    return Response(content=xml_export.to_string(tree.getroot()),
+                    media_type="application/xml")
+
+
+@app.get("/api/cases/{flag_id}.xml", dependencies=[Depends(console_auth)])
+def case_xml(flag_id: str) -> Response:
+    """One case file, as a filing-ready XML document."""
+    from pipeline import xml_export
+
+    art = ENGINE.artifacts
+    case = art.get("cases", {}).get(flag_id)
+    if case is None:
+        raise HTTPException(404, f"No case file for {flag_id}.")
+    flag = next(f for f in art["flags"] if f["flag_id"] == flag_id)
+    generated = str(art.get("meta", {}).get("data_through", ""))
+    xml_text = xml_export.to_string(xml_export.case_to_element(case, flag, generated))
+    return Response(content=xml_text, media_type="application/xml",
+                    headers={"Content-Disposition":
+                             f'attachment; filename="{flag_id}.xml"'})
 
 
 @app.get("/api/actions", dependencies=[Depends(console_auth)])

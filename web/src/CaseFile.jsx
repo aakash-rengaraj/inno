@@ -1,4 +1,5 @@
 import React from 'react'
+import { apiUrl, getToken } from './api.js'
 import { inr, pct } from './data.js'
 
 const Field = ({ label, children, wide }) => (
@@ -8,13 +9,32 @@ const Field = ({ label, children, wide }) => (
   </div>
 )
 
-export default function CaseFile({ caseFile: c, onBack }) {
+export default function CaseFile({ caseFile: c, onBack, live = false }) {
   if (!c) return null
+
+  // Fetched with the console token, then handed over as a file — the XML is
+  // behind the same gate as the case file it describes.
+  const downloadXml = async () => {
+    const res = await fetch(apiUrl(`/api/cases/${c.flag_id}.xml`),
+      { headers: { 'X-Console-Token': getToken() } })
+    if (!res.ok) return
+    const url = URL.createObjectURL(await res.blob())
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${c.flag_id}.xml`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
   return (
     <div className="cf-page">
       <div className="cf-toolbar no-print">
         <button onClick={onBack}>← Back to flag</button>
         <span style={{ flex: 1 }} />
+        {live && (
+          <button onClick={downloadXml} title="Schema-valid XML for filing">
+            Export XML
+          </button>
+        )}
         <button className="primary" onClick={() => window.print()}>Print case file</button>
       </div>
 

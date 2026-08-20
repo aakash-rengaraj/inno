@@ -40,7 +40,11 @@
   "narrative": "Prices from 363 observations across the location stayed within 0.2% of one another for 71 days, against a 3.0% threshold; median +28% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
   "distinct_sellers": 8,
   "basis": "necc",
-  "citation": "National Egg Coordination Committee \u2014 suggested daily egg rate, Namakkal zone (suggestive, not mandatory)"
+  "citation": "National Egg Coordination Committee \u2014 suggested daily egg rate, Namakkal zone (suggestive, not mandatory)",
+  "group_id": "vellore_katpadi",
+  "group_size": 5,
+  "group_rank": 1,
+  "group_primary": false
  },
  {
   "flag_id": "FLG-0002",
@@ -84,7 +88,11 @@
   "narrative": "Listed prices follow one another (correlation 0.91) far more closely than they follow the reference rate (correlation -0.21); median +28% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
   "distinct_sellers": 8,
   "basis": "necc",
-  "citation": "National Egg Coordination Committee \u2014 suggested daily egg rate, Namakkal zone (suggestive, not mandatory)"
+  "citation": "National Egg Coordination Committee \u2014 suggested daily egg rate, Namakkal zone (suggestive, not mandatory)",
+  "group_id": "vellore_katpadi",
+  "group_size": 5,
+  "group_rank": 2,
+  "group_primary": false
  },
  {
   "flag_id": "FLG-0003",
@@ -126,7 +134,11 @@
   "narrative": "Prices stayed above the expected range for 21 consecutive days; median +29% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
   "distinct_sellers": 9,
   "basis": "gazette",
-  "citation": "Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept \u2014 Vellore district schedule"
+  "citation": "Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept \u2014 Vellore district schedule",
+  "group_id": "vellore_katpadi",
+  "group_size": 5,
+  "group_rank": 3,
+  "group_primary": false
  },
  {
   "flag_id": "FLG-0004",
@@ -168,7 +180,11 @@
   "narrative": "Prices stayed above the expected range for 21 consecutive days; median +45% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 2 others remained in-band.",
   "distinct_sellers": 1,
   "basis": "model",
-  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
+  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
+  "group_id": "gudiyatham_sandhai",
+  "group_size": 4,
+  "group_rank": 0,
+  "group_primary": true
  },
  {
   "flag_id": "FLG-0005",
@@ -210,7 +226,11 @@
   "narrative": "Prices stayed above the expected range for 43 consecutive days; median +67% relative to the reference rate while peer locations Gudiyatham Sandhai, Katpadi Sandhai and 2 others remained in-band.",
   "distinct_sellers": 1,
   "basis": "model",
-  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
+  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
+  "group_id": "kahithapattarai_sandhai",
+  "group_size": 4,
+  "group_rank": 1,
+  "group_primary": false
  },
  {
   "flag_id": "FLG-0006",
@@ -249,7 +269,11 @@
   "narrative": "Prices stayed above the expected range for 11 consecutive days; median +38% relative to the reference rate while peer location Apmc remained in-band.",
   "distinct_sellers": 1,
   "basis": "model",
-  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
+  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
+  "group_id": "katpadi_sandhai",
+  "group_size": 3,
+  "group_rank": 1,
+  "group_primary": false
  },
  {
   "flag_id": "FLG-0007",
@@ -291,7 +315,11 @@
   "narrative": "Prices stayed above the expected range for 71 consecutive days; median +28% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
   "distinct_sellers": 8,
   "basis": "necc",
-  "citation": "National Egg Coordination Committee \u2014 suggested daily egg rate, Namakkal zone (suggestive, not mandatory)"
+  "citation": "National Egg Coordination Committee \u2014 suggested daily egg rate, Namakkal zone (suggestive, not mandatory)",
+  "group_id": "vellore_katpadi",
+  "group_size": 5,
+  "group_rank": 4,
+  "group_primary": false
  },
  {
   "flag_id": "FLG-0008",
@@ -375,7 +403,11 @@
   "narrative": "Prices stayed above the expected range for 13 consecutive days; median +41% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 2 others remained in-band.",
   "distinct_sellers": 1,
   "basis": "model",
-  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
+  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
+  "group_id": "gudiyatham_sandhai",
+  "group_size": 4,
+  "group_rank": 1,
+  "group_primary": false
  },
  {
   "flag_id": "FLG-0010",
@@ -418,7 +450,11 @@
   "narrative": "Prices stayed above the expected range for 12 consecutive days; median +20% relative to the reference rate while peer locations Gudiyatham Sandhai, Katpadi Sandhai and 3 others remained in-band.",
   "distinct_sellers": 1,
   "basis": "model",
-  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
+  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
+  "group_id": "kahithapattarai_sandhai",
+  "group_size": 4,
+  "group_rank": 3,
+  "group_primary": false
  },
  {
   "flag_id": "FLG-0011",
@@ -458,7 +494,11 @@
   "narrative": "Prices stayed above the expected range for 24 consecutive days; median +100% relative to the reference rate while peer locations Gudiyatham Sandhai, Perampet Sandhai remained in-band.",
   "distinct_sellers": 1,
   "basis": "model",
-  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
+  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
+  "group_id": "katpadi_sandhai",
+  "group_size": 3,
+  "group_rank": 0,
+  "group_primary": true
  },
  {
   "flag_id": "FLG-0012",
@@ -501,7 +541,11 @@
   "narrative": "Prices stayed above the expected range for 10 consecutive days; median +143% relative to the reference rate while peer locations Gudiyatham Sandhai, Katpadi Sandhai and 3 others remained in-band.",
   "distinct_sellers": 1,
   "basis": "model",
-  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
+  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
+  "group_id": "kahithapattarai_sandhai",
+  "group_size": 4,
+  "group_rank": 0,
+  "group_primary": true
  },
  {
   "flag_id": "FLG-0013",
@@ -543,7 +587,11 @@
   "narrative": "Prices stayed above the expected range for 10 consecutive days; median +33% relative to the reference rate while peer locations Kahithapattarai Sandhai, Pallikonda Sandhai and 2 others remained in-band.",
   "distinct_sellers": 1,
   "basis": "model",
-  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
+  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
+  "group_id": "katpadi_sandhai",
+  "group_size": 3,
+  "group_rank": 2,
+  "group_primary": false
  },
  {
   "flag_id": "FLG-0014",
@@ -584,7 +632,11 @@
   "narrative": "Prices stayed above the expected range for 61 consecutive days; median +33% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 1 other remained in-band.",
   "distinct_sellers": 1,
   "basis": "model",
-  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
+  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
+  "group_id": "gudiyatham_sandhai",
+  "group_size": 4,
+  "group_rank": 3,
+  "group_primary": false
  },
  {
   "flag_id": "FLG-0015",
@@ -626,7 +678,11 @@
   "narrative": "Prices stayed above the expected range for 13 consecutive days; median +30% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 2 others remained in-band.",
   "distinct_sellers": 1,
   "basis": "model",
-  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
+  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
+  "group_id": "perampet_sandhai",
+  "group_size": 1,
+  "group_rank": 0,
+  "group_primary": true
  },
  {
   "flag_id": "FLG-0016",
@@ -665,7 +721,11 @@
   "narrative": "Prices stayed above the expected range for 12 consecutive days; median +60% relative to the reference rate while peer location Perampet Sandhai remained in-band.",
   "distinct_sellers": 1,
   "basis": "model",
-  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
+  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
+  "group_id": "kahithapattarai_sandhai",
+  "group_size": 4,
+  "group_rank": 2,
+  "group_primary": false
  },
  {
   "flag_id": "FLG-0017",
@@ -705,7 +765,11 @@
   "narrative": "Prices stayed above the expected range for 22 consecutive days; median +37% relative to the reference rate while peer locations Kahithapattarai Sandhai, Apmc remained in-band.",
   "distinct_sellers": 1,
   "basis": "model",
-  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
+  "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district",
+  "group_id": "gudiyatham_sandhai",
+  "group_size": 4,
+  "group_rank": 2,
+  "group_primary": false
  },
  {
   "flag_id": "FLG-0018",
@@ -749,6 +813,10 @@
   "narrative": "Quoted fares cluster at round values (93% of quotes) with weak distance sensitivity (R\u00b2 0.24); median +29% relative to the notified rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
   "distinct_sellers": 21,
   "basis": "gazette",
-  "citation": "Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept \u2014 Vellore district schedule"
+  "citation": "Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept \u2014 Vellore district schedule",
+  "group_id": "vellore_katpadi",
+  "group_size": 5,
+  "group_rank": 0,
+  "group_primary": true
  }
 ]

@@ -68,8 +68,24 @@ def insert_report(conn: sqlite3.Connection, row: dict) -> int:
     return int(cur.lastrowid)
 
 
+def reference(report_id: int) -> str:
+    """Public reference a reporter can quote back. Derived from the row id, so
+    it is stable and needs no extra column."""
+    return f"RPT-{report_id:04d}"
+
+
 def all_reports(conn: sqlite3.Connection) -> list[dict]:
-    return [dict(r) for r in conn.execute("SELECT * FROM reports")]
+    return [_report(dict(r)) for r in conn.execute("SELECT * FROM reports")]
+
+
+def list_reports(conn: sqlite3.Connection, limit: int = 500) -> list[dict]:
+    return [_report(dict(r)) for r in conn.execute(
+        "SELECT * FROM reports ORDER BY id DESC LIMIT ?", (limit,))]
+
+
+def _report(r: dict) -> dict:
+    r["reference"] = reference(r["id"])
+    return r
 
 
 def report_count(conn: sqlite3.Connection) -> int:

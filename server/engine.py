@@ -24,10 +24,44 @@ PUBLIC_META_FIELDS = [
 class Engine:
     def __init__(self) -> None:
         self._lock = threading.Lock()
+        self._pending = threading.Event()
+        self._worker: threading.Thread | None = None
+        self.state = "idle"          # idle | recomputing
         self.base: pd.DataFrame | None = None
         self.model = None
         self.artifacts: dict = {}
         self.last_recompute: dict = {}
+
+    # --- background recompute ----------------------------------------------
+
+    def request_recompute(self, fetch_reports) -> None:
+        """Schedule a recompute without making the caller wait for it.
+
+        A recompute takes seconds over a 200k-row panel, and a citizen
+        submitting a price should not sit through it. Requests coalesce: five
+        reports arriving together produce one recompute, not five.
+        """
+        self._pending.set()
+        if self._worker is not None and self._worker.is_alive():
+            return
+        self._worker = threading.Thread(target=self._drain, args=(fetch_reports,),
+                                        daemon=True)
+        self._worker.start()
+
+    def _drain(self, fetch_reports) -> None:
+        while self._pending.is_set():
+            self._pending.clear()
+            self.state = "recomputing"
+            try:
+                self.recompute(fetch_reports())
+            except Exception as exc:               # a bad report must not kill the loop
+                print(f"  recompute failed: {exc}")
+            finally:
+                self.state = "idle"
+
+    @property
+    def busy(self) -> bool:
+        return self.state == "recomputing" or self._pending.is_set()
 
     # --- lifecycle ---------------------------------------------------------
 
@@ -91,13 +125,19 @@ class Engine:
         from pipeline.ingest.reports import MARKET_LOCATIONS, ZONE_LOCATIONS
 
         def label(key: str) -> str:
-            base = key.replace("vellore_", "").replace("_apmc", "").replace("_sandhai", "")
-            name = base.replace("_", " ").title()
+            """Market ids are <town>_<kind>; zone ids are vellore_<zone>.
+
+            Stripping the "vellore_" prefix first turns `vellore_apmc` into
+            "Apmc" and loses the town, so the suffix is taken off first and the
+            prefix only for zones.
+            """
             if key.endswith("_sandhai"):
-                return f"{name} (Uzhavar Sandhai)"
+                town = key[: -len("_sandhai")].replace("_", " ").title()
+                return f"{town} (Uzhavar Sandhai)"
             if key.endswith("_apmc"):
-                return f"{name} (APMC)"
-            return name
+                town = key[: -len("_apmc")].replace("_", " ").title()
+                return f"{town} (APMC)"
+            return key.replace("vellore_", "").replace("_", " ").title()
 
         places = [{"id": k, "label": label(k), "lat": v[0], "lng": v[1], "kind": "market"}
                   for k, v in sorted(MARKET_LOCATIONS.items())]

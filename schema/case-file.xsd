@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Case file exchange schema.
+
+  A case file is the product an officer files, so it needs a machine-readable
+  form as well as a printable one: back-office systems in this domain consume
+  XML, and an evidence document that cannot be exchanged is a dead end.
+
+  This schema is the XML counterpart of the assertions in pipeline/contracts.py —
+  the same contract, expressed where a different system can enforce it.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+  <xs:simpleType name="tierCode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="A"/>
+      <xs:enumeration value="B"/>
+      <xs:enumeration value="C"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="priorityLevel">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="3"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="detectorName">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="variance_collapse"/>
+      <xs:enumeration value="cost_correlation"/>
+      <xs:enumeration value="persistence"/>
+      <xs:enumeration value="quantisation"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="flagRef">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="FLG-[0-9]{4}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="unitName">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="per_kg"/>
+      <xs:enumeration value="per_piece"/>
+      <xs:enumeration value="per_km"/>
+      <xs:enumeration value="per_ride"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="observationWindow">
+    <xs:attribute name="start" type="xs:date" use="required"/>
+    <xs:attribute name="end" type="xs:date" use="required"/>
+    <xs:attribute name="days" type="xs:positiveInteger" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="referenceRate">
+    <xs:sequence>
+      <xs:element name="basis" type="xs:string"/>
+      <!-- never optional: a case file without a citable source is not evidence -->
+      <xs:element name="citation" type="xs:string"/>
+      <xs:element name="rate" type="xs:decimal"/>
+      <xs:element name="expectedRange">
+        <xs:complexType>
+          <xs:attribute name="low" type="xs:decimal" use="required"/>
+          <xs:attribute name="high" type="xs:decimal" use="required"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="unit" type="unitName" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="provenanceEntry">
+    <xs:attribute name="tier" type="tierCode" use="required"/>
+    <xs:attribute name="label" type="xs:string" use="required"/>
+    <xs:attribute name="observations" type="xs:nonNegativeInteger" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="observedPrices">
+    <xs:sequence>
+      <xs:element name="median" type="xs:decimal"/>
+      <xs:element name="percentAgainstReference" type="xs:decimal"/>
+      <xs:element name="provenance">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="source" type="provenanceEntry" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:attribute name="independentLocalities" type="xs:nonNegativeInteger"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="unit" type="unitName" use="required"/>
+    <xs:attribute name="observations" type="xs:positiveInteger" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="appliedMeasure">
+    <xs:sequence>
+      <xs:element name="statistic" type="xs:string"/>
+      <xs:element name="value" type="xs:decimal"/>
+      <xs:element name="threshold" type="xs:decimal"/>
+      <xs:element name="supporting" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="value" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="xs:string">
+                    <xs:attribute name="name" type="xs:string" use="required"/>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="explanation" type="xs:string"/>
+    </xs:sequence>
+    <xs:attribute name="detector" type="detectorName" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="peerComparison">
+    <xs:sequence>
+      <xs:element name="location" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="residualStandardDeviation" type="xs:decimal"/>
+  </xs:complexType>
+
+  <xs:element name="caseFile">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="issuer">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="office" type="xs:string"/>
+              <xs:element name="district" type="xs:string"/>
+              <xs:element name="state" type="xs:string"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="subject">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="item" type="xs:string"/>
+              <xs:element name="itemCode" type="xs:string"/>
+              <xs:element name="location" type="xs:string"/>
+              <xs:element name="locationCode" type="xs:string"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="window" type="observationWindow"/>
+        <xs:element name="finding" type="xs:string"/>
+        <xs:element name="referenceRate" type="referenceRate"/>
+        <xs:element name="observed" type="observedPrices"/>
+        <xs:element name="measure" type="appliedMeasure"/>
+        <xs:element name="peersInBand" type="peerComparison"/>
+        <xs:element name="summary" type="xs:string"/>
+        <xs:element name="evidenceFloor" type="xs:string" minOccurs="0"/>
+        <!-- required: the document must never be readable as a finding of guilt -->
+        <xs:element name="caveat" type="xs:string"/>
+      </xs:sequence>
+      <xs:attribute name="reference" type="flagRef" use="required"/>
+      <xs:attribute name="priority" type="priorityLevel" use="required"/>
+      <xs:attribute name="status" type="xs:string" use="required" fixed="Flagged for investigation"/>
+      <xs:attribute name="generated" type="xs:date" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="caseFileSet">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="caseFile" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="district" type="xs:string" use="required"/>
+      <xs:attribute name="generated" type="xs:date" use="required"/>
+      <xs:attribute name="count" type="xs:nonNegativeInteger" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

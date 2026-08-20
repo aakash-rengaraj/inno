@@ -13,12 +13,12 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from pipeline import cases, detect
+from pipeline import cases, detect, xml_export
 from pipeline.contracts import OBSERVATIONS_PATH, json_safe
 from pipeline.expectations import attach_expectations
 from pipeline.generalise import assign_localities, summarise
 from pipeline.ingest import agmarknet_export, gazette, necc_real, qcommerce, reports, ridehail
-from pipeline.model import fit_band, predict_band
+from pipeline.model import benchmark_band, fit_band, predict_band
 
 OUT = Path("web/public/data")
 
@@ -221,9 +221,28 @@ def compute(obs: pd.DataFrame, model=None, verbose: bool = True) -> dict:
         charts[flag["flag_id"]] = chart_for(scored, flag)
         case_files[flag["flag_id"]] = cases.build_case(flag)
 
-    # queue order: tier first, then how far outside the band it sits
-    queue.sort(key=lambda f: (-f["tier"], -abs(f["observed"]["median"]
-                                               / max(f["expected"]["rate"], 1e-9) - 1)))
+    # An officer inspects a market, not a flag. Four findings at one market is
+    # one visit, so the queue is grouped by location: the strongest finding
+    # leads and the rest travel with it as supporting evidence. Without this the
+    # queue reads as one market repeated, and the inspection count is inflated.
+    def _gap(f: dict) -> float:
+        return abs(f["observed"]["median"] / max(f["expected"]["rate"], 1e-9) - 1)
+
+    groups: dict[str, list[dict]] = {}
+    for f in queue:
+        groups.setdefault(f["location"], []).append(f)
+
+    for location, members in groups.items():
+        members.sort(key=lambda f: (-f["tier"], -_gap(f)))
+        for rank, f in enumerate(members):
+            f["group_id"] = location
+            f["group_size"] = len(members)
+            f["group_rank"] = rank
+            f["group_primary"] = rank == 0
+
+    ordered = sorted(groups.values(),
+                     key=lambda m: (-m[0]["tier"], -_gap(m[0])))
+    queue = [f for members in ordered for f in members]
 
     meta = {
         "data_through": str(obs["date"].max()),
@@ -234,8 +253,10 @@ def compute(obs: pd.DataFrame, model=None, verbose: bool = True) -> dict:
         "rejected_reports": int(reports.REJECTED.get("no_geotag_or_timestamp", 0)),
         "flags_total": len(all_flags),
         "flags_in_queue": len(queue),
+        "inspections": len({f["location"] for f in queue}),
         "flags_excluded_evidence_floor": len(all_flags) - len(queue),
         "model": model.metrics,
+        "model_benchmark": benchmark_band(model, obs),
         "thresholds": detect.THRESHOLDS,
         "generaliser": gen,
         "item_labels": {k: v for k, v in labels.items()
@@ -245,7 +266,8 @@ def compute(obs: pd.DataFrame, model=None, verbose: bool = True) -> dict:
                         pd.Series([f["tier"] for f in queue]).value_counts().items()},
         "sources": sorted(obs["source"].unique().tolist()),
     }
-    log(f"\n  {len(queue)} flag(s) in the inspection queue, "
+    log(f"\n  {len(queue)} finding(s) across "
+        f"{len({f['location'] for f in queue})} market(s) for inspection, "
         f"{len(all_flags) - len(queue)} excluded by the evidence floor")
     return {"queue": queue, "flags": all_flags, "cases": case_files,
             "charts": charts, "meta": meta, "model": model}
@@ -264,6 +286,15 @@ def main() -> None:
     result = compute(obs)
     for name in ("queue", "flags", "cases", "charts", "meta"):
         _write(f"{name}.json", result[name])
+
+    # the same case files as XML, checked against schema/case-file.xsd
+    generated = str(obs["date"].max())
+    tree = xml_export.build_case_set(result["cases"], result["flags"], generated)
+    xml_text = xml_export.to_string(tree.getroot())
+    xml_export.validate(xml_text)
+    path = OUT / "cases.xml"
+    path.write_text(xml_text)
+    print(f"    wrote {path} ({path.stat().st_size / 1024:.0f} kB, schema-valid)")
 
 
 if __name__ == "__main__":

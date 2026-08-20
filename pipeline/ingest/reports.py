@@ -11,6 +11,16 @@ import pandas as pd
 from pipeline.contracts import validate_observations
 from pipeline.ingest._common import RAW, blank_frame, grid_seller_id
 
+# Zones carry the egg and auto verticals, which have no mandi equivalent.
+REPORT_ZONES = {
+    "vellore_katpadi":      (12.9698, 79.1325),
+    "vellore_bagayam":      (12.9060, 79.0930),
+    "vellore_sathuvachari": (12.9340, 79.1560),
+    "vellore_thorapadi":    (12.9010, 79.1420),
+    "vellore_ranipet":      (12.9500, 79.3300),
+}
+
+
 def _known_locations() -> dict[str, tuple[float, float]]:
     """Every place a report can be attributed to.
 
@@ -26,21 +36,18 @@ def _known_locations() -> dict[str, tuple[float, float]]:
             key = f"{town}_{kind}"
             if key not in EXCLUDED_MARKETS:
                 places[key] = coords
-    places.update({
-        "vellore_katpadi":      (12.9698, 79.1325),
-        "vellore_bagayam":      (12.9060, 79.0930),
-        "vellore_sathuvachari": (12.9340, 79.1560),
-        "vellore_thorapadi":    (12.9010, 79.1420),
-        "vellore_ranipet":      (12.9500, 79.3300),
-    })
     return places
 
 
-ITEM_LOCATIONS = _known_locations()
-
 # Commodity reports belong at a market; egg and auto reports belong in a zone.
-ZONE_LOCATIONS = {k: v for k, v in ITEM_LOCATIONS.items() if k.startswith("vellore_")}
-MARKET_LOCATIONS = {k: v for k, v in ITEM_LOCATIONS.items() if not k.startswith("vellore_")}
+#
+# These two sets are built explicitly. Splitting one combined dict on a
+# "vellore_" prefix put `vellore_apmc` — the district's principal mandi — in the
+# zone set, so no commodity report could ever be attributed to it, and the
+# market dropdown defaulted to Ambur, 51km away.
+MARKET_LOCATIONS = _known_locations()
+ZONE_LOCATIONS = dict(REPORT_ZONES)
+ITEM_LOCATIONS = {**MARKET_LOCATIONS, **ZONE_LOCATIONS}
 
 REJECTED: dict[str, int] = {}
 

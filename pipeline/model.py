@@ -174,3 +174,58 @@ def predict_band(model: BandModel, df: pd.DataFrame) -> pd.DataFrame:
     feats["residual"] = (feats["price"] - feats["p50"]) / half
     feats["in_band"] = feats["price"].between(feats["p10"], feats["p90"])
     return feats
+
+
+def benchmark_band(model: BandModel, df: pd.DataFrame) -> dict:
+    """Does the fitted band beat the obvious alternatives?
+
+    A quantile model is easy to talk up and easy to overrate. This scores it on
+    held-out data against two baselines anyone could write in three lines:
+    per-commodity empirical quantiles of the same target, and a single band for
+    everything. Reported honestly — when the input lacks the supply features the
+    model is built to condition on, the margin is thin, and that is the finding.
+    """
+    backbone = df[df["source"] == "agmarknet"]
+    feats = build_features(backbone, model.item_codes)
+    feats = feats[feats["peer_level"].notna() & (feats["peer_level"] > 0)].copy()
+    feats["target"] = np.log(feats["price"] / feats["peer_level"])
+
+    dates = np.sort(feats["date"].unique())
+    cut = dates[int(len(dates) * 0.8)]
+    train, valid = feats[feats["date"] < cut], feats[feats["date"] >= cut]
+    if len(valid) < 50 or train.empty:
+        return {}
+
+    y = valid["price"].to_numpy()
+    peer = valid["peer_level"].to_numpy()
+
+    def score(lo, hi, mid) -> dict:
+        return {
+            "coverage": round(float(((y >= lo) & (y <= hi)).mean()), 4),
+            "pinball": round((_pinball(y, lo, 0.1) + _pinball(y, mid, 0.5)
+                              + _pinball(y, hi, 0.9)) / 3, 4),
+            "band_width_inr": round(float(np.mean(hi - lo)), 2),
+        }
+
+    X = valid[FEATURES]
+    fitted = score(peer * np.exp(model.boosters["p10"].predict(X)),
+                   peer * np.exp(model.boosters["p90"].predict(X)),
+                   peer * np.exp(model.boosters["p50"].predict(X)))
+
+    q = train.groupby("item")["target"].quantile([0.1, 0.5, 0.9]).unstack()
+    pick = lambda a: valid["item"].map(q[a]).fillna(train["target"].quantile(a)).to_numpy()
+    per_item = score(peer * np.exp(pick(0.1)), peer * np.exp(pick(0.9)),
+                     peer * np.exp(pick(0.5)))
+
+    g = train["target"].quantile([0.1, 0.5, 0.9])
+    global_band = score(peer * np.exp(g[0.1]), peer * np.exp(g[0.9]),
+                        peer * np.exp(g[0.5]))
+
+    improvement = (per_item["pinball"] - fitted["pinball"]) / per_item["pinball"]
+    return {
+        "quantile_model": fitted,
+        "baseline_per_commodity_quantiles": per_item,
+        "baseline_single_band": global_band,
+        "pinball_improvement_vs_best_baseline": round(float(improvement), 4),
+        "n_valid": int(len(valid)),
+    }

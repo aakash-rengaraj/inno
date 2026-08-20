@@ -1,0 +1,719 @@
+<?xml version='1.0' encoding='utf-8'?>
+<caseFileSet district="Vellore" generated="2026-08-20" count="17">
+  <caseFile reference="FLG-0001" priority="3" status="Flagged for investigation" generated="2026-08-20">
+    <issuer>
+      <office>Office of the District Supply Officer</office>
+      <district>Vellore</district>
+      <state>Tamil Nadu</state>
+    </issuer>
+    <subject>
+      <item>Table eggs</item>
+      <itemCode>egg_table</itemCode>
+      <location>Katpadi</location>
+      <locationCode>vellore_katpadi</locationCode>
+    </subject>
+    <window start="2026-06-01" end="2026-08-10" days="71" />
+    <finding>Prices stopped varying between sellers</finding>
+    <referenceRate unit="per_piece">
+      <basis>NECC declared daily egg rate</basis>
+      <citation>National Egg Coordination Committee — suggested daily egg rate, Namakkal zone (suggestive, not mandatory)</citation>
+      <rate>7.58</rate>
+      <expectedRange low="6.77" high="8.38" />
+    </referenceRate>
+    <observed unit="per_piece" observations="363">
+      <median>9.73</median>
+      <percentAgainstReference>28.4</percentAgainstReference>
+      <provenance independentLocalities="8">
+        <source tier="B" label="commercial listing" observations="213" />
+        <source tier="C" label="field report" observations="150" />
+      </provenance>
+    </observed>
+    <measure detector="variance_collapse">
+      <statistic>median_daily_cv_across_sellers</statistic>
+      <value>0.0021</value>
+      <threshold>0.03</threshold>
+      <supporting>
+        <value name="days_collapsed">71</value>
+      </supporting>
+      <explanation>Independent sellers facing the same costs still disagree on price, because they buy at different times and carry different stock. This measure is the day-to-day spread of prices across sellers in one location. A spread that stays near zero for weeks is what a single repeated price looks like.</explanation>
+    </measure>
+    <peersInBand residualStandardDeviation="0.946">
+      <location>Bagayam</location>
+      <location>Sathuvachari</location>
+      <location>Thorapadi</location>
+    </peersInBand>
+    <summary>Prices from 363 observations across the location stayed within 0.2% of one another for 71 days, against a 3.0% threshold; median +28% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.</summary>
+    <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
+  </caseFile>
+  <caseFile reference="FLG-0002" priority="3" status="Flagged for investigation" generated="2026-08-20">
+    <issuer>
+      <office>Office of the District Supply Officer</office>
+      <district>Vellore</district>
+      <state>Tamil Nadu</state>
+    </issuer>
+    <subject>
+      <item>Table eggs</item>
+      <itemCode>egg_table</itemCode>
+      <location>Katpadi</location>
+      <locationCode>vellore_katpadi</locationCode>
+    </subject>
+    <window start="2026-06-25" end="2026-08-10" days="47" />
+    <finding>Prices track each other, not costs</finding>
+    <referenceRate unit="per_piece">
+      <basis>NECC declared daily egg rate</basis>
+      <citation>National Egg Coordination Committee — suggested daily egg rate, Namakkal zone (suggestive, not mandatory)</citation>
+      <rate>7.64</rate>
+      <expectedRange low="6.83" high="8.45" />
+    </referenceRate>
+    <observed unit="per_piece" observations="243">
+      <median>9.78</median>
+      <percentAgainstReference>28.0</percentAgainstReference>
+      <provenance independentLocalities="8">
+        <source tier="B" label="commercial listing" observations="141" />
+        <source tier="C" label="field report" observations="102" />
+      </provenance>
+    </observed>
+    <measure detector="cost_correlation">
+      <statistic>peer_corr_minus_cost_corr</statistic>
+      <value>1.117</value>
+      <threshold>0.4</threshold>
+      <supporting>
+        <value name="peer_correlation">0.91</value>
+        <value name="cost_correlation">-0.208</value>
+      </supporting>
+      <explanation>A competitive price moves when costs move. This measure compares how closely each seller's price follows its neighbours' prices against how closely it follows the published reference rate. A price that follows the neighbours and ignores the reference rate is the pattern this system exists to surface.</explanation>
+    </measure>
+    <peersInBand residualStandardDeviation="1.065">
+      <location>Bagayam</location>
+      <location>Sathuvachari</location>
+      <location>Thorapadi</location>
+    </peersInBand>
+    <summary>Listed prices follow one another (correlation 0.91) far more closely than they follow the reference rate (correlation -0.21); median +28% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.</summary>
+    <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
+  </caseFile>
+  <caseFile reference="FLG-0003" priority="2" status="Flagged for investigation" generated="2026-08-20">
+    <issuer>
+      <office>Office of the District Supply Officer</office>
+      <district>Vellore</district>
+      <state>Tamil Nadu</state>
+    </issuer>
+    <subject>
+      <item>Autorickshaw fares</item>
+      <itemCode>auto_ride</itemCode>
+      <location>Katpadi</location>
+      <locationCode>vellore_katpadi</locationCode>
+    </subject>
+    <window start="2026-07-10" end="2026-07-30" days="21" />
+    <finding>Sustained gap above the reference rate</finding>
+    <referenceRate unit="per_ride">
+      <basis>Notified autorickshaw fare schedule</basis>
+      <citation>Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept — Vellore district schedule</citation>
+      <rate>61.87</rate>
+      <expectedRange low="53.8" high="69.94" />
+    </referenceRate>
+    <observed unit="per_ride" observations="291">
+      <median>80.0</median>
+      <percentAgainstReference>29.3</percentAgainstReference>
+      <provenance independentLocalities="9">
+        <source tier="B" label="commercial listing" observations="252" />
+        <source tier="C" label="field report" observations="39" />
+      </provenance>
+    </observed>
+    <measure detector="persistence">
+      <statistic>consecutive_days_above_band</statistic>
+      <value>21</value>
+      <threshold>10</threshold>
+      <explanation>Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock.</explanation>
+    </measure>
+    <peersInBand residualStandardDeviation="4.654">
+      <location>Bagayam</location>
+      <location>Sathuvachari</location>
+      <location>Thorapadi</location>
+    </peersInBand>
+    <summary>Prices stayed above the expected range for 21 consecutive days; median +29% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.</summary>
+    <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
+  </caseFile>
+  <caseFile reference="FLG-0004" priority="2" status="Flagged for investigation" generated="2026-08-20">
+    <issuer>
+      <office>Office of the District Supply Officer</office>
+      <district>Vellore</district>
+      <state>Tamil Nadu</state>
+    </issuer>
+    <subject>
+      <item>Banana</item>
+      <itemCode>banana</itemCode>
+      <location>Gudiyatham Sandhai</location>
+      <locationCode>gudiyatham_sandhai</locationCode>
+    </subject>
+    <window start="2026-07-06" end="2026-07-26" days="21" />
+    <finding>Sustained gap above the reference rate</finding>
+    <referenceRate unit="per_kg">
+      <basis>Modelled competitive range from wholesale mandi prices</basis>
+      <citation>Agmarknet daily mandi report — Directorate of Marketing &amp; Inspection, modal wholesale price, Vellore district</citation>
+      <rate>55.0</rate>
+      <expectedRange low="44.89" high="65.51" />
+    </referenceRate>
+    <observed unit="per_kg" observations="21">
+      <median>80.0</median>
+      <percentAgainstReference>45.5</percentAgainstReference>
+      <provenance independentLocalities="1">
+        <source tier="A" label="authoritative" observations="21" />
+      </provenance>
+    </observed>
+    <measure detector="persistence">
+      <statistic>consecutive_days_above_band</statistic>
+      <value>21</value>
+      <threshold>10</threshold>
+      <explanation>Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock.</explanation>
+    </measure>
+    <peersInBand residualStandardDeviation="0.365">
+      <location>Kahithapattarai Sandhai</location>
+      <location>Katpadi Sandhai</location>
+      <location>Pallikonda Sandhai</location>
+      <location>Perampet Sandhai</location>
+    </peersInBand>
+    <summary>Prices stayed above the expected range for 21 consecutive days; median +45% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 2 others remained in-band.</summary>
+    <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
+  </caseFile>
+  <caseFile reference="FLG-0005" priority="2" status="Flagged for investigation" generated="2026-08-20">
+    <issuer>
+      <office>Office of the District Supply Officer</office>
+      <district>Vellore</district>
+      <state>Tamil Nadu</state>
+    </issuer>
+    <subject>
+      <item>Banana - Green</item>
+      <itemCode>banana_green</itemCode>
+      <location>Kahithapattarai Sandhai</location>
+      <locationCode>kahithapattarai_sandhai</locationCode>
+    </subject>
+    <window start="2026-07-08" end="2026-08-19" days="43" />
+    <finding>Sustained gap above the reference rate</finding>
+    <referenceRate unit="per_kg">
+      <basis>Modelled competitive range from wholesale mandi prices</basis>
+      <citation>Agmarknet daily mandi report — Directorate of Marketing &amp; Inspection, modal wholesale price, Vellore district</citation>
+      <rate>30.0</rate>
+      <expectedRange low="23.66" high="38.15" />
+    </referenceRate>
+    <observed unit="per_kg" observations="43">
+      <median>50.0</median>
+      <percentAgainstReference>66.7</percentAgainstReference>
+      <provenance independentLocalities="1">
+        <source tier="A" label="authoritative" observations="43" />
+      </provenance>
+    </observed>
+    <measure detector="persistence">
+      <statistic>consecutive_days_above_band</statistic>
+      <value>43</value>
+      <threshold>10</threshold>
+      <explanation>Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock.</explanation>
+    </measure>
+    <peersInBand residualStandardDeviation="0.364">
+      <location>Gudiyatham Sandhai</location>
+      <location>Katpadi Sandhai</location>
+      <location>Pallikonda Sandhai</location>
+      <location>Apmc</location>
+    </peersInBand>
+    <summary>Prices stayed above the expected range for 43 consecutive days; median +67% relative to the reference rate while peer locations Gudiyatham Sandhai, Katpadi Sandhai and 2 others remained in-band.</summary>
+    <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
+  </caseFile>
+  <caseFile reference="FLG-0006" priority="2" status="Flagged for investigation" generated="2026-08-20">
+    <issuer>
+      <office>Office of the District Supply Officer</office>
+      <district>Vellore</district>
+      <state>Tamil Nadu</state>
+    </issuer>
+    <subject>
+      <item>Cauliflower</item>
+      <itemCode>cauliflower</itemCode>
+      <location>Katpadi Sandhai</location>
+      <locationCode>katpadi_sandhai</locationCode>
+    </subject>
+    <window start="2026-07-15" end="2026-07-25" days="11" />
+    <finding>Sustained gap above the reference rate</finding>
+    <referenceRate unit="per_kg">
+      <basis>Modelled competitive range from wholesale mandi prices</basis>
+      <citation>Agmarknet daily mandi report — Directorate of Marketing &amp; Inspection, modal wholesale price, Vellore district</citation>
+      <rate>20.0</rate>
+      <expectedRange low="15.77" high="24.54" />
+    </referenceRate>
+    <observed unit="per_kg" observations="11">
+      <median>27.5</median>
+      <percentAgainstReference>37.5</percentAgainstReference>
+      <provenance independentLocalities="1">
+        <source tier="A" label="authoritative" observations="11" />
+      </provenance>
+    </observed>
+    <measure detector="persistence">
+      <statistic>consecutive_days_above_band</statistic>
+      <value>11</value>
+      <threshold>10</threshold>
+      <explanation>Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock.</explanation>
+    </measure>
+    <peersInBand residualStandardDeviation="2.186">
+      <location>Apmc</location>
+    </peersInBand>
+    <summary>Prices stayed above the expected range for 11 consecutive days; median +38% relative to the reference rate while peer location Apmc remained in-band.</summary>
+    <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
+  </caseFile>
+  <caseFile reference="FLG-0007" priority="2" status="Flagged for investigation" generated="2026-08-20">
+    <issuer>
+      <office>Office of the District Supply Officer</office>
+      <district>Vellore</district>
+      <state>Tamil Nadu</state>
+    </issuer>
+    <subject>
+      <item>Table eggs</item>
+      <itemCode>egg_table</itemCode>
+      <location>Katpadi</location>
+      <locationCode>vellore_katpadi</locationCode>
+    </subject>
+    <window start="2026-06-01" end="2026-08-10" days="71" />
+    <finding>Sustained gap above the reference rate</finding>
+    <referenceRate unit="per_piece">
+      <basis>NECC declared daily egg rate</basis>
+      <citation>National Egg Coordination Committee — suggested daily egg rate, Namakkal zone (suggestive, not mandatory)</citation>
+      <rate>7.58</rate>
+      <expectedRange low="6.77" high="8.38" />
+    </referenceRate>
+    <observed unit="per_piece" observations="363">
+      <median>9.73</median>
+      <percentAgainstReference>28.4</percentAgainstReference>
+      <provenance independentLocalities="8">
+        <source tier="B" label="commercial listing" observations="213" />
+        <source tier="C" label="field report" observations="150" />
+      </provenance>
+    </observed>
+    <measure detector="persistence">
+      <statistic>consecutive_days_above_band</statistic>
+      <value>71</value>
+      <threshold>10</threshold>
+      <explanation>Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock.</explanation>
+    </measure>
+    <peersInBand residualStandardDeviation="0.946">
+      <location>Bagayam</location>
+      <location>Sathuvachari</location>
+      <location>Thorapadi</location>
+    </peersInBand>
+    <summary>Prices stayed above the expected range for 71 consecutive days; median +28% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.</summary>
+    <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
+  </caseFile>
+  <caseFile reference="FLG-0009" priority="2" status="Flagged for investigation" generated="2026-08-20">
+    <issuer>
+      <office>Office of the District Supply Officer</office>
+      <district>Vellore</district>
+      <state>Tamil Nadu</state>
+    </issuer>
+    <subject>
+      <item>Ginger(Green)</item>
+      <itemCode>ginger_green</itemCode>
+      <location>Gudiyatham Sandhai</location>
+      <locationCode>gudiyatham_sandhai</locationCode>
+    </subject>
+    <window start="2026-07-15" end="2026-07-27" days="13" />
+    <finding>Sustained gap above the reference rate</finding>
+    <referenceRate unit="per_kg">
+      <basis>Modelled competitive range from wholesale mandi prices</basis>
+      <citation>Agmarknet daily mandi report — Directorate of Marketing &amp; Inspection, modal wholesale price, Vellore district</citation>
+      <rate>170.0</rate>
+      <expectedRange low="147.88" high="212.74" />
+    </referenceRate>
+    <observed unit="per_kg" observations="13">
+      <median>240.0</median>
+      <percentAgainstReference>41.2</percentAgainstReference>
+      <provenance independentLocalities="1">
+        <source tier="A" label="authoritative" observations="13" />
+      </provenance>
+    </observed>
+    <measure detector="persistence">
+      <statistic>consecutive_days_above_band</statistic>
+      <value>13</value>
+      <threshold>10</threshold>
+      <explanation>Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock.</explanation>
+    </measure>
+    <peersInBand residualStandardDeviation="0.487">
+      <location>Kahithapattarai Sandhai</location>
+      <location>Katpadi Sandhai</location>
+      <location>Pallikonda Sandhai</location>
+      <location>Apmc</location>
+    </peersInBand>
+    <summary>Prices stayed above the expected range for 13 consecutive days; median +41% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 2 others remained in-band.</summary>
+    <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
+  </caseFile>
+  <caseFile reference="FLG-0010" priority="2" status="Flagged for investigation" generated="2026-08-20">
+    <issuer>
+      <office>Office of the District Supply Officer</office>
+      <district>Vellore</district>
+      <state>Tamil Nadu</state>
+    </issuer>
+    <subject>
+      <item>Groundnut</item>
+      <itemCode>groundnut</itemCode>
+      <location>Kahithapattarai Sandhai</location>
+      <locationCode>kahithapattarai_sandhai</locationCode>
+    </subject>
+    <window start="2026-06-04" end="2026-06-15" days="12" />
+    <finding>Sustained gap above the reference rate</finding>
+    <referenceRate unit="per_kg">
+      <basis>Modelled competitive range from wholesale mandi prices</basis>
+      <citation>Agmarknet daily mandi report — Directorate of Marketing &amp; Inspection, modal wholesale price, Vellore district</citation>
+      <rate>75.0</rate>
+      <expectedRange low="66.35" high="81.86" />
+    </referenceRate>
+    <observed unit="per_kg" observations="12">
+      <median>90.0</median>
+      <percentAgainstReference>20.0</percentAgainstReference>
+      <provenance independentLocalities="1">
+        <source tier="A" label="authoritative" observations="12" />
+      </provenance>
+    </observed>
+    <measure detector="persistence">
+      <statistic>consecutive_days_above_band</statistic>
+      <value>12</value>
+      <threshold>10</threshold>
+      <explanation>Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock.</explanation>
+    </measure>
+    <peersInBand residualStandardDeviation="1.184">
+      <location>Gudiyatham Sandhai</location>
+      <location>Katpadi Sandhai</location>
+      <location>Pallikonda Sandhai</location>
+      <location>Perampet Sandhai</location>
+      <location>Apmc</location>
+    </peersInBand>
+    <summary>Prices stayed above the expected range for 12 consecutive days; median +20% relative to the reference rate while peer locations Gudiyatham Sandhai, Katpadi Sandhai and 3 others remained in-band.</summary>
+    <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
+  </caseFile>
+  <caseFile reference="FLG-0011" priority="2" status="Flagged for investigation" generated="2026-08-20">
+    <issuer>
+      <office>Office of the District Supply Officer</office>
+      <district>Vellore</district>
+      <state>Tamil Nadu</state>
+    </issuer>
+    <subject>
+      <item>Lemon</item>
+      <itemCode>lemon</itemCode>
+      <location>Katpadi Sandhai</location>
+      <locationCode>katpadi_sandhai</locationCode>
+    </subject>
+    <window start="2026-07-16" end="2026-08-08" days="24" />
+    <finding>Sustained gap above the reference rate</finding>
+    <referenceRate unit="per_kg">
+      <basis>Modelled competitive range from wholesale mandi prices</basis>
+      <citation>Agmarknet daily mandi report — Directorate of Marketing &amp; Inspection, modal wholesale price, Vellore district</citation>
+      <rate>50.0</rate>
+      <expectedRange low="36.87" high="71.2" />
+    </referenceRate>
+    <observed unit="per_kg" observations="24">
+      <median>100.0</median>
+      <percentAgainstReference>100.0</percentAgainstReference>
+      <provenance independentLocalities="1">
+        <source tier="A" label="authoritative" observations="24" />
+      </provenance>
+    </observed>
+    <measure detector="persistence">
+      <statistic>consecutive_days_above_band</statistic>
+      <value>24</value>
+      <threshold>10</threshold>
+      <explanation>Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock.</explanation>
+    </measure>
+    <peersInBand residualStandardDeviation="0.511">
+      <location>Gudiyatham Sandhai</location>
+      <location>Perampet Sandhai</location>
+    </peersInBand>
+    <summary>Prices stayed above the expected range for 24 consecutive days; median +100% relative to the reference rate while peer locations Gudiyatham Sandhai, Perampet Sandhai remained in-band.</summary>
+    <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
+  </caseFile>
+  <caseFile reference="FLG-0012" priority="2" status="Flagged for investigation" generated="2026-08-20">
+    <issuer>
+      <office>Office of the District Supply Officer</office>
+      <district>Vellore</district>
+      <state>Tamil Nadu</state>
+    </issuer>
+    <subject>
+      <item>Mint(Pudina)</item>
+      <itemCode>mint_pudina</itemCode>
+      <location>Kahithapattarai Sandhai</location>
+      <locationCode>kahithapattarai_sandhai</locationCode>
+    </subject>
+    <window start="2026-06-18" end="2026-06-29" days="12" />
+    <finding>Sustained gap above the reference rate</finding>
+    <referenceRate unit="per_kg">
+      <basis>Modelled competitive range from wholesale mandi prices</basis>
+      <citation>Agmarknet daily mandi report — Directorate of Marketing &amp; Inspection, modal wholesale price, Vellore district</citation>
+      <rate>35.0</rate>
+      <expectedRange low="21.38" high="61.34" />
+    </referenceRate>
+    <observed unit="per_kg" observations="10">
+      <median>85.0</median>
+      <percentAgainstReference>142.9</percentAgainstReference>
+      <provenance independentLocalities="1">
+        <source tier="A" label="authoritative" observations="10" />
+      </provenance>
+    </observed>
+    <measure detector="persistence">
+      <statistic>consecutive_days_above_band</statistic>
+      <value>10</value>
+      <threshold>10</threshold>
+      <explanation>Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock.</explanation>
+    </measure>
+    <peersInBand residualStandardDeviation="0.597">
+      <location>Gudiyatham Sandhai</location>
+      <location>Katpadi Sandhai</location>
+      <location>Pallikonda Sandhai</location>
+      <location>Perampet Sandhai</location>
+      <location>Apmc</location>
+    </peersInBand>
+    <summary>Prices stayed above the expected range for 10 consecutive days; median +143% relative to the reference rate while peer locations Gudiyatham Sandhai, Katpadi Sandhai and 3 others remained in-band.</summary>
+    <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
+  </caseFile>
+  <caseFile reference="FLG-0013" priority="2" status="Flagged for investigation" generated="2026-08-20">
+    <issuer>
+      <office>Office of the District Supply Officer</office>
+      <district>Vellore</district>
+      <state>Tamil Nadu</state>
+    </issuer>
+    <subject>
+      <item>Onion</item>
+      <itemCode>onion</itemCode>
+      <location>Katpadi Sandhai</location>
+      <locationCode>katpadi_sandhai</locationCode>
+    </subject>
+    <window start="2026-06-19" end="2026-06-28" days="10" />
+    <finding>Sustained gap above the reference rate</finding>
+    <referenceRate unit="per_kg">
+      <basis>Modelled competitive range from wholesale mandi prices</basis>
+      <citation>Agmarknet daily mandi report — Directorate of Marketing &amp; Inspection, modal wholesale price, Vellore district</citation>
+      <rate>27.0</rate>
+      <expectedRange low="24.87" high="30.34" />
+    </referenceRate>
+    <observed unit="per_kg" observations="10">
+      <median>36.0</median>
+      <percentAgainstReference>33.3</percentAgainstReference>
+      <provenance independentLocalities="1">
+        <source tier="A" label="authoritative" observations="10" />
+      </provenance>
+    </observed>
+    <measure detector="persistence">
+      <statistic>consecutive_days_above_band</statistic>
+      <value>10</value>
+      <threshold>10</threshold>
+      <explanation>Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock.</explanation>
+    </measure>
+    <peersInBand residualStandardDeviation="0.651">
+      <location>Kahithapattarai Sandhai</location>
+      <location>Pallikonda Sandhai</location>
+      <location>Perampet Sandhai</location>
+      <location>Apmc</location>
+    </peersInBand>
+    <summary>Prices stayed above the expected range for 10 consecutive days; median +33% relative to the reference rate while peer locations Kahithapattarai Sandhai, Pallikonda Sandhai and 2 others remained in-band.</summary>
+    <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
+  </caseFile>
+  <caseFile reference="FLG-0014" priority="2" status="Flagged for investigation" generated="2026-08-20">
+    <issuer>
+      <office>Office of the District Supply Officer</office>
+      <district>Vellore</district>
+      <state>Tamil Nadu</state>
+    </issuer>
+    <subject>
+      <item>Onion Green</item>
+      <itemCode>onion_green</itemCode>
+      <location>Gudiyatham Sandhai</location>
+      <locationCode>gudiyatham_sandhai</locationCode>
+    </subject>
+    <window start="2026-06-09" end="2026-08-09" days="62" />
+    <finding>Sustained gap above the reference rate</finding>
+    <referenceRate unit="per_kg">
+      <basis>Modelled competitive range from wholesale mandi prices</basis>
+      <citation>Agmarknet daily mandi report — Directorate of Marketing &amp; Inspection, modal wholesale price, Vellore district</citation>
+      <rate>45.0</rate>
+      <expectedRange low="40.02" high="53.94" />
+    </referenceRate>
+    <observed unit="per_kg" observations="61">
+      <median>60.0</median>
+      <percentAgainstReference>33.3</percentAgainstReference>
+      <provenance independentLocalities="1">
+        <source tier="A" label="authoritative" observations="61" />
+      </provenance>
+    </observed>
+    <measure detector="persistence">
+      <statistic>consecutive_days_above_band</statistic>
+      <value>61</value>
+      <threshold>10</threshold>
+      <explanation>Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock.</explanation>
+    </measure>
+    <peersInBand residualStandardDeviation="0.358">
+      <location>Kahithapattarai Sandhai</location>
+      <location>Katpadi Sandhai</location>
+      <location>Pallikonda Sandhai</location>
+    </peersInBand>
+    <summary>Prices stayed above the expected range for 61 consecutive days; median +33% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 1 other remained in-band.</summary>
+    <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
+  </caseFile>
+  <caseFile reference="FLG-0015" priority="2" status="Flagged for investigation" generated="2026-08-20">
+    <issuer>
+      <office>Office of the District Supply Officer</office>
+      <district>Vellore</district>
+      <state>Tamil Nadu</state>
+    </issuer>
+    <subject>
+      <item>Onion Green</item>
+      <itemCode>onion_green</itemCode>
+      <location>Perampet Sandhai</location>
+      <locationCode>perampet_sandhai</locationCode>
+    </subject>
+    <window start="2026-06-19" end="2026-07-02" days="14" />
+    <finding>Sustained gap above the reference rate</finding>
+    <referenceRate unit="per_kg">
+      <basis>Modelled competitive range from wholesale mandi prices</basis>
+      <citation>Agmarknet daily mandi report — Directorate of Marketing &amp; Inspection, modal wholesale price, Vellore district</citation>
+      <rate>46.25</rate>
+      <expectedRange low="41.36" high="54.68" />
+    </referenceRate>
+    <observed unit="per_kg" observations="13">
+      <median>60.0</median>
+      <percentAgainstReference>29.7</percentAgainstReference>
+      <provenance independentLocalities="1">
+        <source tier="A" label="authoritative" observations="13" />
+      </provenance>
+    </observed>
+    <measure detector="persistence">
+      <statistic>consecutive_days_above_band</statistic>
+      <value>13</value>
+      <threshold>10</threshold>
+      <explanation>Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock.</explanation>
+    </measure>
+    <peersInBand residualStandardDeviation="0.238">
+      <location>Kahithapattarai Sandhai</location>
+      <location>Katpadi Sandhai</location>
+      <location>Pallikonda Sandhai</location>
+      <location>Apmc</location>
+    </peersInBand>
+    <summary>Prices stayed above the expected range for 13 consecutive days; median +30% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 2 others remained in-band.</summary>
+    <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
+  </caseFile>
+  <caseFile reference="FLG-0016" priority="2" status="Flagged for investigation" generated="2026-08-20">
+    <issuer>
+      <office>Office of the District Supply Officer</office>
+      <district>Vellore</district>
+      <state>Tamil Nadu</state>
+    </issuer>
+    <subject>
+      <item>Tamarind Fruit</item>
+      <itemCode>tamarind_fruit</itemCode>
+      <location>Kahithapattarai Sandhai</location>
+      <locationCode>kahithapattarai_sandhai</locationCode>
+    </subject>
+    <window start="2026-06-04" end="2026-06-15" days="12" />
+    <finding>Sustained gap above the reference rate</finding>
+    <referenceRate unit="per_kg">
+      <basis>Modelled competitive range from wholesale mandi prices</basis>
+      <citation>Agmarknet daily mandi report — Directorate of Marketing &amp; Inspection, modal wholesale price, Vellore district</citation>
+      <rate>100.0</rate>
+      <expectedRange low="83.91" high="122.08" />
+    </referenceRate>
+    <observed unit="per_kg" observations="12">
+      <median>160.0</median>
+      <percentAgainstReference>60.0</percentAgainstReference>
+      <provenance independentLocalities="1">
+        <source tier="A" label="authoritative" observations="12" />
+      </provenance>
+    </observed>
+    <measure detector="persistence">
+      <statistic>consecutive_days_above_band</statistic>
+      <value>12</value>
+      <threshold>10</threshold>
+      <explanation>Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock.</explanation>
+    </measure>
+    <peersInBand residualStandardDeviation="0.523">
+      <location>Perampet Sandhai</location>
+    </peersInBand>
+    <summary>Prices stayed above the expected range for 12 consecutive days; median +60% relative to the reference rate while peer location Perampet Sandhai remained in-band.</summary>
+    <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
+  </caseFile>
+  <caseFile reference="FLG-0017" priority="2" status="Flagged for investigation" generated="2026-08-20">
+    <issuer>
+      <office>Office of the District Supply Officer</office>
+      <district>Vellore</district>
+      <state>Tamil Nadu</state>
+    </issuer>
+    <subject>
+      <item>Yam (Ratalu)</item>
+      <itemCode>yam_ratalu</itemCode>
+      <location>Gudiyatham Sandhai</location>
+      <locationCode>gudiyatham_sandhai</locationCode>
+    </subject>
+    <window start="2026-07-29" end="2026-08-19" days="22" />
+    <finding>Sustained gap above the reference rate</finding>
+    <referenceRate unit="per_kg">
+      <basis>Modelled competitive range from wholesale mandi prices</basis>
+      <citation>Agmarknet daily mandi report — Directorate of Marketing &amp; Inspection, modal wholesale price, Vellore district</citation>
+      <rate>48.12</rate>
+      <expectedRange low="41.96" high="54.42" />
+    </referenceRate>
+    <observed unit="per_kg" observations="22">
+      <median>66.0</median>
+      <percentAgainstReference>37.2</percentAgainstReference>
+      <provenance independentLocalities="1">
+        <source tier="A" label="authoritative" observations="22" />
+      </provenance>
+    </observed>
+    <measure detector="persistence">
+      <statistic>consecutive_days_above_band</statistic>
+      <value>22</value>
+      <threshold>10</threshold>
+      <explanation>Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock.</explanation>
+    </measure>
+    <peersInBand residualStandardDeviation="0.635">
+      <location>Kahithapattarai Sandhai</location>
+      <location>Apmc</location>
+    </peersInBand>
+    <summary>Prices stayed above the expected range for 22 consecutive days; median +37% relative to the reference rate while peer locations Kahithapattarai Sandhai, Apmc remained in-band.</summary>
+    <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
+  </caseFile>
+  <caseFile reference="FLG-0018" priority="3" status="Flagged for investigation" generated="2026-08-20">
+    <issuer>
+      <office>Office of the District Supply Officer</office>
+      <district>Vellore</district>
+      <state>Tamil Nadu</state>
+    </issuer>
+    <subject>
+      <item>Autorickshaw fares</item>
+      <itemCode>auto_ride</itemCode>
+      <location>Katpadi</location>
+      <locationCode>vellore_katpadi</locationCode>
+    </subject>
+    <window start="2026-05-26" end="2026-08-10" days="77" />
+    <finding>Fares cluster at round values</finding>
+    <referenceRate unit="per_ride">
+      <basis>Notified autorickshaw fare schedule</basis>
+      <citation>Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept — Vellore district schedule</citation>
+      <rate>61.87</rate>
+      <expectedRange low="53.8" high="69.94" />
+    </referenceRate>
+    <observed unit="per_ride" observations="1082">
+      <median>80.0</median>
+      <percentAgainstReference>29.3</percentAgainstReference>
+      <provenance independentLocalities="21">
+        <source tier="B" label="commercial listing" observations="924" />
+        <source tier="C" label="field report" observations="158" />
+      </provenance>
+    </observed>
+    <measure detector="quantisation">
+      <statistic>modal_mass_at_round_values</statistic>
+      <value>0.927</value>
+      <threshold>0.6</threshold>
+      <supporting>
+        <value name="distance_r2">0.239</value>
+        <value name="distance_r2_threshold">0.35</value>
+      </supporting>
+      <explanation>A metered fare varies continuously with distance. This measure reports the share of quoted fares landing on round multiples, together with how much of the fare is explained by distance at all. Round numbers with weak distance response describe a fare that was set rather than measured.</explanation>
+    </measure>
+    <peersInBand residualStandardDeviation="4.594">
+      <location>Bagayam</location>
+      <location>Sathuvachari</location>
+      <location>Thorapadi</location>
+    </peersInBand>
+    <summary>Quoted fares cluster at round values (93% of quotes) with weak distance sensitivity (R² 0.24); median +29% relative to the notified rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.</summary>
+    <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
+  </caseFile>
+</caseFileSet>

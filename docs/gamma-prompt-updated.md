@@ -49,6 +49,8 @@ Concrete framing to feature prominently:
 - Existing published rates (mandi reports, declared egg rates, gazetted auto
   fares) are *already public* — nobody is joining them to observed prices
 
+Headline line for this slide: **22 markets monitored, 5 flagged for inspection.**
+
 ## Slide 3 — Proposed Solution
 
 A screening tool that compares what people are actually charged against what the
@@ -109,6 +111,34 @@ page and the enforcement console are separate builds. The public bundle carries
 no flag IDs, no case narratives, no detector names, no thresholds — it cannot
 name a flagged location even from page source.
 
+**Data handling — CSV, JSON and XML, in both directions:**
+- **CSV in** — Agmarknet portal exports (gzipped, 246,882 rows) and the citizen
+  report form
+- **JSON / JSONL in** — q-commerce and ride-hail captures, the gazette schedule
+- **Parquet** for the shared observation table, **SQLite** for live report and
+  action state
+- **XML out** — every case file exports as a document validated against our own
+  **XSD** (`schema/case-file.xsd`), because back-office systems in this domain
+  exchange XML. The schema makes the citation and the caveat *required*
+  elements and fixes `status` to "Flagged for investigation", so a conforming
+  document cannot assert guilt even if hand-edited. It round-trips: exported XML
+  parses back to the same values.
+
+**Show the model is honest, not just present.** Scored on held-out data against
+baselines anyone could write in three lines:
+
+| Model | Coverage (nominal 80%) | Pinball loss | Band width |
+|---|---|---|---|
+| **Our quantile band** | **0.789** | **2.519** | **Rs 24.42** |
+| Per-commodity empirical quantiles | 0.812 | 2.536 | Rs 25.91 |
+| One global band | 0.838 | 2.575 | Rs 24.96 |
+
+The model is the **best calibrated** — closest to the nominal 80% — while giving
+the **narrowest** band. The baselines over-cover, and a band that is too wide
+flags nothing. State plainly that the margin on pinball loss is small (+0.7%)
+because the current export omits the arrivals column the model is designed to
+condition on. Owning that is the point of the slide.
+
 ## Slide 5 — Demo / Prototype
 
 Show screenshots of: the inspection queue, a flag detail with its chart, and the
@@ -117,13 +147,18 @@ printed case file.
 **Live on real government data:**
 - **246,882 rows** of Agmarknet mandi prices, Vellore district, 2020–2026
 - **597 days** of NECC declared egg rates
-- **17 flags** in the inspection queue — **12 from real government data**
+- **22 markets monitored, 5 flagged for inspection** — 17 findings grouped into
+  5 visits, because an officer inspects a market, not a flag
+- **12 of 17 findings come from real government data**
 - **1 pattern withheld** for failing the evidence floor
 
 Key features to list:
+- Queue grouped by market: strongest finding leads, supporting findings expand
+  underneath — the inspection list, not a feed
 - Public page where any citizen reports a price they were charged
 - A submitted report becomes tier-C evidence and re-runs detection in ~6 seconds
 - Enforcement console: queue, flag evidence, action board, printable A4 case file
+- One-click **XML export** of any case file, schema-validated for filing
 - Passphrase-gated console; open, rate-limited public intake (30/hour)
 - Works with the server switched off — falls back to the last built artifacts
 
@@ -173,7 +208,11 @@ Present as problem → what we did. These are real engineering obstacles:
    APMC"; "Katpadi (Uzhavar Sandhai )" three separate ways. Unresolved, a single
    market splits into several and appears in the queue repeatedly. A name
    normaliser reduced **33 raw names to 17 real markets**.
-6. **A market that was not comparable.** One market sat ~50km away in a
+6. **The queue read as one market repeated.** Seventeen findings across five
+   markets meant the same market appeared four times over, inflating the
+   apparent inspection count. Grouping by market turned it into five visits with
+   supporting evidence attached.
+7. **A market that was not comparable.** One market sat ~50km away in a
    separately administered district and produced repeat flags across unrelated
    commodities — one market looking like four findings. Excluding it *improved*
    model coverage from 0.785 to 0.806.
