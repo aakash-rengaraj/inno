@@ -1,12 +1,19 @@
 // Everything is static JSON on disk. There is no API server, and the demo path
 // never touches the network.
-export async function loadAll() {
+const CONSOLE_ARTIFACTS = ['queue', 'flags', 'cases', 'charts', 'meta', 'heatmap']
+
+// The public build ships meta.json alone — tools/build_web deletes the rest, so
+// asking for them here would 404 and blank the page. A missing artifact is a
+// withheld artifact, not an error.
+export async function loadAll(names = CONSOLE_ARTIFACTS) {
   // when the app is served as a single self-contained page, the artifacts are
   // inlined ahead of the bundle instead of fetched
   if (globalThis.__CASE_DATA__) return globalThis.__CASE_DATA__
-  const names = ['queue', 'flags', 'cases', 'charts', 'meta']
   const parts = await Promise.all(
-    names.map((n) => fetch(`/data/${n}.json`).then((r) => r.json()))
+    names.map((n) =>
+      fetch(`/data/${n}.json`)
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null))
   )
   return Object.fromEntries(names.map((n, i) => [n, parts[i]]))
 }

@@ -52,7 +52,7 @@ state, and serving flags/cases/charts.
 
 | | |
 |---|---|
-| `GET /api/queue` `/flags` `/cases` `/charts` `/meta` | computed artifacts |
+| `GET /api/queue` `/flags` `/cases` `/charts` `/heatmap` `/meta` | computed artifacts |
 | `GET`/`POST /api/actions` | action board, persisted |
 | `POST /api/recompute` | manual trigger |
 
@@ -88,6 +88,20 @@ this app (vite on :5173 during development). Defaults to `*`.
 - The passphrase is a shared secret, not user accounts. It separates the citizen
   surface from the enforcement surface; it is not an audit trail of who did what
   beyond the officer name recorded on each action.
+
+### Deploying to a Windows VPS
+
+`deploy/sync.ps1` plus `deploy/README.md`. A scheduled task polls `main` every
+two minutes, rebuilds only what changed, and restarts the service; NSSM keeps
+uvicorn running. No inbound port is needed for deployment and no webhook or
+secret is shared with GitHub.
+
+Not a self-hosted GitHub Actions runner: the repo is public, and GitHub advises
+against pairing the two, because a workflow triggered by a pull request runs a
+stranger's code on the box.
+
+`server/data/` is gitignored, so citizen reports and the action board survive a
+deploy. Idle is ~46 MB; a recompute peaks near 645 MB, so size the box at 2 GB.
 
 ### Static fallback
 
@@ -149,6 +163,75 @@ resolution it could not.
 
 Reset demo state: `rm -rf server/data/review.db*`
 
+## Heatmap
+
+`pipeline/heatmap.py` -> `heatmap.json` -> the console **Map** tab. 1,514 field
+reports binned to 150 m cells over a fixed frame of Vellore district.
+
+Two decisions, because the obvious version of this feature is wrong in both:
+
+**Colour is price deviation, not report count.** A density map of citizen reports
+maps where people have phones and civic energy, not where prices are manipulated
+-- Thorapadi would be the darkest zone in the district on 427 reports alone. The
+cell value is the median gap between what reporters paid and the middle of the
+modelled band, so a zone with 400 reports at fair prices renders cold and a
+six-report cell paying 30% over renders hot. Count only drives opacity.
+
+**Cells below the evidence floor are not drawn.** `cases.apply_evidence_floor`
+keeps a finding out of the queue until three independent localities corroborate
+it; a cell rendered from one walk-past would put on screen exactly the claim the
+floor exists to withhold. 40 cells are suppressed on the current build.
+
+The cell is 150 m -- the same radius `generalise.py` merges reporting points at,
+so one cell is approximately one locality and the map is drawn at the resolution
+the evidence is actually counted at.
+
+**The frame is fixed** (12.885-12.985 N, 79.070-79.345 E) and the map does not
+pan, zoom or scroll. An enforcement map that can be dragged off its own
+jurisdiction invites reading a neighbouring district's prices as this district's
+problem, and the 20 km of empty ground between Vellore city and Ranipet is
+exactly where a smoothed, scrollable surface would invent confidence it does not
+have. Cells are discrete squares; nothing is interpolated between clusters.
+
+Filtered to eggs, the map independently reproduces the queue: Katpadi and Ranipet
+are the only hot zones, which are the two egg findings -- one in the queue, one
+withheld below the floor.
+
+### Basemap
+
+Roads, railways and water come from OpenStreetMap, drawn under the cells so a
+cell is a recognisable place and not a square on graph paper.
+
+**Not Leaflet or MapLibre.** Both exist to solve pan, zoom and
+tile-loading-on-demand; the frame is fixed, so all three would have to be turned
+off, and what remains of a slippy-map library after that is a div with images in
+it. The deciding argument is offline: both need a tile server, and a map that
+goes grey when the venue wifi drops fails visibly, mid-sentence, on the screen
+everyone is looking at.
+
+Instead the OSM geometry is fetched **once, by hand** into
+`data/raw/basemap/overpass_raw.json.gz` (0.95 MB gzipped) and committed, exactly
+like the Agmarknet and NECC exports. `tools.make_basemap` reads it from disk:
+
+```
+1.0 MB gzipped raw -> 313 kB
+65,331 nodes -> 28,415 after simplification (12 m tolerance)
+  major   432   minor   192   street  8755   rail  148   water  77   waterbody  59
+```
+
+Because the frame never moves, the projection is known at build time, so the
+9,663 ways ship as **six merged path strings** already in viewBox coordinates.
+The whole map is 106 SVG nodes; React is not asked to reconcile ten thousand of
+them on every hover. Simplification tolerance is 12 m against a scale of ~30 m
+per viewBox unit — under half a pixel, invisible at the only size this is drawn.
+
+Roads are three weights, in grey only. The map is context; the colour on it is
+the finding. Attribution (ODbL) is rendered in the corner and must not be
+removed.
+
+**Console-only.** At 150 m a hot cell is close to naming a shop. It is served
+from `/api/heatmap` behind the passphrase and stripped from the public build.
+
 ## Two separate surfaces
 
 The public page and the enforcement console are **separate builds with separate
@@ -161,6 +244,13 @@ SURFACE=console npx vite build --outDir dist-console
 ```
 
 The separation is enforced by what each bundle *contains*, not by hiding links.
+Vite copies the whole of `web/public` into every dist, so the public build was
+shipping `flags.json`, `cases.json`, `cases.xml`, `charts.json` and
+`heatmap.json` as static files -- fetchable by path whatever the bundle chose to
+render. `tools.build_web` now deletes them from `dist-public` and projects
+`meta.json` down to the same `PUBLIC_META_FIELDS` whitelist the live
+`/api/public/meta` uses, so the static fallback withholds what the served
+surface withholds.
 The public build embeds only aggregate counts from `meta.json` — it carries no
 flag ids, no case narratives, no detector names, no thresholds and no model
 internals, so it cannot name a flagged location even from page source. Note that

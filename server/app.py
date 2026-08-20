@@ -185,6 +185,13 @@ def charts() -> dict:
     return json_safe(ENGINE.artifacts.get("charts", {}))
 
 
+@app.get("/api/heatmap", dependencies=[Depends(console_auth)])
+def heatmap() -> dict:
+    # console-only: at 150 m a hot cell is close to naming a shop, which is
+    # exactly the claim the public surface is built not to make.
+    return json_safe(ENGINE.artifacts.get("heatmap", {}))
+
+
 @app.get("/api/meta", dependencies=[Depends(console_auth)])
 def meta() -> dict:
     m = dict(ENGINE.artifacts.get("meta", {}))

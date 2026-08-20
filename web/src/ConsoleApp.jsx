@@ -5,10 +5,11 @@ import TokenGate from './TokenGate.jsx'
 import ActionBoard from './ActionBoard.jsx'
 import CaseFile from './CaseFile.jsx'
 import FlagDetail from './FlagDetail.jsx'
+import Heatmap from './Heatmap.jsx'
 import Queue from './Queue.jsx'
 import Reports from './Reports.jsx'
 
-const CONSOLE_VIEWS = ['queue', 'board', 'detail']
+const CONSOLE_VIEWS = ['queue', 'map', 'board', 'detail']
 
 export default function ConsoleApp() {
   const [db, setDb] = useState(null)
@@ -17,12 +18,12 @@ export default function ConsoleApp() {
   const [mode, setMode] = useState('checking')   // checking | gate | live | static
 
   const loadLive = useCallback(async () => {
-    const [queue, flags, cases, charts, meta] = await Promise.all([
+    const [queue, flags, cases, charts, meta, heatmap] = await Promise.all([
       apiGet('/api/queue', true), apiGet('/api/flags', true), apiGet('/api/cases', true),
-      apiGet('/api/charts', true), apiGet('/api/meta', true),
+      apiGet('/api/charts', true), apiGet('/api/meta', true), apiGet('/api/heatmap', true),
     ])
     setItemLabels(meta.item_labels)
-    setDb({ queue, flags, cases, charts, meta })
+    setDb({ queue, flags, cases, charts, meta, heatmap })
   }, [])
 
   const boot = useCallback(async () => {
@@ -61,7 +62,7 @@ export default function ConsoleApp() {
         <h1 onClick={() => setView('queue')} style={{ cursor: 'pointer' }}>Price Review</h1>
         <span className="sub">Vellore District · Supply &amp; Enforcement</span>
         <nav className="topnav">
-          {[['queue', 'Queue'], ['board', 'Action board'],
+          {[['queue', 'Queue'], ['map', 'Map'], ['board', 'Action board'],
             ...(mode === 'live' ? [['reports', 'Citizen reports']] : [])]
             .map(([v, label]) => (
               <button key={v} className={view === v ? 'on' : ''}
@@ -102,6 +103,7 @@ export default function ConsoleApp() {
 
       <main>
         {view === 'queue' && <Queue db={db} onOpen={open} />}
+        {view === 'map' && <Heatmap heatmap={db.heatmap} />}
         {view === 'board' && <ActionBoard db={db} onOpen={open} live={mode === 'live'} />}
         {view === 'reports' && <Reports />}
         {view === 'detail' && (

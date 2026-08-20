@@ -343,3 +343,85 @@ button.more:hover { background: #e8eff3; }
   font-family: var(--mono); font-size: 21px; font-weight: 600;
   font-variant-numeric: tabular-nums; letter-spacing: 0.02em; color: var(--steel);
 }
+
+/* ---- heatmap -------------------------------------------------------------
+   Fixed extent, no pan and no zoom. The svg scales to its container and never
+   overflows it, so the district is always wholly on screen.                */
+.heatmap { display: flex; flex-direction: column; gap: var(--s3); padding: var(--s4); }
+
+.hm-head { display: flex; align-items: flex-start; gap: var(--s4); flex-wrap: wrap; }
+.hm-head h2 { margin: 0 0 var(--s1); font-size: var(--t-head); }
+.hm-head p { margin: 0; max-width: 62ch; }
+
+.hm-items { display: flex; gap: var(--s1); margin-left: auto; flex-wrap: wrap; }
+.hm-items button {
+  font: inherit; font-size: var(--t-small);
+  padding: 3px 10px; background: var(--surface); color: var(--ink-2);
+  border: 1px solid var(--rule-strong); cursor: pointer;
+}
+.hm-items button.on { background: var(--steel); border-color: var(--steel); color: #fff; }
+
+.hm-frame {
+  border: 1px solid var(--rule-strong);
+  background: var(--surface-alt);
+  overflow: hidden;                 /* the frame never scrolls */
+}
+.hm-frame svg { display: block; width: 100%; height: auto; }
+
+.hm-bg { fill: var(--surface-alt); }
+
+circle.hm-place { fill: var(--rule-strong); }
+circle.hm-place.market { fill: var(--steel); }
+.hm-label {
+  font-family: var(--sans); font-size: 10px; fill: var(--ink-3);
+  paint-order: stroke; stroke: var(--surface-alt); stroke-width: 3px;
+  stroke-linejoin: round; pointer-events: none;
+}
+.hm-label.market { fill: var(--ink-2); font-weight: 600; }
+
+.hm-cell { stroke: rgba(255,255,255,.55); stroke-width: .5; cursor: pointer; }
+.hm-ring { fill: none; stroke: var(--ink); stroke-width: 1.5; pointer-events: none; }
+
+.hm-scale line { stroke: var(--ink-3); stroke-width: 1; }
+.hm-scale text {
+  font-family: var(--sans); font-size: 9.5px; fill: var(--ink-3); text-anchor: middle;
+}
+
+.hm-tip {
+  display: flex; gap: var(--s3); align-items: baseline; flex-wrap: wrap;
+  padding: var(--s2) var(--s3);
+  border-top: 1px solid var(--rule);
+  background: var(--surface);
+  font-size: var(--t-small);
+  min-height: 17px;
+}
+.hm-tip .over  { color: var(--accent); font-weight: 600; }
+.hm-tip .under { color: var(--steel); font-weight: 600; }
+
+.hm-legend { display: flex; align-items: center; gap: var(--s2); flex-wrap: wrap; }
+.hm-ramp { display: flex; height: 10px; width: 180px; border: 1px solid var(--rule); }
+.hm-ramp i { flex: 1; }
+
+.hm-caveat { margin: 0; max-width: 78ch; }
+
+@media (max-width: 750px) {
+  .hm-items { margin-left: 0; }
+  .hm-label { display: none; }
+}
+
+/* Basemap: OSM geometry projected into the fixed frame at build time. Drawn as
+   six merged paths under the cells, in greys only -- the map is context, the
+   colour on it is the finding. */
+.hm-base { pointer-events: none; }   /* never steal a hover from a cell */
+.hm-base path { fill: none; vector-effect: non-scaling-stroke; }
+.hm-base .hm-street    { stroke: #dce0e4; stroke-width: .5; }
+.hm-base .hm-minor     { stroke: #c7cdd3; stroke-width: .9; }
+.hm-base .hm-major     { stroke: #aab3bb; stroke-width: 1.4; }
+.hm-base .hm-rail      { stroke: #b6bec6; stroke-width: .8; stroke-dasharray: 4 3; }
+.hm-base .hm-water     { stroke: #bcd0da; stroke-width: 1; }
+.hm-base .hm-waterbody { fill: #d6e3ea; stroke: none; }
+
+.hm-attrib {
+  font-family: var(--sans); font-size: 8.5px; fill: var(--ink-3);
+  text-anchor: end; opacity: .8;
+}

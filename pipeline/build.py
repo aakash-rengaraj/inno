@@ -13,7 +13,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from pipeline import cases, detect, xml_export
+from pipeline import cases, detect, heatmap as heatmap_mod, xml_export
 from pipeline.contracts import OBSERVATIONS_PATH, json_safe
 from pipeline.expectations import attach_expectations
 from pipeline.generalise import assign_localities, summarise
@@ -266,11 +266,17 @@ def compute(obs: pd.DataFrame, model=None, verbose: bool = True) -> dict:
                         pd.Series([f["tier"] for f in queue]).value_counts().items()},
         "sources": sorted(obs["source"].unique().tolist()),
     }
+    grid = heatmap_mod.build(scored, window_days=DETECTION_WINDOW_DAYS)
+    log(f"  heatmap      {grid['totals'].get('cells', 0)} cell(s) at "
+        f"{heatmap_mod.CELL_M:.0f}m from {grid['totals'].get('reports_shown', 0)} "
+        f"of {grid['totals'].get('reports', 0)} field reports "
+        f"({grid.get('suppressed_cells', 0)} below the evidence floor)")
+
     log(f"\n  {len(queue)} finding(s) across "
         f"{len({f['location'] for f in queue})} market(s) for inspection, "
         f"{len(all_flags) - len(queue)} excluded by the evidence floor")
     return {"queue": queue, "flags": all_flags, "cases": case_files,
-            "charts": charts, "meta": meta, "model": model}
+            "charts": charts, "meta": meta, "heatmap": grid, "model": model}
 
 
 def _quiet_detect(judged: pd.DataFrame) -> list[dict]:
@@ -284,7 +290,7 @@ def main() -> None:
     print("building (offline; no network access)")
     obs = ingest()
     result = compute(obs)
-    for name in ("queue", "flags", "cases", "charts", "meta"):
+    for name in ("queue", "flags", "cases", "charts", "meta", "heatmap"):
         _write(f"{name}.json", result[name])
 
     # the same case files as XML, checked against schema/case-file.xsd

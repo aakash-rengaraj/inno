@@ -23,7 +23,7 @@ export default function PublicApp() {
           if (!cancelled) { setMeta(live); setOnline(true); return }
         } catch { /* fall through to the embedded copy */ }
       }
-      const db = await loadAll()
+      const db = await loadAll(['meta'])
       if (!cancelled) setMeta(db.meta)
     })()
     return () => { cancelled = true }
