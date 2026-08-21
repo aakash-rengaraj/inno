@@ -71,8 +71,12 @@ export default function Heatmap({ heatmap }) {
   const cw = Math.max(MIN_PX, (grid.cell_m / 108400) / (f.lng_max - f.lng_min) * W)
   const ch = Math.max(MIN_PX, (grid.cell_m / 110574) / (f.lat_max - f.lat_min) * H)
 
+  // Single-report cells are drawn now, so opacity is the only thing separating
+  // one person's walk-past from forty corroborating reports. The floor drops
+  // from 0.35 to 0.14 to make that separation actually visible: at 0.35 a lone
+  // report rendered nearly as solid as a well-evidenced cell.
   const maxN = Math.max(1, ...cells.map((c) => c.n))
-  const opacity = (n) => 0.35 + 0.65 * Math.min(1, Math.log1p(n) / Math.log1p(maxN))
+  const opacity = (n) => 0.14 + 0.86 * Math.min(1, Math.log1p(n) / Math.log1p(maxN))
 
   // scale bar: 5 km
   const kmPx = (5000 / 108400) / (f.lng_max - f.lng_min) * W
@@ -86,7 +90,7 @@ export default function Heatmap({ heatmap }) {
             {grid.totals.reports_shown?.toLocaleString('en-IN')} field reports binned to{' '}
             {grid.cell_m} m cells over Vellore district. Colour is the median gap between what
             reporters paid and the middle of the modelled band {'—'} not how many people
-            reported. Cells with fewer than {grid.min_reports} reports are not drawn.
+            reported. Faint cells rest on one or two reports; solid cells on many.
           </p>
         </div>
         <div className="hm-items">
@@ -189,13 +193,17 @@ export default function Heatmap({ heatmap }) {
         <span className="muted small">{'≥'} +30% over band</span>
         <span className="spacer" />
         <span className="muted small">
-          Opacity is report volume. {grid.suppressed_cells} cell
-          {grid.suppressed_cells === 1 ? '' : 's'} withheld below the evidence floor.
+          Opacity is report volume{grid.suppressed_cells > 0
+            ? `; ${grid.suppressed_cells} cell${grid.suppressed_cells === 1 ? '' : 's'} `
+              + `below the ${grid.min_reports}-report display minimum are not drawn`
+            : ''}.
         </span>
       </div>
 
       <p className="muted small hm-caveat">
         A hot cell is a place to send an inspector, not a finding against any business.
+        A cell resting on a single report is not evidence of anything on its own: a
+        pattern still needs three independent localities before it reaches the queue.
         Field reports are pseudonymised to a {grid.cell_m} m cell {'—'} the same radius the
         generaliser merges reporting points at {'—'} so a cell is a street, never a shop.
       </p>

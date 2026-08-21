@@ -274,8 +274,9 @@ def compute(obs: pd.DataFrame, model=None, verbose: bool = True) -> dict:
     grid = heatmap_mod.build(scored, window_days=DETECTION_WINDOW_DAYS)
     log(f"  heatmap      {grid['totals'].get('cells', 0)} cell(s) at "
         f"{heatmap_mod.CELL_M:.0f}m from {grid['totals'].get('reports_shown', 0)} "
-        f"of {grid['totals'].get('reports', 0)} field reports "
-        f"({grid.get('suppressed_cells', 0)} below the evidence floor)")
+        f"of {grid['totals'].get('reports', 0)} field reports"
+        + (f" ({grid['suppressed_cells']} below the {heatmap_mod.MIN_REPORTS}-report "
+           f"display minimum)" if grid.get("suppressed_cells") else ""))
 
     log(f"\n  {len(queue)} finding(s) across "
         f"{len({f['location'] for f in queue})} market(s) for inspection, "

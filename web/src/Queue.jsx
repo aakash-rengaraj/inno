@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { DETECTOR_LABEL, UNIT, inr, pct, prettyItem, prettyLocation } from './data.js'
+import { DETECTOR_LABEL, UNIT, gapPct, inr, pct, prettyItem, prettyLocation } from './data.js'
 
 const vertical = (item) =>
   item === 'auto_ride' ? 'Autos' : item === 'egg_table' ? 'Eggs' : 'Commodities'
@@ -13,7 +13,7 @@ export default function Queue({ db, onOpen }) {
   // findings at the same market sit under it rather than competing with it.
   const groups = useMemo(() => {
     const withGap = db.queue.map((f) => ({
-      ...f, gap: (f.observed.median / f.expected.rate - 1) * 100,
+      ...f, gap: gapPct(f),
     }))
     const filtered = withGap.filter(
       (f) => filter === 'all' || vertical(f.item) === filter)

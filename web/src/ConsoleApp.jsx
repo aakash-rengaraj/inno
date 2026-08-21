@@ -6,15 +6,20 @@ import ActionBoard from './ActionBoard.jsx'
 import CaseFile from './CaseFile.jsx'
 import FlagDetail from './FlagDetail.jsx'
 import Heatmap from './Heatmap.jsx'
+import CaseFiles from './CaseFiles.jsx'
 import Queue from './Queue.jsx'
 import Reports from './Reports.jsx'
 
-const CONSOLE_VIEWS = ['queue', 'map', 'board', 'detail']
+const CONSOLE_VIEWS = ['queue', 'map', 'board', 'cases', 'detail']
 
 export default function ConsoleApp() {
   const [db, setDb] = useState(null)
   const [selected, setSelected] = useState(null)
   const [view, setView] = useState('queue')
+  // where 'Back' returns to: the case file is reachable from the flag
+  // detail and from the case-file list, and landing on the wrong one is
+  // disorienting mid-demo.
+  const [caseFrom, setCaseFrom] = useState('detail')
   const [mode, setMode] = useState('checking')   // checking | gate | live | static
 
   const loadLive = useCallback(async () => {
@@ -47,37 +52,51 @@ export default function ConsoleApp() {
   if (!db) return <div style={{ padding: 32 }} className="muted">Loading case data…</div>
 
   const flag = db.queue.find((f) => f.flag_id === selected) || null
+  const signOut = () => { clearToken(); setDb(null); setSelected(null); setMode('gate') }
   const open = (id) => { setSelected(id); setView('detail') }
+  const openCase = (id) => { setSelected(id); setCaseFrom('cases'); setView('case') }
 
   if (view === 'case' && flag) {
     return <CaseFile caseFile={db.cases[flag.flag_id]} live={mode === 'live'}
-                     onBack={() => setView('detail')} />
+                     onBack={() => setView(caseFrom)} />
   }
 
   const inConsole = CONSOLE_VIEWS.includes(view)
 
   return (
     <div className="app">
+      {/* Two rows, as an administrative system is normally laid out: the office
+          it belongs to on top, what you can do with it underneath. Navigation
+          was competing with the masthead for the same line, and the data-through
+          line was taking width from the tabs to say something nobody navigates by. */}
       <header className="topbar">
         <h1 onClick={() => setView('queue')} style={{ cursor: 'pointer' }}>Price Review</h1>
-        <span className="sub">Vellore District · Supply &amp; Enforcement</span>
-        <nav className="topnav">
-          {[['queue', 'Queue'], ['map', 'Map'], ['board', 'Action board'],
-            ...(mode === 'live' ? [['reports', 'Citizen reports']] : [])]
-            .map(([v, label]) => (
-              <button key={v} className={view === v ? 'on' : ''}
-                      onClick={() => setView(v)}>{label}</button>
-            ))}
-        </nav>
+        <span className="sub">Vellore District &middot; Supply &amp; Enforcement</span>
         <span className="spacer" />
-        <span className="sub mono">
-          data through {db.meta.data_through} · {db.meta.observations.toLocaleString('en-IN')} observations
+        <span className="chip mono" title={mode === 'live'
+          ? 'Connected to the review service'
+          : 'Reading the build shipped with this page'}>
+          {mode === 'live' ? 'console' : 'static build'}
         </span>
-        <span className={`conn ${mode}`} title={mode === 'live'
-          ? 'Connected to the review service' : 'Reading the build shipped with this page'}>
-          {mode === 'live' ? 'Live' : 'Static build'}
-        </span>
+        {mode === 'live' && (
+          <button className="ghost" onClick={signOut}>Sign out</button>
+        )}
       </header>
+
+      <nav className="subnav">
+        {[['queue', 'Queue'], ['map', 'Map'], ['board', 'Action board'],
+          ['cases', 'Case files'],
+          ...(mode === 'live' ? [['reports', 'Citizen reports']] : [])]
+          .map(([v, label]) => (
+            <button key={v} className={view === v ? 'on' : ''}
+                    onClick={() => { setSelected(null); setView(v) }}>{label}</button>
+          ))}
+        <span className="spacer" />
+        <span className="subnav-meta mono">
+          data through {db.meta.data_through} &middot;{' '}
+          {db.meta.observations.toLocaleString('en-IN')} observations
+        </span>
+      </nav>
 
       {inConsole && (
         <div className="framing">
@@ -101,14 +120,18 @@ export default function ConsoleApp() {
         </div>
       )}
 
-      <main>
+      {/* keyed on the view so React remounts on navigation: without it the
+          content swaps in place and the mount animation never runs. The flag
+          id is in the key too, so moving between two flags animates as well. */}
+      <main key={`${view}:${selected || ''}`}>
         {view === 'queue' && <Queue db={db} onOpen={open} />}
         {view === 'map' && <Heatmap heatmap={db.heatmap} />}
+        {view === 'cases' && <CaseFiles db={db} onOpen={openCase} />}
         {view === 'board' && <ActionBoard db={db} onOpen={open} live={mode === 'live'} />}
         {view === 'reports' && <Reports />}
         {view === 'detail' && (
           <FlagDetail db={db} flag={flag} onBack={() => setView('queue')}
-                      onCase={() => setView('case')} />
+                      onCase={() => { setCaseFrom('detail'); setView('case') }} />
         )}
       </main>
     </div>

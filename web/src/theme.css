@@ -41,8 +41,25 @@
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --serif: Georgia, "Times New Roman", "Nimbus Roman", serif;
 
+  /* Georgia carries no Tamil glyphs, so a Tamil heading silently fell back to
+     whatever the browser chose and sat at a different weight and size from the
+     English one beside it. Named Tamil faces first, per platform, then Noto. */
+  --sans-ta: "Nirmala UI", "Tamil Sangam MN", "Noto Sans Tamil", "Latha",
+             "Lohit Tamil", var(--sans);
+  --serif-ta: "Noto Serif Tamil", "Tamil MN", "Nirmala UI", "Tamil Sangam MN",
+              var(--sans-ta);
+
   --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px;
   --s5: 24px; --s6: 32px; --s7: 48px;
+
+  /* Motion. Short and eased-out, never bouncy: this is a government register,
+     and a button that springs undermines the tone the rest of the design is
+     working for. Everything below is 120-260ms, which reads as responsive
+     rather than as an effect you notice. */
+  --dur-fast: 110ms;
+  --dur:      170ms;
+  --dur-slow: 260ms;
+  --ease:     cubic-bezier(0.2, 0.6, 0.3, 1);
 
   --t-micro: 10.5px;
   --t-small: 12px;
@@ -183,6 +200,43 @@ dl.kv dd { margin: 0; font-family: var(--mono); font-variant-numeric: tabular-nu
 
 /* ---- top nav ---- */
 
+/* Second row: navigation on white, with an underline for the current screen.
+   Tabs on the navy bar had to fight the masthead for attention and were losing. */
+.subnav {
+  display: flex; align-items: stretch; gap: var(--s1);
+  padding: 0 var(--s5);
+  background: var(--surface);
+  border-bottom: 1px solid var(--rule);
+}
+.subnav button {
+  background: none; border: none; border-radius: 0;
+  border-bottom: 3px solid transparent;
+  padding: 11px var(--s3) 8px;
+  color: var(--ink-2); font-size: var(--t-body);
+}
+.subnav button:hover { color: var(--steel); background: var(--surface-alt); }
+.subnav button.on {
+  color: var(--steel); font-weight: 600; border-bottom-color: var(--steel);
+}
+.subnav .spacer { flex: 1; }
+.subnav-meta {
+  display: flex; align-items: center;
+  font-size: var(--t-small); color: var(--ink-3); white-space: nowrap;
+}
+
+/* Which surface you are looking at, stated rather than implied. */
+.chip {
+  font-size: var(--t-small); padding: 2px 9px;
+  border: 1px solid rgba(255,255,255,.45); color: #fff; border-radius: 2px;
+}
+
+button.ghost {
+  background: transparent; color: #fff;
+  border: 1px solid rgba(255,255,255,.45); padding: 3px 11px;
+  font-size: var(--t-small);
+}
+button.ghost:hover { background: rgba(255,255,255,.14); border-color: #fff; }
+
 .topnav { display: flex; gap: 2px; margin-left: var(--s4); }
 .topnav button {
   background: transparent; border: 1px solid transparent; color: #cfe2f6;
@@ -210,7 +264,7 @@ dl.kv dd { margin: 0; font-family: var(--mono); font-variant-numeric: tabular-nu
 .lp-mast-sub { font-size: var(--t-small); color: #cfe2f6; }
 
 .lp { max-width: 900px; margin: 0 auto; padding: var(--s6) var(--s5) var(--s7); }
-.lp-hero { padding-bottom: var(--s5); border-bottom: 2px solid var(--steel-dark); }
+.lp-hero { padding-bottom: var(--s5); }
 .lp-eyebrow {
   font-size: var(--t-micro); letter-spacing: 0.13em; text-transform: uppercase;
   color: var(--ink-3); font-weight: 700;
@@ -224,6 +278,49 @@ dl.kv dd { margin: 0; font-family: var(--mono); font-variant-numeric: tabular-nu
 .lp-actions { display: flex; gap: var(--s3); margin-top: var(--s5); }
 .lp-actions button { padding: 8px 16px; }
 
+/* Two things a citizen can do, given the weight of the page rather than a pair
+   of ordinary buttons under a wall of methodology. */
+.lp-cards {
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4);
+  margin-bottom: var(--s6);
+}
+.lp-card {
+  display: flex; flex-direction: column; gap: 5px; text-align: left;
+  padding: var(--s4) var(--s5); border: 1px solid var(--rule-strong);
+  background: var(--surface); cursor: pointer;
+}
+.lp-card:hover { background: var(--steel-soft); border-color: var(--steel); }
+.lp-card.primary { background: var(--steel); border-color: var(--steel); color: #fff; }
+.lp-card.primary:hover { background: var(--steel-dark); border-color: var(--steel-dark); }
+.lp-card-title { font-family: var(--serif); font-size: 19px; font-weight: 700; }
+.lp-card-sub { font-size: var(--t-small); color: var(--ink-3); line-height: 1.45; }
+.lp-card.primary .lp-card-sub { color: #cfe2f6; }
+
+.lp-caveat {
+  margin: 0 0 var(--s5); padding: var(--s3) var(--s4);
+  border-left: 3px solid var(--steel);
+  background: var(--surface-alt);
+  font-size: var(--t-body); color: var(--ink-2); max-width: 78ch;
+}
+.lp-foot { padding-top: var(--s4); border-top: 1px solid var(--rule); }
+
+/* Language picker. Tamil is not a smaller language than English here, so it is
+   a visible pair of choices rather than a dropdown hidden behind a globe. */
+.langpick { display: flex; gap: 2px; }
+.langpick button {
+  background: transparent; border: 1px solid transparent; color: #cfe2f6;
+  padding: 3px 10px; font-size: var(--t-small); border-radius: 2px;
+}
+.langpick button:hover { background: rgba(255,255,255,.10); color: #fff; }
+.langpick button.on {
+  background: rgba(255,255,255,.15); color: #fff;
+  border-color: rgba(255,255,255,.28); font-weight: 600;
+}
+
+/* The English name under the Tamil one: a shopper who knows the item by its
+   English market name should not have to guess. */
+.pr-alt { display: block; font-size: var(--t-micro); color: var(--ink-3); }
+
 .lp-quote { padding: var(--s5) 0; border-bottom: 1px solid var(--rule); }
 .lp-quote blockquote {
   margin: 0; font-size: 19px; line-height: 1.5; max-width: 54ch;
@@ -231,8 +328,9 @@ dl.kv dd { margin: 0; font-family: var(--mono); font-variant-numeric: tabular-nu
 }
 
 .lp-stats {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  border-bottom: 1px solid var(--rule);
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  margin-bottom: var(--s5);
 }
 .lp-stat { padding: var(--s4) var(--s4) var(--s4) 0; }
 .lp-stat-value { font-size: 27px; font-weight: 600; letter-spacing: -0.02em; }
@@ -532,6 +630,9 @@ circle.hm-place.market { fill: var(--steel); }
   .topbar .spacer { display: none; }
   .topbar > .sub { display: none; }
   .topbar .topnav { order: 3; width: 100%; margin-left: 0; }
+  .subnav { padding: 0 var(--s2); overflow-x: auto; }
+  .subnav button { padding: 9px var(--s2) 7px; font-size: var(--t-small); white-space: nowrap; }
+  .subnav .spacer, .subnav-meta { display: none; }
 
   .framing { padding: var(--s2) var(--s3); gap: var(--s1) var(--s3); flex-wrap: wrap; }
   .framing .line { font-size: var(--t-body); }
@@ -564,7 +665,12 @@ circle.hm-place.market { fill: var(--steel); }
 
   /* Four stat tiles across a phone gives each ~90px, and the counts are the
      headline number on both surfaces. */
-  .ab-stats, .lp-stats { grid-template-columns: 1fr 1fr; }
+  .ab-stats { grid-template-columns: 1fr 1fr; }
+  .lp-stats { grid-template-columns: 1fr; }
+  .lp-cards { grid-template-columns: 1fr; gap: var(--s3); }
+  .lp-masthead-inner { padding: var(--s2) var(--s3); }
+  .lp { padding: var(--s5) var(--s4) var(--s6); }
+  .lp-title { font-size: 32px; }
 
   .ab-head { flex-wrap: wrap; gap: var(--s2); }
   .ab-head > span[style] { display: none; }   /* the flex spacer */
@@ -573,3 +679,140 @@ circle.hm-place.market { fill: var(--steel); }
   .fd-head > span[style] { display: none; }
   .fd-head h2 { font-size: var(--t-head) !important; width: 100%; order: 4; }
 }
+
+/* ---- Tamil -------------------------------------------------------------
+   Scoped by :lang(ta), which useLang stamps on <html>, so a Tamil string
+   inside an English page (and the language picker itself) still gets a face
+   that can draw it. Tamil needs a little more line height than Latin at the
+   same size: the glyphs carry marks above and below the baseline. */
+:root:lang(ta) body, [lang="ta"] { font-family: var(--sans-ta); }
+
+:lang(ta) .lp-title,
+:lang(ta) .lp-card-title,
+:lang(ta) .lp-mast-name,
+:lang(ta) .topbar h1,
+:lang(ta) .panel > h2,
+:lang(ta) .pr-head h2 { font-family: var(--serif-ta); letter-spacing: 0; }
+
+:lang(ta) .lp-lede,
+:lang(ta) .lp-caveat,
+:lang(ta) .pr-head p { line-height: 1.65; }
+
+/* Tamil words do not abbreviate the way English ones do, so the uppercase
+   micro-labels become unreadable at 10.5px. Give them normal case and a size. */
+:lang(ta) .label { text-transform: none; letter-spacing: 0; font-size: var(--t-small); }
+:lang(ta) .pr-table th { text-transform: none; letter-spacing: 0; font-size: var(--t-small); }
+
+/* Keeps a long Tamil name from scrolling the page: the table scrolls in its
+   own box instead, same arrangement as the console's queue. */
+.pr-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* Latin can be broken anywhere in a pinch; Tamil cannot. `break-word` was
+   splitting நீர்ப்பூசணிக்காய் mid-cluster across two lines, which is not a
+   hyphenation a reader can repair. Let long Tamil names simply take the width
+   they need -- the table is inside a scroll container, so a wide column costs a
+   sideways nudge rather than a broken word. */
+:lang(ta) .pr-table td:first-child { word-break: normal; overflow-wrap: normal; }
+
+/* ---- motion -------------------------------------------------------------
+   Nothing here moves layout. Every transition is on colour, opacity, border or
+   a sub-pixel transform, so a slow device degrades to the static design rather
+   than to a janky one. */
+
+button,
+.lp-card,
+.pr-search,
+.rp-form input,
+.rp-form select,
+.topnav button,
+.langpick button {
+  transition:
+    background-color var(--dur-fast) var(--ease),
+    border-color     var(--dur-fast) var(--ease),
+    color            var(--dur-fast) var(--ease),
+    box-shadow       var(--dur-fast) var(--ease),
+    transform        var(--dur-fast) var(--ease);
+}
+
+button:active, .lp-card:active { transform: translateY(1px); }
+
+/* The two public actions are the only things given any lift, and 1px of it. */
+.lp-card:hover { transform: translateY(-1px); box-shadow: 0 2px 0 var(--rule); }
+.lp-card.primary:hover { box-shadow: 0 2px 0 var(--steel-dark); }
+.lp-card:active { box-shadow: none; }
+
+/* A visible focus ring matters more than any of the rest: the report form is
+   filled in on a phone, sometimes by keyboard, and the browser default ring was
+   being lost against the blue. */
+button:focus-visible,
+.pr-search:focus-visible,
+.rp-form input:focus-visible,
+.rp-form select:focus-visible,
+.lp-card:focus-visible {
+  outline: 2px solid var(--steel);
+  outline-offset: 2px;
+}
+.topnav button:focus-visible,
+.langpick button:focus-visible { outline-color: #fff; }
+
+.rp-form input:focus, .rp-form select:focus, .pr-search:focus {
+  border-color: var(--steel);
+  box-shadow: inset 0 0 0 1px var(--steel);
+  outline: none;
+}
+
+table.grid tbody tr, .pr-table tbody tr {
+  transition: background-color var(--dur-fast) var(--ease);
+}
+
+/* Screen-to-screen. `main` and the landing carry a key that changes with the
+   view, so React remounts them and this runs once per navigation. 8px, not 24:
+   enough to read as a change of place, not enough to feel like a slide deck. */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+/* No fill-mode, deliberately. `both` holds the *first* frame -- opacity 0 --
+   until the animation runs, so anything that stops it starting leaves the page
+   blank rather than unanimated: a background tab, an extension that blocks
+   animations, a stylesheet that loads late. Without a fill mode the element sits
+   at its natural opacity of 1 and the animation is decoration on top of a page
+   that is already correct. Costs one frame of un-animated content; buys never
+   showing an invisible screen. */
+main > *, .lp { animation: rise var(--dur-slow) var(--ease); }
+
+@keyframes fade { from { opacity: 0 } to { opacity: 1 } }
+.hm-cell { animation: fade var(--dur-slow) var(--ease); }
+.rp-receipt { animation: rise var(--dur-slow) var(--ease); }
+
+/* The status pill is the one thing that should catch the eye when it changes,
+   because it is telling the officer the queue is being recomputed underneath
+   them. A slow pulse, not a spinner. */
+@keyframes breathe { 0%, 100% { opacity: 1 } 50% { opacity: 0.45 } }
+.conn.recomputing, .busy-pulse { animation: breathe 1.6s ease-in-out infinite; }
+
+/* Off entirely when the reader has asked for that, and when printing -- a case
+   file mid-animation would print half-faded. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+@media print {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* Eggs and fares: their own blocks above the commodity table. */
+.pr-block { margin-top: var(--s5); }
+.pr-block h3, .pr-block-head {
+  font-family: var(--serif); font-size: var(--t-head); font-weight: 700;
+  margin: 0 0 var(--s3); color: var(--steel-dark);
+}
+.pr-block-head { margin-top: var(--s6); }
+.pr-pair { display: flex; gap: var(--s6); flex-wrap: wrap; }
+.pr-pair > div { display: flex; flex-direction: column; gap: 2px; }
+.pr-big { font-size: 21px; font-weight: 600; letter-spacing: -0.01em; }
+.pr-block-note { margin: var(--s2) 0 0; max-width: 70ch; }
+.pr-fares { max-width: 560px; }

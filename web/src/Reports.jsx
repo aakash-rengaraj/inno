@@ -43,7 +43,7 @@ export default function Reports() {
           </p>
         </div>
         <span style={{ flex: 1 }} />
-        {busy && <span className="conn live">Updating detection…</span>}
+        {busy && <span className="conn live busy-pulse">Updating detection…</span>}
       </div>
 
       {error && <div className="recompute-note">{error}</div>}

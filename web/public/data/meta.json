@@ -1,7 +1,7 @@
 {
  "data_through": "2026-08-20",
  "data_from": "2020-04-15",
- "observations": 217072,
+ "observations": 217074,
  "locations_monitored": 23,
  "items_monitored": 109,
  "rejected_reports": 29,
@@ -68,9 +68,9 @@
  "generaliser": {
   "radius_m": 150.0,
   "price_tolerance": 0.03,
-  "report_points": 349,
-  "report_localities": 119,
-  "collapsed": 230
+  "report_points": 1131,
+  "report_localities": 530,
+  "collapsed": 601
  },
  "item_labels": {
   "auto_ride": "Autorickshaw fares",
