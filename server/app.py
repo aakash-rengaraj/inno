@@ -45,7 +45,7 @@ _hits: dict[str, deque] = defaultdict(deque)
 ITEM_UNITS = {"tomato": "per_kg", "onion": "per_kg",
               "egg_table": "per_piece", "auto_ride": "per_ride"}
 
-app = FastAPI(title="Price Review API", version="1.0")
+app = FastAPI(title="FairMark API", version="1.0")
 
 # Uvicorn serves everything uncompressed. On a modest VPS uplink that made the
 # console pull ~1.2 MB of JS, charts and basemap before it could draw: measured

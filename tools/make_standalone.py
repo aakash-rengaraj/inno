@@ -29,7 +29,7 @@ def main() -> None:
     js = next(p for p in assets if p.suffix == ".js").read_text()
     payload = {n: json.loads((DATA / f"{n}.json").read_text()) for n in NAMES}
 
-    html = f"""<title>Vellore Price Review</title>
+    html = f"""<title>FairMark — Vellore District</title>
 <style>
 {css}
 /* The artifact host paints its own ground behind the page; this instrument is

@@ -70,7 +70,7 @@ export default function ConsoleApp() {
           was competing with the masthead for the same line, and the data-through
           line was taking width from the tabs to say something nobody navigates by. */}
       <header className="topbar">
-        <h1 onClick={() => setView('queue')} style={{ cursor: 'pointer' }}>Price Review</h1>
+        <h1 onClick={() => setView('queue')} style={{ cursor: 'pointer' }}>FairMark</h1>
         <span className="sub">Vellore District &middot; Supply &amp; Enforcement</span>
         <span className="spacer" />
         <span className="chip mono" title={mode === 'live'

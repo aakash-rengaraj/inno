@@ -25,7 +25,7 @@ the deck.
 
 - **Track:** AIML-08
 - **Problem Statement:** Price Manipulation Detection
-- **Project name:** Price Review — Vellore District
+- **Project name:** FairMark — Vellore District
 - **Team name:** [TEAM NAME]
 - **Members:** [NAME — REGISTRATION NUMBER] (repeat for each member)
 

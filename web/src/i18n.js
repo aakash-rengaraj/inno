@@ -19,7 +19,7 @@ const S = {
   en: {
     office: 'Office of the District Supply Officer',
     district: 'Vellore District · Tamil Nadu',
-    title: 'Price Review',
+    title: 'FairMark',
     lede: 'Check what vegetables and fruit sold for in the district today, or tell us what you were charged.',
 
     seePrices: "See today's prices",
@@ -116,7 +116,7 @@ const S = {
   ta: {
     office: 'மாவட்ட வழங்கல் அலுவலர் அலுவலகம்',
     district: 'வேலூர் மாவட்டம் · தமிழ்நாடு',
-    title: 'விலை ஆய்வு',
+    title: 'FairMark',
     lede: 'மாவட்டத்தில் இன்று காய்கறி மற்றும் பழங்களின் விலையைப் பார்க்கவும், அல்லது நீங்கள் கொடுத்த விலையைத் தெரிவிக்கவும்.',
 
     seePrices: 'இன்றைய விலைகள்',

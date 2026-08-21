@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  One-shot setup of the Price Review app on a fresh Windows VPS.
+  One-shot setup of the FairMark app on a fresh Windows VPS.
 
 .DESCRIPTION
   Installs the prerequisites, clones the repo, builds both surfaces, registers
@@ -67,7 +67,7 @@ function Install-WithWinget ($id, $exe, $label) {
 
 # ---------------------------------------------------------------------------
 Assert-Admin
-Write-Host "Price Review - Windows VPS bootstrap" -ForegroundColor White
+Write-Host "FairMark - Windows VPS bootstrap" -ForegroundColor White
 Write-Host "  repo    $RepoUrl ($Branch)"
 Write-Host "  root    $Root"
 Write-Host "  service $Service on port $Port"
