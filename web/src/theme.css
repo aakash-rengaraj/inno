@@ -816,3 +816,18 @@ main > *, .lp { animation: rise var(--dur-slow) var(--ease); }
 .pr-big { font-size: 21px; font-weight: 600; letter-spacing: -0.01em; }
 .pr-block-note { margin: var(--s2) 0 0; max-width: 70ch; }
 .pr-fares { max-width: 560px; }
+
+/* A finding whose evidence includes citizen reports. Small and quiet -- it says
+   the public contributed here, not that the finding is more serious. */
+.cit {
+  margin-left: 5px; padding: 0 5px;
+  font-size: 10.5px; font-weight: 600;
+  color: var(--steel-dark); background: var(--steel-soft);
+  border: 1px solid var(--steel); border-radius: 2px;
+}
+
+/* Supporting findings keep a real priority badge instead of the old "also",
+   but sit back a step so the lead of each market still reads first. */
+.tier.sub { opacity: .72; font-weight: 500; }
+
+.inwin { color: var(--steel-dark); font-weight: 600; }

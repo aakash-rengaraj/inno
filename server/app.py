@@ -86,7 +86,7 @@ CONN = db.connect()
 def _startup() -> None:
     db.init(CONN)
     print("starting engine (parsing data/raw, fitting band model)")
-    ENGINE.start()
+    ENGINE.start(lambda: db.all_reports(CONN))
     print(f"console token: {CONSOLE_TOKEN}")
 
 

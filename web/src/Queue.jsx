@@ -7,7 +7,11 @@ const vertical = (item) =>
 export default function Queue({ db, onOpen }) {
   const [filter, setFilter] = useState('all')
 
-  const [open, setOpen] = useState({})
+  // Groups start open. Collapsed-by-default hid supporting findings behind a
+  // "+3 more" nobody clicks, so a market with four findings read as one -- and
+  // the officer could not see the shape of what was waiting at that market
+  // without interacting. Collapse is still there for a long queue.
+  const [collapsed, setCollapsed] = useState({})
 
   // One row per market: an officer makes a visit, not a flag. Supporting
   // findings at the same market sit under it rather than competing with it.
@@ -58,8 +62,8 @@ export default function Queue({ db, onOpen }) {
         <tbody>
           {groups.map((g) => {
             const rest = g.members.slice(1)
-            const expanded = !!open[g.location]
-            const shown = expanded ? g.members : [g.members[0]]
+            const isOpen = !collapsed[g.location]
+            const shown = isOpen ? g.members : [g.members[0]]
             return (
               <React.Fragment key={g.location}>
                 {shown.map((f, i) => {
@@ -70,12 +74,13 @@ export default function Queue({ db, onOpen }) {
                     <tr key={f.flag_id}
                         className={`row t${f.tier} ${isLead ? '' : 'supporting'}`}
                         onClick={() => onOpen(f.flag_id)}>
+                      {/* every row carries its own priority, lead or not: a
+                          supporting finding can be the more serious one, and
+                          labelling it "also" told the officer nothing. */}
                       <td>
-                        {isLead ? (
-                          <span className={`tier t${f.tier}`}>
-                            {f.tier === 3 ? 'Priority' : 'Review'}
-                          </span>
-                        ) : <span className="also">also</span>}
+                        <span className={`tier t${f.tier}${isLead ? '' : ' sub'}`}>
+                          {f.tier === 3 ? 'Priority' : 'Review'}
+                        </span>
                       </td>
                       <td className="num small nowrap">{f.flag_id}</td>
                       <td>{prettyItem(f.item)}</td>
@@ -84,9 +89,9 @@ export default function Queue({ db, onOpen }) {
                         {isLead && rest.length > 0 && (
                           <button className="more" onClick={(e) => {
                             e.stopPropagation()
-                            setOpen((o) => ({ ...o, [g.location]: !expanded }))
+                            setCollapsed((c) => ({ ...c, [g.location]: isOpen }))
                           }}>
-                            {expanded ? 'hide' : `+${rest.length} more`}
+                            {isOpen ? 'collapse' : `+${rest.length} more`}
                           </button>
                         )}
                       </td>
@@ -95,7 +100,15 @@ export default function Queue({ db, onOpen }) {
                       <td className="num right muted">{inr(f.expected.rate)}</td>
                       <td className="num right" style={{ fontWeight: 600 }}>{pct(f.gap)}</td>
                       <td className="num right">{days}</td>
-                      <td className="num right muted">{f.observed.n}</td>
+                      <td className="num right muted">
+                        {f.observed.n}
+                        {f.citizen_report_count > 0 && (
+                          <span className="cit" title={
+                            `${f.citizen_report_count} citizen report`
+                            + `${f.citizen_report_count === 1 ? '' : 's'} in this evidence`
+                          }>+{f.citizen_report_count}</span>
+                        )}
+                      </td>
                     </tr>
                   )
                 })}

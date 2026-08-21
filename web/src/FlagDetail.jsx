@@ -71,6 +71,50 @@ export default function FlagDetail({ db, flag, onBack, onCase }) {
             </div>
           </div>
 
+          {/* The loop, closed. A person who files a report gets a reference
+              number and, until now, no way of ever seeing it again. These are
+              the reports that are part of *this* finding's evidence -- matched
+              on item, location and window, the same test the pipeline applies,
+              so it is not a decorative badge. */}
+          {flag.citizen_reports?.length > 0 && (
+            <div className="panel">
+              <h2>Citizen reports in this evidence</h2>
+              <div className="body">
+                <table className="grid" style={{ fontSize: 12 }}>
+                  <tbody>
+                    {flag.citizen_reports.slice(0, 8).map((r) => (
+                      <tr key={r.reference}>
+                        <td className="mono">{r.reference}</td>
+                        <td className="num right">{inr(r.price_inr)}</td>
+                        <td className="small muted right nowrap">
+                          {String(r.submitted_at).slice(0, 10)}
+                        </td>
+                        {/* whether it falls inside the run the detector measured
+                            is a different fact from whether it concerns this
+                            market, and both are worth stating */}
+                        <td className="small right nowrap">
+                          {r.in_window
+                            ? <span className="inwin">in window</span>
+                            : <span className="muted">outside window</span>}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {flag.citizen_reports.length > 8 && (
+                  <p className="small muted" style={{ marginBottom: 0 }}>
+                    and {flag.citizen_reports.length - 8} more
+                  </p>
+                )}
+                <p className="small muted" style={{ marginBottom: 0, marginTop: 12 }}>
+                  Reports about this market and item. Counted as tier C, the lowest
+                  evidence weight &mdash; reports alone cannot put a finding in the
+                  queue, which needs three independent localities.
+                </p>
+              </div>
+            </div>
+          )}
+
           <div className="panel">
             <h2>Measure</h2>
             <div className="body">

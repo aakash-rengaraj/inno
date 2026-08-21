@@ -21,6 +21,66 @@ PUBLIC_META_FIELDS = [
 ]
 
 
+def _attach_citizen_reports(result: dict, submitted: list[dict]) -> None:
+    """Name, on each finding, the citizen reports that are part of its evidence.
+
+    Reports were already counted -- they enter as tier C observations and show up
+    in `observed.n` -- but nothing said *which* reports, so a person who had just
+    filed one had no way to see it land. The number went up by one somewhere.
+
+    Matched on **item and market**, with `in_window` recorded separately rather
+    than used as a filter. Filtering on the window looked stricter and was in
+    practice useless: a finding's window closes on the last day the pattern was
+    observed, so a report filed today falls after nearly every one of them and
+    the honest answer became "no citizen reports" for a report that plainly
+    concerned that market.
+
+    So both facts are carried. The report is evidence about this market and this
+    item -- that is true and it is what a reporter wants to see. Whether it falls
+    inside the specific run the detector measured is a different question, and
+    the flag marks it rather than hiding it.
+
+    It attaches references only, never notes or coordinates -- the console has a
+    separate screen for the report itself, and a case file must not start
+    carrying free text somebody typed into a form.
+    """
+    # `attributed_to` is derived, not stored: the reports table keeps raw
+    # coordinates, and the market is worked out on read. Reading the key off the
+    # row returned None for every report, so this matched nothing at all and
+    # reported it as "no citizen reports" rather than as a failure.
+    from pipeline.ingest.reports import _nearest_location
+
+    by_flag: dict[str, list[dict]] = {}
+    for r in submitted:
+        item = r.get("item")
+        day = str(r.get("submitted_at", ""))[:10]
+        loc = r.get("attributed_to")
+        if loc is None and r.get("lat") is not None:
+            try:
+                loc = _nearest_location(r["lat"], r["lng"], item)
+            except Exception:
+                loc = None
+        if not (loc and item and day):
+            continue
+        for flag in result.get("flags", []):
+            if flag["item"] != item or flag["location"] != loc:
+                continue
+            by_flag.setdefault(flag["flag_id"], []).append({
+                "reference": r.get("reference"),
+                "submitted_at": r.get("submitted_at"),
+                "price_inr": r.get("price_inr"),
+                "in_window": flag["window"]["start"] <= day <= flag["window"]["end"],
+            })
+
+    for coll in (result.get("flags", []), result.get("queue", [])):
+        for flag in coll:
+            got = by_flag.get(flag["flag_id"], [])
+            got = sorted(got, key=lambda x: x["submitted_at"] or "", reverse=True)
+            flag["citizen_reports"] = got
+            flag["citizen_report_count"] = len(got)
+            flag["citizen_reports_in_window"] = sum(1 for x in got if x["in_window"])
+
+
 class Engine:
     def __init__(self) -> None:
         self._lock = threading.Lock()
@@ -65,14 +125,31 @@ class Engine:
 
     # --- lifecycle ---------------------------------------------------------
 
-    def start(self) -> None:
+    def start(self, fetch_reports=None) -> None:
+        """Fit the band and compute the first set of artifacts.
+
+        `fetch_reports` must be supplied or every citizen report already on file
+        is dropped. This used to call `recompute([])`, so a restart silently
+        emptied the evidence: reports stayed in the database, disappeared from
+        the analysis, and came back only when the next person happened to submit
+        one and triggered a recompute. On a server that restarts after every
+        deploy, that is most of the time.
+        """
         t0 = time.perf_counter()
         self.base = parse_sources(verbose=False)
         self.model = fit_band(self.base)
         print(f"  band model fitted on {self.model.metrics['n_train']} rows "
               f"(coverage {self.model.metrics['band_coverage']})")
-        self.recompute([])
-        print(f"  engine ready in {time.perf_counter() - t0:.1f}s")
+
+        stored = []
+        if fetch_reports is not None:
+            try:
+                stored = fetch_reports()
+            except Exception as exc:
+                print(f"  WARNING: could not load stored reports: {exc}")
+        self.recompute(stored)
+        print(f"  engine ready in {time.perf_counter() - t0:.1f}s "
+              f"({len(stored)} citizen report(s) loaded)")
 
     # --- recompute ---------------------------------------------------------
 
@@ -85,6 +162,7 @@ class Engine:
             if live is not None and len(live):
                 obs = pd.concat([self.base, live], ignore_index=True)
             result = compute(obs, model=self.model, verbose=False)
+            _attach_citizen_reports(result, submitted)
             self.artifacts = result
             self.last_recompute = {
                 "at": pd.Timestamp.utcnow().isoformat(timespec="seconds"),
