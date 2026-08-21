@@ -1,10 +1,28 @@
 {
+  "_provenance": "Committed source material. NOT generated. See reference/README.md.",
   "source": "tn_gazette",
-  "citation": "Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept \u2014 Vellore district schedule",
-  "effective_from": "2025-01-01",
+
+  "statutory": {
+    "citation": "Tamil Nadu autorickshaw fare revision announced August 2013 - Rs 25 for the first 1.8 km, Rs 12 for each additional km. Still the standing notified structure; unrevised for 13 years.",
+    "effective_from": "2013-08-01",
+    "minimum_fare": 25.0,
+    "minimum_fare_included_km": 1.8,
+    "per_km_after": 12.0,
+    "status": "unrevised since 2013; State Transport Authority revision proposal with the Home Department as of July 2026"
+  },
+
+  "prevailing": {
+    "citation": "Tamil Nadu autorickshaw fare in force from 1 February 2025 - Rs 50 for the first 1.8 km, Rs 18 for each additional km, 50% night surcharge 11pm-5am, waiting Rs 1.50/minute. Declared by the drivers' unions, not by government notification.",
+    "effective_from": "2025-02-01",
+    "minimum_fare": 50.0,
+    "minimum_fare_included_km": 1.8,
+    "per_km_after": 18.0,
+    "night_surcharge_pct": 50,
+    "waiting_per_minute": 1.5,
+    "declared_by": "drivers' unions (unilateral); not a government order"
+  },
+
+  "benchmark": "prevailing",
   "currency": "INR",
-  "minimum_fare": 25.0,
-  "minimum_fare_included_km": 1.8,
-  "per_km_after": 12.0,
-  "waiting_per_15_min": 7.5
+  "caveat": "The statutory rate has not been revised since 2013 and is far below what any ride costs today; measuring against it would make every honest driver look like a violator. The prevailing union-declared rate is used as the benchmark, and it is not law."
 }

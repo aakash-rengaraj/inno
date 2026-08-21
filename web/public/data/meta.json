@@ -5,8 +5,8 @@
  "locations_monitored": 23,
  "items_monitored": 109,
  "rejected_reports": 29,
- "flags_total": 18,
- "flags_in_queue": 17,
+ "flags_total": 17,
+ "flags_in_queue": 16,
  "inspections": 6,
  "flags_excluded_evidence_floor": 1,
  "model": {
@@ -69,8 +69,8 @@
   "radius_m": 150.0,
   "price_tolerance": 0.03,
   "report_points": 1131,
-  "report_localities": 530,
-  "collapsed": 601
+  "report_localities": 497,
+  "collapsed": 634
  },
  "item_labels": {
   "auto_ride": "Autorickshaw fares",
@@ -91,7 +91,7 @@
   "yam_ratalu": "Yam (Ratalu)"
  },
  "tier_counts": {
-  "2": 14,
+  "2": 13,
   "3": 3
  },
  "sources": [

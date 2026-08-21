@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<caseFileSet district="Vellore" generated="2026-08-20" count="17">
+<caseFileSet district="Vellore" generated="2026-08-20" count="16">
   <caseFile reference="FLG-0001" priority="3" status="Flagged for investigation" generated="2026-08-20">
     <issuer>
       <office>Office of the District Supply Officer</office>
@@ -98,48 +98,6 @@
       <state>Tamil Nadu</state>
     </issuer>
     <subject>
-      <item>Autorickshaw fares</item>
-      <itemCode>auto_ride</itemCode>
-      <location>Katpadi</location>
-      <locationCode>vellore_katpadi</locationCode>
-    </subject>
-    <window start="2026-07-04" end="2026-07-22" days="19" />
-    <finding>Sustained gap above the reference rate</finding>
-    <referenceRate unit="per_ride">
-      <basis>Notified autorickshaw fare schedule</basis>
-      <citation>Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept — Vellore district schedule</citation>
-      <rate>59.11</rate>
-      <expectedRange low="51.4" high="66.82" />
-    </referenceRate>
-    <observed unit="per_ride" observations="267">
-      <median>80.0</median>
-      <percentAgainstReference>35.3</percentAgainstReference>
-      <provenance independentLocalities="30">
-        <source tier="B" label="commercial listing" observations="228" />
-        <source tier="C" label="field report" observations="39" />
-      </provenance>
-    </observed>
-    <measure detector="persistence">
-      <statistic>consecutive_days_above_band</statistic>
-      <value>19</value>
-      <threshold>10</threshold>
-      <explanation>Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock.</explanation>
-    </measure>
-    <peersInBand residualStandardDeviation="4.65">
-      <location>Bagayam</location>
-      <location>Sathuvachari</location>
-      <location>Thorapadi</location>
-    </peersInBand>
-    <summary>Prices stayed above the expected range for 19 consecutive days; median +35% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.</summary>
-    <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
-  </caseFile>
-  <caseFile reference="FLG-0004" priority="2" status="Flagged for investigation" generated="2026-08-20">
-    <issuer>
-      <office>Office of the District Supply Officer</office>
-      <district>Vellore</district>
-      <state>Tamil Nadu</state>
-    </issuer>
-    <subject>
       <item>Banana</item>
       <itemCode>banana</itemCode>
       <location>Gudiyatham Sandhai</location>
@@ -175,7 +133,7 @@
     <summary>Prices stayed above the expected range for 21 consecutive days; median +45% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 2 others remained in-band.</summary>
     <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
   </caseFile>
-  <caseFile reference="FLG-0005" priority="2" status="Flagged for investigation" generated="2026-08-20">
+  <caseFile reference="FLG-0004" priority="2" status="Flagged for investigation" generated="2026-08-20">
     <issuer>
       <office>Office of the District Supply Officer</office>
       <district>Vellore</district>
@@ -217,7 +175,7 @@
     <summary>Prices stayed above the expected range for 12 consecutive days; median +64% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 2 others remained in-band.</summary>
     <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
   </caseFile>
-  <caseFile reference="FLG-0006" priority="2" status="Flagged for investigation" generated="2026-08-20">
+  <caseFile reference="FLG-0005" priority="2" status="Flagged for investigation" generated="2026-08-20">
     <issuer>
       <office>Office of the District Supply Officer</office>
       <district>Vellore</district>
@@ -259,7 +217,7 @@
     <summary>Prices stayed above the expected range for 44 consecutive days; median +67% relative to the reference rate while peer locations Gudiyatham Sandhai, Katpadi Sandhai and 2 others remained in-band.</summary>
     <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
   </caseFile>
-  <caseFile reference="FLG-0007" priority="2" status="Flagged for investigation" generated="2026-08-20">
+  <caseFile reference="FLG-0006" priority="2" status="Flagged for investigation" generated="2026-08-20">
     <issuer>
       <office>Office of the District Supply Officer</office>
       <district>Vellore</district>
@@ -298,7 +256,7 @@
     <summary>Prices stayed above the expected range for 11 consecutive days; median +38% relative to the reference rate while peer location Vellore APMC remained in-band.</summary>
     <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
   </caseFile>
-  <caseFile reference="FLG-0008" priority="2" status="Flagged for investigation" generated="2026-08-20">
+  <caseFile reference="FLG-0007" priority="2" status="Flagged for investigation" generated="2026-08-20">
     <issuer>
       <office>Office of the District Supply Officer</office>
       <district>Vellore</district>
@@ -340,7 +298,7 @@
     <summary>Prices stayed above the expected range for 71 consecutive days; median +28% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.</summary>
     <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
   </caseFile>
-  <caseFile reference="FLG-0010" priority="2" status="Flagged for investigation" generated="2026-08-20">
+  <caseFile reference="FLG-0009" priority="2" status="Flagged for investigation" generated="2026-08-20">
     <issuer>
       <office>Office of the District Supply Officer</office>
       <district>Vellore</district>
@@ -382,7 +340,7 @@
     <summary>Prices stayed above the expected range for 13 consecutive days; median +41% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 2 others remained in-band.</summary>
     <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
   </caseFile>
-  <caseFile reference="FLG-0011" priority="2" status="Flagged for investigation" generated="2026-08-20">
+  <caseFile reference="FLG-0010" priority="2" status="Flagged for investigation" generated="2026-08-20">
     <issuer>
       <office>Office of the District Supply Officer</office>
       <district>Vellore</district>
@@ -425,7 +383,7 @@
     <summary>Prices stayed above the expected range for 12 consecutive days; median +20% relative to the reference rate while peer locations Gudiyatham Sandhai, Katpadi Sandhai and 3 others remained in-band.</summary>
     <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
   </caseFile>
-  <caseFile reference="FLG-0012" priority="2" status="Flagged for investigation" generated="2026-08-20">
+  <caseFile reference="FLG-0011" priority="2" status="Flagged for investigation" generated="2026-08-20">
     <issuer>
       <office>Office of the District Supply Officer</office>
       <district>Vellore</district>
@@ -465,7 +423,7 @@
     <summary>Prices stayed above the expected range for 24 consecutive days; median +100% relative to the reference rate while peer locations Gudiyatham Sandhai, Perampet Sandhai remained in-band.</summary>
     <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
   </caseFile>
-  <caseFile reference="FLG-0013" priority="2" status="Flagged for investigation" generated="2026-08-20">
+  <caseFile reference="FLG-0012" priority="2" status="Flagged for investigation" generated="2026-08-20">
     <issuer>
       <office>Office of the District Supply Officer</office>
       <district>Vellore</district>
@@ -508,7 +466,7 @@
     <summary>Prices stayed above the expected range for 10 consecutive days; median +143% relative to the reference rate while peer locations Gudiyatham Sandhai, Katpadi Sandhai and 3 others remained in-band.</summary>
     <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
   </caseFile>
-  <caseFile reference="FLG-0014" priority="2" status="Flagged for investigation" generated="2026-08-20">
+  <caseFile reference="FLG-0013" priority="2" status="Flagged for investigation" generated="2026-08-20">
     <issuer>
       <office>Office of the District Supply Officer</office>
       <district>Vellore</district>
@@ -551,7 +509,7 @@
     <summary>Prices stayed above the expected range for 10 consecutive days; median +33% relative to the reference rate while peer locations Gudiyatham Sandhai, Kahithapattarai Sandhai and 3 others remained in-band.</summary>
     <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
   </caseFile>
-  <caseFile reference="FLG-0015" priority="2" status="Flagged for investigation" generated="2026-08-20">
+  <caseFile reference="FLG-0014" priority="2" status="Flagged for investigation" generated="2026-08-20">
     <issuer>
       <office>Office of the District Supply Officer</office>
       <district>Vellore</district>
@@ -592,7 +550,7 @@
     <summary>Prices stayed above the expected range for 51 consecutive days; median +33% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 1 other remained in-band.</summary>
     <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
   </caseFile>
-  <caseFile reference="FLG-0016" priority="2" status="Flagged for investigation" generated="2026-08-20">
+  <caseFile reference="FLG-0015" priority="2" status="Flagged for investigation" generated="2026-08-20">
     <issuer>
       <office>Office of the District Supply Officer</office>
       <district>Vellore</district>
@@ -634,7 +592,7 @@
     <summary>Prices stayed above the expected range for 12 consecutive days; median +30% relative to the reference rate while peer locations Kahithapattarai Sandhai, Katpadi Sandhai and 2 others remained in-band.</summary>
     <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
   </caseFile>
-  <caseFile reference="FLG-0017" priority="2" status="Flagged for investigation" generated="2026-08-20">
+  <caseFile reference="FLG-0016" priority="2" status="Flagged for investigation" generated="2026-08-20">
     <issuer>
       <office>Office of the District Supply Officer</office>
       <district>Vellore</district>
@@ -675,7 +633,7 @@
     <summary>Prices stayed above the expected range for 12 consecutive days; median +39% relative to the reference rate while peer locations Kahithapattarai Sandhai, Pallikonda Sandhai and 1 other remained in-band.</summary>
     <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
   </caseFile>
-  <caseFile reference="FLG-0018" priority="3" status="Flagged for investigation" generated="2026-08-20">
+  <caseFile reference="FLG-0017" priority="3" status="Flagged for investigation" generated="2026-08-20">
     <issuer>
       <office>Office of the District Supply Officer</office>
       <district>Vellore</district>
@@ -691,34 +649,34 @@
     <finding>Fares cluster at round values</finding>
     <referenceRate unit="per_ride">
       <basis>Notified autorickshaw fare schedule</basis>
-      <citation>Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept — Vellore district schedule</citation>
-      <rate>63.25</rate>
-      <expectedRange low="55.0" high="71.5" />
+      <citation>Tamil Nadu autorickshaw fare in force from 1 February 2025 - Rs 50 for the first 1.8 km, Rs 18 for each additional km, 50% night surcharge 11pm-5am, waiting Rs 1.50/minute. Declared by the drivers' unions, not by government notification.</citation>
+      <rate>84.41</rate>
+      <expectedRange low="73.4" high="95.42" />
     </referenceRate>
     <observed unit="per_ride" observations="1076">
-      <median>80.0</median>
-      <percentAgainstReference>26.5</percentAgainstReference>
-      <provenance independentLocalities="87">
+      <median>90.0</median>
+      <percentAgainstReference>6.6</percentAgainstReference>
+      <provenance independentLocalities="85">
         <source tier="B" label="commercial listing" observations="924" />
         <source tier="C" label="field report" observations="152" />
       </provenance>
     </observed>
     <measure detector="quantisation">
       <statistic>modal_mass_at_round_values</statistic>
-      <value>0.926</value>
+      <value>0.931</value>
       <threshold>0.6</threshold>
       <supporting>
-        <value name="distance_r2">0.234</value>
+        <value name="distance_r2">0.335</value>
         <value name="distance_r2_threshold">0.35</value>
       </supporting>
       <explanation>A metered fare varies continuously with distance. This measure reports the share of quoted fares landing on round multiples, together with how much of the fare is explained by distance at all. Round numbers with weak distance response describe a fare that was set rather than measured.</explanation>
     </measure>
-    <peersInBand residualStandardDeviation="4.59">
+    <peersInBand residualStandardDeviation="1.642">
       <location>Bagayam</location>
       <location>Sathuvachari</location>
       <location>Thorapadi</location>
     </peersInBand>
-    <summary>Quoted fares cluster at round values (93% of quotes) with weak distance sensitivity (R² 0.23); median +26% relative to the notified rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.</summary>
+    <summary>Quoted fares cluster at round values (93% of quotes) with weak distance sensitivity (R² 0.34); median +7% relative to the notified rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.</summary>
     <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
   </caseFile>
 </caseFileSet>

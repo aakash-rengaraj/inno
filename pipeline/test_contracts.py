@@ -24,7 +24,7 @@ OBS = pd.DataFrame([
 REFS = pd.DataFrame([
     dict(item="auto_ride", location="vellore_katpadi", date="2026-08-10", rate=33.5,
          unit="per_ride", source="tn_gazette",
-         citation="TN G.O. (Ms) No. 41, Transport Dept — Vellore district schedule"),
+         citation="TN autorickshaw fare in force from 1 February 2025 (union-declared)"),
 ])
 
 FLAG = dict(

@@ -124,65 +124,6 @@
  },
  "FLG-0003": {
   "flag_id": "FLG-0003",
-  "title": "Autorickshaw fares \u2014 Katpadi",
-  "status": "Flagged for investigation",
-  "tier": 2,
-  "tier_label": "Review",
-  "finding": "Sustained gap above the reference rate",
-  "narrative": "Prices stayed above the expected range for 19 consecutive days; median +35% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
-  "window": {
-   "start": "2026-07-04",
-   "end": "2026-07-22"
-  },
-  "duration_days": 19,
-  "reference": {
-   "basis": "Notified autorickshaw fare schedule",
-   "rate": 59.11,
-   "band": [
-    51.4,
-    66.82
-   ],
-   "unit": "per ride",
-   "citation": "Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept \u2014 Vellore district schedule"
-  },
-  "observed": {
-   "median": 80.0,
-   "unit": "per ride",
-   "n": 267,
-   "pct_vs_reference": 35.3,
-   "provenance": [
-    {
-     "tier": "B",
-     "label": "commercial listing",
-     "n": 228
-    },
-    {
-     "tier": "C",
-     "label": "field report",
-     "n": 39
-    }
-   ],
-   "distinct_localities": 30
-  },
-  "measure": {
-   "detector": "persistence",
-   "name": "consecutive_days_above_band",
-   "value": 19,
-   "threshold": 10,
-   "extra": {},
-   "explanation": "Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock."
-  },
-  "residual_sd": 4.65,
-  "peers_in_band": [
-   "Bagayam",
-   "Sathuvachari",
-   "Thorapadi"
-  ],
-  "series": [],
-  "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
- },
- "FLG-0004": {
-  "flag_id": "FLG-0004",
   "title": "Banana \u2014 Gudiyatham Sandhai",
   "status": "Flagged for investigation",
   "tier": 2,
@@ -236,8 +177,8 @@
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0005": {
-  "flag_id": "FLG-0005",
+ "FLG-0004": {
+  "flag_id": "FLG-0004",
   "title": "Banana \u2014 Vellore APMC",
   "status": "Flagged for investigation",
   "tier": 2,
@@ -291,8 +232,8 @@
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0006": {
-  "flag_id": "FLG-0006",
+ "FLG-0005": {
+  "flag_id": "FLG-0005",
   "title": "Banana - Green \u2014 Kahithapattarai Sandhai",
   "status": "Flagged for investigation",
   "tier": 2,
@@ -346,8 +287,8 @@
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0007": {
-  "flag_id": "FLG-0007",
+ "FLG-0006": {
+  "flag_id": "FLG-0006",
   "title": "Cauliflower \u2014 Katpadi Sandhai",
   "status": "Flagged for investigation",
   "tier": 2,
@@ -398,8 +339,8 @@
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0008": {
-  "flag_id": "FLG-0008",
+ "FLG-0007": {
+  "flag_id": "FLG-0007",
   "title": "Table eggs \u2014 Katpadi",
   "status": "Flagged for investigation",
   "tier": 2,
@@ -457,8 +398,8 @@
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0010": {
-  "flag_id": "FLG-0010",
+ "FLG-0009": {
+  "flag_id": "FLG-0009",
   "title": "Ginger(Green) \u2014 Gudiyatham Sandhai",
   "status": "Flagged for investigation",
   "tier": 2,
@@ -512,8 +453,8 @@
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0011": {
-  "flag_id": "FLG-0011",
+ "FLG-0010": {
+  "flag_id": "FLG-0010",
   "title": "Groundnut \u2014 Kahithapattarai Sandhai",
   "status": "Flagged for investigation",
   "tier": 2,
@@ -568,8 +509,8 @@
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0012": {
-  "flag_id": "FLG-0012",
+ "FLG-0011": {
+  "flag_id": "FLG-0011",
   "title": "Lemon \u2014 Katpadi Sandhai",
   "status": "Flagged for investigation",
   "tier": 2,
@@ -621,8 +562,8 @@
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0013": {
-  "flag_id": "FLG-0013",
+ "FLG-0012": {
+  "flag_id": "FLG-0012",
   "title": "Mint(Pudina) \u2014 Kahithapattarai Sandhai",
   "status": "Flagged for investigation",
   "tier": 2,
@@ -677,8 +618,8 @@
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0014": {
-  "flag_id": "FLG-0014",
+ "FLG-0013": {
+  "flag_id": "FLG-0013",
   "title": "Onion \u2014 Katpadi Sandhai",
   "status": "Flagged for investigation",
   "tier": 2,
@@ -733,8 +674,8 @@
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0015": {
-  "flag_id": "FLG-0015",
+ "FLG-0014": {
+  "flag_id": "FLG-0014",
   "title": "Onion Green \u2014 Gudiyatham Sandhai",
   "status": "Flagged for investigation",
   "tier": 2,
@@ -787,8 +728,8 @@
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0016": {
-  "flag_id": "FLG-0016",
+ "FLG-0015": {
+  "flag_id": "FLG-0015",
   "title": "Onion Green \u2014 Perampet Sandhai",
   "status": "Flagged for investigation",
   "tier": 2,
@@ -842,8 +783,8 @@
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0017": {
-  "flag_id": "FLG-0017",
+ "FLG-0016": {
+  "flag_id": "FLG-0016",
   "title": "Yam (Ratalu) \u2014 Gudiyatham Sandhai",
   "status": "Flagged for investigation",
   "tier": 2,
@@ -896,14 +837,14 @@
   "series": [],
   "caveat": "This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes."
  },
- "FLG-0018": {
-  "flag_id": "FLG-0018",
+ "FLG-0017": {
+  "flag_id": "FLG-0017",
   "title": "Autorickshaw fares \u2014 Katpadi",
   "status": "Flagged for investigation",
   "tier": 3,
   "tier_label": "Priority",
   "finding": "Fares cluster at round values",
-  "narrative": "Quoted fares cluster at round values (93% of quotes) with weak distance sensitivity (R\u00b2 0.23); median +26% relative to the notified rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
+  "narrative": "Quoted fares cluster at round values (93% of quotes) with weak distance sensitivity (R\u00b2 0.34); median +7% relative to the notified rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
   "window": {
    "start": "2026-05-26",
    "end": "2026-08-10"
@@ -911,19 +852,19 @@
   "duration_days": 77,
   "reference": {
    "basis": "Notified autorickshaw fare schedule",
-   "rate": 63.25,
+   "rate": 84.41,
    "band": [
-    55.0,
-    71.5
+    73.4,
+    95.42
    ],
    "unit": "per ride",
-   "citation": "Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept \u2014 Vellore district schedule"
+   "citation": "Tamil Nadu autorickshaw fare in force from 1 February 2025 - Rs 50 for the first 1.8 km, Rs 18 for each additional km, 50% night surcharge 11pm-5am, waiting Rs 1.50/minute. Declared by the drivers' unions, not by government notification."
   },
   "observed": {
-   "median": 80.0,
+   "median": 90.0,
    "unit": "per ride",
    "n": 1076,
-   "pct_vs_reference": 26.5,
+   "pct_vs_reference": 6.6,
    "provenance": [
     {
      "tier": "B",
@@ -936,20 +877,20 @@
      "n": 152
     }
    ],
-   "distinct_localities": 87
+   "distinct_localities": 85
   },
   "measure": {
    "detector": "quantisation",
    "name": "modal_mass_at_round_values",
-   "value": 0.926,
+   "value": 0.931,
    "threshold": 0.6,
    "extra": {
-    "distance_r2": 0.234,
+    "distance_r2": 0.335,
     "distance_r2_threshold": 0.35
    },
    "explanation": "A metered fare varies continuously with distance. This measure reports the share of quoted fares landing on round multiples, together with how much of the fare is explained by distance at all. Round numbers with weak distance response describe a fare that was set rather than measured."
   },
-  "residual_sd": 4.59,
+  "residual_sd": 1.642,
   "peers_in_band": [
    "Bagayam",
    "Sathuvachari",

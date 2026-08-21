@@ -38,7 +38,9 @@ MIN_MARKETS = 3
 # Both carry a published reference the public is entitled to see -- the NECC
 # declared rate and the TN gazetted fare schedule -- so each block states the
 # reference alongside what people are actually paying.
-FARE_DISTANCES = (2.0, 3.0, 5.0, 8.0, 10.0)
+# Auto-stand trips, not cross-town ones. 8 and 10 km rows sat permanently
+# empty, which reads as missing data rather than as a trip nobody takes.
+FARE_DISTANCES = (2.0, 3.0, 4.0, 5.0)
 RETAIL_WINDOW_DAYS = 30
 
 

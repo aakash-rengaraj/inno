@@ -218,13 +218,13 @@ def gen_qcommerce() -> None:
 
 # --- 4. ride-hail fare estimates (autos) -----------------------------------
 
-GAZETTE_MIN_FARE = 25.0     # first 1.8 km
-GAZETTE_INCLUDED_KM = 1.8
-GAZETTE_PER_KM = 12.0
-
-
+# Read from the committed reference file rather than restated here. When these
+# were separate constants the fixture kept the 2013 statutory rate while the
+# pipeline benchmarked the 2025 prevailing one, so every synthetic "honest"
+# driver appeared to be charging half the going rate.
 def gazetted_fare(km: float) -> float:
-    return GAZETTE_MIN_FARE + max(0.0, km - GAZETTE_INCLUDED_KM) * GAZETTE_PER_KM
+    from pipeline.ingest import gazette
+    return gazette.fare_for(km)
 
 
 # What a driver normally asks over the notified fare: roughly 20%, and crucially
@@ -241,11 +241,14 @@ def gen_ridehail() -> None:
             for d in DEMO_DAYS:
                 for zone, (lat, lng) in ZONES.items():
                     for _ in range(6):
-                        km = float(np.round(RNG.uniform(1.2, 7.5), 1))
+                        km = float(np.round(RNG.uniform(1.2, 5.0), 1))
                         if zone == SUSPECT_ZONE and d >= EVENT_START:
-                            # fares quantised to Rs 10 steps, weak distance response
-                            # near-flat zone rate: barely responds to distance
-                            raw = 76 + 2.0 * km + RNG.normal(0, 6)
+                            # A near-flat rate quantised to Rs 10 steps: ~Rs 80 for
+                            # a short trip whatever the distance, which is what a
+                            # stand that has agreed a price actually looks like.
+                            # The tell is not the level, it is that the fare barely
+                            # responds to distance.
+                            raw = 72 + 4.2 * km + RNG.normal(0, 7)
                             fare = float(np.round(raw / 10.0) * 10)
                         else:
                             fare = gazetted_fare(km) * RNG.uniform(*NORMAL_PREMIUM)
@@ -335,9 +338,10 @@ def gen_reports() -> None:
                 rows.append([f"{d.isoformat()}T18:40:00+05:30", a, b, "egg_table",
                              round(price, 2), "per_piece", "", "local shop"])
             for _ in range(RNG.integers(1, 4)):
-                km = float(np.round(RNG.uniform(1.5, 6.0), 1))
+                km = float(np.round(RNG.uniform(1.5, 5.0), 1))
                 if zone == SUSPECT_ZONE and d >= EVENT_START:
-                    fare = float(np.round((76 + 2.0 * km + RNG.normal(0, 6)) / 10.0) * 10)
+                    raw = 72 + 4.2 * km + RNG.normal(0, 7)
+                    fare = float(np.round(raw / 10.0) * 10)
                 else:
                     fare = float(np.round(gazetted_fare(km) * RNG.uniform(*NORMAL_PREMIUM)))
                 a, b = scatter(lat, lng)
@@ -373,23 +377,18 @@ def gen_reports() -> None:
 # --- 6. reference rate sources not covered above ---------------------------
 
 def gen_reference() -> None:
-    (RAW / "reference" / "tn_auto_fare.json").write_text(json.dumps({
-        "source": "tn_gazette",
-        "citation": "Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, "
-                    "G.O. (Ms) No. 41, Transport Dept — Vellore district schedule",
-        "effective_from": "2025-01-01",
-        "currency": "INR",
-        "minimum_fare": GAZETTE_MIN_FARE,
-        "minimum_fare_included_km": GAZETTE_INCLUDED_KM,
-        "per_km_after": GAZETTE_PER_KM,
-        "waiting_per_15_min": 7.5,
-    }, indent=2) + "\n")
-    (RAW / "reference" / "necc_citation.txt").write_text(
-        "National Egg Coordination Committee — declared daily egg rate, Chennai zone\n")
-    (RAW / "reference" / "README.md").write_text(
-        "Reference-rate source material. `citation` strings here are copied verbatim "
-        "into case files.\n")
-    print("  reference/: gazette schedule + citations")
+    """Deliberately does nothing.
+
+    This used to write data/raw/reference/tn_auto_fare.json, inventing both the
+    fare numbers and a citation string -- "G.O. (Ms) No. 41, Transport Dept" --
+    that named a government order nobody had checked existed. That string was
+    copied verbatim into every autorickshaw case file, so a synthetic fixture was
+    manufacturing the one thing a case file cannot be allowed to get wrong.
+
+    Reference rates are source material. They are committed by hand with their
+    provenance in reference/README.md, and the fixture does not touch them.
+    """
+    print("  reference/: committed by hand, not generated")
 
 
 def main() -> None:

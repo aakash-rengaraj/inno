@@ -22,53 +22,48 @@
   "rows": [
    {
     "km": 2.0,
-    "notified": 27.4,
+    "notified": 53.6,
     "observed": {
-     "low": 29.0,
-     "typical": 35.0,
+     "low": 57.0,
+     "typical": 67.0,
      "high": 90.0,
-     "n": 256
+     "n": 417
     }
    },
    {
     "km": 3.0,
-    "notified": 39.4,
+    "notified": 71.6,
     "observed": {
-     "low": 38.0,
-     "typical": 50.0,
-     "high": 90.0,
-     "n": 311
+     "low": 70.0,
+     "typical": 86.0,
+     "high": 101.0,
+     "n": 499
+    }
+   },
+   {
+    "km": 4.0,
+    "notified": 89.6,
+    "observed": {
+     "low": 70.0,
+     "typical": 102.0,
+     "high": 130.0,
+     "n": 800
     }
    },
    {
     "km": 5.0,
-    "notified": 63.4,
-    "observed": {
-     "low": 59.0,
-     "typical": 80.0,
-     "high": 100.0,
-     "n": 630
-    }
-   },
-   {
-    "km": 8.0,
-    "notified": 99.4,
+    "notified": 107.6,
     "observed": {
      "low": 70.0,
-     "typical": 101.0,
-     "high": 117.0,
-     "n": 271
+     "typical": 114.0,
+     "high": 135.0,
+     "n": 508
     }
-   },
-   {
-    "km": 10.0,
-    "notified": 123.4,
-    "observed": null
    }
   ],
   "window_days": 30,
   "note": "The notified fare is the regulated rate for the distance. Waiting time and night trips are charged extra.",
-  "source": "Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept \u2014 Vellore district schedule"
+  "source": "Tamil Nadu autorickshaw fare in force from 1 February 2025 - Rs 50 for the first 1.8 km, Rs 18 for each additional km, 50% night surcharge 11pm-5am, waiting Rs 1.50/minute. Declared by the drivers' unions, not by government notification."
  },
  "source": "Agmarknet daily mandi prices, Government of India",
  "min_markets": 3,

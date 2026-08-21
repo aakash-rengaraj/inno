@@ -1,4 +1,20 @@
-"""TN gazetted autorickshaw fare schedule — the reference rate for autos."""
+"""Tamil Nadu autorickshaw fare — the reference rate for autos.
+
+Two rates exist and conflating them was a real defect here. The **statutory**
+rate (Rs 25 / 1.8 km, Rs 12 per km) was announced in August 2013 and has not been
+revised in thirteen years. The **prevailing** rate (Rs 50 / 1.8 km, Rs 18 per km,
+from 1 February 2025) was declared by the drivers' unions and is not a government
+order, but it is what riders are actually quoted against.
+
+We benchmark against the prevailing rate. Measured against the 2013 rate, a
+present-day fare is roughly double it before anyone does anything wrong, and the
+detectors would be reading thirteen years of inflation as manipulation.
+
+The rate lives in data/raw/reference/tn_auto_fare.json, which is **committed
+source material and must never be generated** -- its `citation` string is copied
+verbatim into case files, so an invented string here becomes an invented citation
+in a document that reads as an enforcement record.
+"""
 from __future__ import annotations
 
 import json
@@ -12,7 +28,15 @@ ZONES = ["vellore_katpadi", "vellore_bagayam", "vellore_sathuvachari", "vellore_
 
 
 def schedule() -> dict:
-    return json.loads((RAW / "reference" / "tn_auto_fare.json").read_text())
+    """The benchmark block, flattened, with its citation attached."""
+    doc = json.loads((RAW / "reference" / "tn_auto_fare.json").read_text())
+    which = doc.get("benchmark", "prevailing")
+    block = dict(doc[which])
+    block["basis"] = which
+    block["currency"] = doc.get("currency", "INR")
+    block["caveat"] = doc.get("caveat", "")
+    block["statutory_note"] = doc["statutory"]["citation"]
+    return block
 
 
 def fare_for(km: float, sched: dict | None = None) -> float:

@@ -42,7 +42,7 @@
   "basis": "necc",
   "citation": "National Egg Coordination Committee \u2014 suggested daily egg rate, Namakkal zone (suggestive, not mandatory)",
   "group_id": "vellore_katpadi",
-  "group_size": 5,
+  "group_size": 4,
   "group_rank": 0,
   "group_primary": true
  },
@@ -90,58 +90,12 @@
   "basis": "necc",
   "citation": "National Egg Coordination Committee \u2014 suggested daily egg rate, Namakkal zone (suggestive, not mandatory)",
   "group_id": "vellore_katpadi",
-  "group_size": 5,
+  "group_size": 4,
   "group_rank": 1,
   "group_primary": false
  },
  {
   "flag_id": "FLG-0003",
-  "tier": 2,
-  "item": "auto_ride",
-  "location": "vellore_katpadi",
-  "window": {
-   "start": "2026-07-04",
-   "end": "2026-07-22"
-  },
-  "detector": "persistence",
-  "statistic": {
-   "name": "consecutive_days_above_band",
-   "value": 19,
-   "threshold": 10
-  },
-  "expected": {
-   "rate": 59.11,
-   "band": [
-    51.4,
-    66.82
-   ],
-   "unit": "per_ride"
-  },
-  "observed": {
-   "median": 80.0,
-   "n": 267,
-   "tier_mix": {
-    "B": 228,
-    "C": 39
-   }
-  },
-  "residual_sd": 4.65,
-  "peers_in_band": [
-   "vellore_bagayam",
-   "vellore_sathuvachari",
-   "vellore_thorapadi"
-  ],
-  "narrative": "Prices stayed above the expected range for 19 consecutive days; median +35% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
-  "distinct_sellers": 30,
-  "basis": "gazette",
-  "citation": "Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept \u2014 Vellore district schedule",
-  "group_id": "vellore_katpadi",
-  "group_size": 5,
-  "group_rank": 3,
-  "group_primary": false
- },
- {
-  "flag_id": "FLG-0004",
   "tier": 2,
   "item": "banana",
   "location": "gudiyatham_sandhai",
@@ -187,7 +141,7 @@
   "group_primary": true
  },
  {
-  "flag_id": "FLG-0005",
+  "flag_id": "FLG-0004",
   "tier": 2,
   "item": "banana",
   "location": "vellore_apmc",
@@ -233,7 +187,7 @@
   "group_primary": true
  },
  {
-  "flag_id": "FLG-0006",
+  "flag_id": "FLG-0005",
   "tier": 2,
   "item": "banana_green",
   "location": "kahithapattarai_sandhai",
@@ -279,7 +233,7 @@
   "group_primary": false
  },
  {
-  "flag_id": "FLG-0007",
+  "flag_id": "FLG-0006",
   "tier": 2,
   "item": "cauliflower",
   "location": "katpadi_sandhai",
@@ -322,7 +276,7 @@
   "group_primary": false
  },
  {
-  "flag_id": "FLG-0008",
+  "flag_id": "FLG-0007",
   "tier": 2,
   "item": "egg_table",
   "location": "vellore_katpadi",
@@ -363,12 +317,12 @@
   "basis": "necc",
   "citation": "National Egg Coordination Committee \u2014 suggested daily egg rate, Namakkal zone (suggestive, not mandatory)",
   "group_id": "vellore_katpadi",
-  "group_size": 5,
-  "group_rank": 4,
+  "group_size": 4,
+  "group_rank": 3,
   "group_primary": false
  },
  {
-  "flag_id": "FLG-0009",
+  "flag_id": "FLG-0008",
   "tier": 1,
   "item": "egg_table",
   "location": "vellore_ranipet",
@@ -410,7 +364,7 @@
   "evidence_floor": "Downgraded: all 90 observations are field reports from 1 independent locality; 3 required. Nearby reports quoting the same price are counted once."
  },
  {
-  "flag_id": "FLG-0010",
+  "flag_id": "FLG-0009",
   "tier": 2,
   "item": "ginger_green",
   "location": "gudiyatham_sandhai",
@@ -456,7 +410,7 @@
   "group_primary": false
  },
  {
-  "flag_id": "FLG-0011",
+  "flag_id": "FLG-0010",
   "tier": 2,
   "item": "groundnut",
   "location": "kahithapattarai_sandhai",
@@ -503,7 +457,7 @@
   "group_primary": false
  },
  {
-  "flag_id": "FLG-0012",
+  "flag_id": "FLG-0011",
   "tier": 2,
   "item": "lemon",
   "location": "katpadi_sandhai",
@@ -547,7 +501,7 @@
   "group_primary": true
  },
  {
-  "flag_id": "FLG-0013",
+  "flag_id": "FLG-0012",
   "tier": 2,
   "item": "mint_pudina",
   "location": "kahithapattarai_sandhai",
@@ -594,7 +548,7 @@
   "group_primary": true
  },
  {
-  "flag_id": "FLG-0014",
+  "flag_id": "FLG-0013",
   "tier": 2,
   "item": "onion",
   "location": "katpadi_sandhai",
@@ -641,7 +595,7 @@
   "group_primary": false
  },
  {
-  "flag_id": "FLG-0015",
+  "flag_id": "FLG-0014",
   "tier": 2,
   "item": "onion_green",
   "location": "gudiyatham_sandhai",
@@ -686,7 +640,7 @@
   "group_primary": false
  },
  {
-  "flag_id": "FLG-0016",
+  "flag_id": "FLG-0015",
   "tier": 2,
   "item": "onion_green",
   "location": "perampet_sandhai",
@@ -732,7 +686,7 @@
   "group_primary": true
  },
  {
-  "flag_id": "FLG-0017",
+  "flag_id": "FLG-0016",
   "tier": 2,
   "item": "yam_ratalu",
   "location": "gudiyatham_sandhai",
@@ -777,7 +731,7 @@
   "group_primary": false
  },
  {
-  "flag_id": "FLG-0018",
+  "flag_id": "FLG-0017",
   "tier": 3,
   "item": "auto_ride",
   "location": "vellore_katpadi",
@@ -788,39 +742,39 @@
   "detector": "quantisation",
   "statistic": {
    "name": "modal_mass_at_round_values",
-   "value": 0.926,
+   "value": 0.931,
    "threshold": 0.6,
-   "distance_r2": 0.234,
+   "distance_r2": 0.335,
    "distance_r2_threshold": 0.35
   },
   "expected": {
-   "rate": 63.25,
+   "rate": 84.41,
    "band": [
-    55.0,
-    71.5
+    73.4,
+    95.42
    ],
    "unit": "per_ride"
   },
   "observed": {
-   "median": 80.0,
+   "median": 90.0,
    "n": 1076,
    "tier_mix": {
     "B": 924,
     "C": 152
    }
   },
-  "residual_sd": 4.59,
+  "residual_sd": 1.642,
   "peers_in_band": [
    "vellore_bagayam",
    "vellore_sathuvachari",
    "vellore_thorapadi"
   ],
-  "narrative": "Quoted fares cluster at round values (93% of quotes) with weak distance sensitivity (R\u00b2 0.23); median +26% relative to the notified rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
-  "distinct_sellers": 87,
+  "narrative": "Quoted fares cluster at round values (93% of quotes) with weak distance sensitivity (R\u00b2 0.34); median +7% relative to the notified rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
+  "distinct_sellers": 85,
   "basis": "gazette",
-  "citation": "Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept \u2014 Vellore district schedule",
+  "citation": "Tamil Nadu autorickshaw fare in force from 1 February 2025 - Rs 50 for the first 1.8 km, Rs 18 for each additional km, 50% night surcharge 11pm-5am, waiting Rs 1.50/minute. Declared by the drivers' unions, not by government notification.",
   "group_id": "vellore_katpadi",
-  "group_size": 5,
+  "group_size": 4,
   "group_rank": 2,
   "group_primary": false
  }
