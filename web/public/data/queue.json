@@ -1,98 +1,50 @@
 [
  {
-  "flag_id": "FLG-0018",
-  "tier": 3,
-  "item": "auto_ride",
-  "location": "vellore_katpadi",
-  "window": {
-   "start": "2026-05-26",
-   "end": "2026-08-10"
-  },
-  "detector": "quantisation",
-  "statistic": {
-   "name": "modal_mass_at_round_values",
-   "value": 0.927,
-   "threshold": 0.6,
-   "distance_r2": 0.239,
-   "distance_r2_threshold": 0.35
-  },
-  "expected": {
-   "rate": 61.87,
-   "band": [
-    53.8,
-    69.94
-   ],
-   "unit": "per_ride"
-  },
-  "observed": {
-   "median": 80.0,
-   "n": 1082,
-   "tier_mix": {
-    "B": 924,
-    "C": 158
-   }
-  },
-  "residual_sd": 4.594,
-  "peers_in_band": [
-   "vellore_bagayam",
-   "vellore_sathuvachari",
-   "vellore_thorapadi"
-  ],
-  "narrative": "Quoted fares cluster at round values (93% of quotes) with weak distance sensitivity (R\u00b2 0.24); median +29% relative to the notified rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
-  "distinct_sellers": 21,
-  "basis": "gazette",
-  "citation": "Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept \u2014 Vellore district schedule",
-  "group_id": "vellore_katpadi",
-  "group_size": 5,
-  "group_rank": 0,
-  "group_primary": true
- },
- {
   "flag_id": "FLG-0001",
   "tier": 3,
   "item": "egg_table",
   "location": "vellore_katpadi",
   "window": {
-   "start": "2026-06-01",
+   "start": "2026-07-21",
    "end": "2026-08-10"
   },
   "detector": "variance_collapse",
   "statistic": {
    "name": "median_daily_cv_across_sellers",
-   "value": 0.0021,
+   "value": 0.0019,
    "threshold": 0.03,
-   "days_collapsed": 71
+   "days_collapsed": 21
   },
   "expected": {
-   "rate": 7.58,
+   "rate": 7.05,
    "band": [
-    6.77,
-    8.38
+    6.3,
+    7.8
    ],
    "unit": "per_piece"
   },
   "observed": {
-   "median": 9.73,
-   "n": 363,
+   "median": 9.78,
+   "n": 104,
    "tier_mix": {
-    "B": 213,
-    "C": 150
+    "B": 63,
+    "C": 41
    }
   },
-  "residual_sd": 0.946,
+  "residual_sd": 1.253,
   "peers_in_band": [
    "vellore_bagayam",
    "vellore_sathuvachari",
    "vellore_thorapadi"
   ],
-  "narrative": "Prices from 363 observations across the location stayed within 0.2% of one another for 71 days, against a 3.0% threshold; median +28% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
-  "distinct_sellers": 8,
+  "narrative": "Prices from 104 observations across the location stayed within 0.2% of one another for 21 days, against a 3.0% threshold; median +39% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
+  "distinct_sellers": 17,
   "basis": "necc",
   "citation": "National Egg Coordination Committee \u2014 suggested daily egg rate, Namakkal zone (suggestive, not mandatory)",
   "group_id": "vellore_katpadi",
   "group_size": 5,
-  "group_rank": 1,
-  "group_primary": false
+  "group_rank": 0,
+  "group_primary": true
  },
  {
   "flag_id": "FLG-0002",
@@ -108,7 +60,7 @@
    "name": "peer_corr_minus_cost_corr",
    "value": 1.117,
    "threshold": 0.4,
-   "peer_correlation": 0.91,
+   "peer_correlation": 0.909,
    "cost_correlation": -0.208
   },
   "expected": {
@@ -121,22 +73,70 @@
   },
   "observed": {
    "median": 9.78,
-   "n": 243,
+   "n": 234,
    "tier_mix": {
     "B": 141,
-    "C": 102
+    "C": 93
    }
   },
-  "residual_sd": 1.065,
+  "residual_sd": 1.112,
   "peers_in_band": [
    "vellore_bagayam",
    "vellore_sathuvachari",
    "vellore_thorapadi"
   ],
   "narrative": "Listed prices follow one another (correlation 0.91) far more closely than they follow the reference rate (correlation -0.21); median +28% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
-  "distinct_sellers": 8,
+  "distinct_sellers": 38,
   "basis": "necc",
   "citation": "National Egg Coordination Committee \u2014 suggested daily egg rate, Namakkal zone (suggestive, not mandatory)",
+  "group_id": "vellore_katpadi",
+  "group_size": 5,
+  "group_rank": 1,
+  "group_primary": false
+ },
+ {
+  "flag_id": "FLG-0018",
+  "tier": 3,
+  "item": "auto_ride",
+  "location": "vellore_katpadi",
+  "window": {
+   "start": "2026-05-26",
+   "end": "2026-08-10"
+  },
+  "detector": "quantisation",
+  "statistic": {
+   "name": "modal_mass_at_round_values",
+   "value": 0.926,
+   "threshold": 0.6,
+   "distance_r2": 0.234,
+   "distance_r2_threshold": 0.35
+  },
+  "expected": {
+   "rate": 63.25,
+   "band": [
+    55.0,
+    71.5
+   ],
+   "unit": "per_ride"
+  },
+  "observed": {
+   "median": 80.0,
+   "n": 1076,
+   "tier_mix": {
+    "B": 924,
+    "C": 152
+   }
+  },
+  "residual_sd": 4.59,
+  "peers_in_band": [
+   "vellore_bagayam",
+   "vellore_sathuvachari",
+   "vellore_thorapadi"
+  ],
+  "narrative": "Quoted fares cluster at round values (93% of quotes) with weak distance sensitivity (R\u00b2 0.23); median +26% relative to the notified rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
+  "distinct_sellers": 87,
+  "basis": "gazette",
+  "citation": "Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept \u2014 Vellore district schedule",
   "group_id": "vellore_katpadi",
   "group_size": 5,
   "group_rank": 2,
@@ -148,39 +148,39 @@
   "item": "auto_ride",
   "location": "vellore_katpadi",
   "window": {
-   "start": "2026-07-10",
-   "end": "2026-07-30"
+   "start": "2026-07-04",
+   "end": "2026-07-22"
   },
   "detector": "persistence",
   "statistic": {
    "name": "consecutive_days_above_band",
-   "value": 21,
+   "value": 19,
    "threshold": 10
   },
   "expected": {
-   "rate": 61.87,
+   "rate": 59.11,
    "band": [
-    53.8,
-    69.94
+    51.4,
+    66.82
    ],
    "unit": "per_ride"
   },
   "observed": {
    "median": 80.0,
-   "n": 291,
+   "n": 267,
    "tier_mix": {
-    "B": 252,
+    "B": 228,
     "C": 39
    }
   },
-  "residual_sd": 4.654,
+  "residual_sd": 4.65,
   "peers_in_band": [
    "vellore_bagayam",
    "vellore_sathuvachari",
    "vellore_thorapadi"
   ],
-  "narrative": "Prices stayed above the expected range for 21 consecutive days; median +29% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
-  "distinct_sellers": 9,
+  "narrative": "Prices stayed above the expected range for 19 consecutive days; median +35% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
+  "distinct_sellers": 30,
   "basis": "gazette",
   "citation": "Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept \u2014 Vellore district schedule",
   "group_id": "vellore_katpadi",
@@ -213,20 +213,20 @@
   },
   "observed": {
    "median": 9.73,
-   "n": 363,
+   "n": 355,
    "tier_mix": {
     "B": 213,
-    "C": 150
+    "C": 142
    }
   },
-  "residual_sd": 0.946,
+  "residual_sd": 0.989,
   "peers_in_band": [
    "vellore_bagayam",
    "vellore_sathuvachari",
    "vellore_thorapadi"
   ],
   "narrative": "Prices stayed above the expected range for 71 consecutive days; median +28% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
-  "distinct_sellers": 8,
+  "distinct_sellers": 50,
   "basis": "necc",
   "citation": "National Egg Coordination Committee \u2014 suggested daily egg rate, Namakkal zone (suggestive, not mandatory)",
   "group_id": "vellore_katpadi",
@@ -584,7 +584,7 @@
     "A": 21
    }
   },
-  "residual_sd": 0.355,
+  "residual_sd": 0.358,
   "peers_in_band": [
    "kahithapattarai_sandhai",
    "katpadi_sandhai",
@@ -665,7 +665,7 @@
    "rate": 47.5,
    "band": [
     41.61,
-    54.44
+    54.41
    ],
    "unit": "per_kg"
   },
@@ -721,7 +721,7 @@
     "A": 51
    }
   },
-  "residual_sd": 0.357,
+  "residual_sd": 0.361,
   "peers_in_band": [
    "kahithapattarai_sandhai",
    "katpadi_sandhai",

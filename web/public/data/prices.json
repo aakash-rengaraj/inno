@@ -2,6 +2,74 @@
  "date": "2026-08-20",
  "unit": "per_kg",
  "basis": "wholesale",
+ "eggs": {
+  "date": "2026-08-20",
+  "unit": "per_piece",
+  "declared": 5.4,
+  "observed": {
+   "low": 5.84,
+   "typical": 7.66,
+   "high": 10.06,
+   "n": 465
+  },
+  "window_days": 30,
+  "note": "The NECC rate is suggestive, not mandatory. Shops add their own margin, so a higher shop price is normal.",
+  "source": "National Egg Coordination Committee, Namakkal zone"
+ },
+ "autos": {
+  "date": "2026-08-10",
+  "unit": "per_ride",
+  "rows": [
+   {
+    "km": 2.0,
+    "notified": 27.4,
+    "observed": {
+     "low": 29.0,
+     "typical": 35.0,
+     "high": 90.0,
+     "n": 256
+    }
+   },
+   {
+    "km": 3.0,
+    "notified": 39.4,
+    "observed": {
+     "low": 38.0,
+     "typical": 50.0,
+     "high": 90.0,
+     "n": 311
+    }
+   },
+   {
+    "km": 5.0,
+    "notified": 63.4,
+    "observed": {
+     "low": 59.0,
+     "typical": 80.0,
+     "high": 100.0,
+     "n": 630
+    }
+   },
+   {
+    "km": 8.0,
+    "notified": 99.4,
+    "observed": {
+     "low": 70.0,
+     "typical": 101.0,
+     "high": 117.0,
+     "n": 271
+    }
+   },
+   {
+    "km": 10.0,
+    "notified": 123.4,
+    "observed": null
+   }
+  ],
+  "window_days": 30,
+  "note": "The notified fare is the regulated rate for the distance. Waiting time and night trips are charged extra.",
+  "source": "Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept \u2014 Vellore district schedule"
+ },
  "source": "Agmarknet daily mandi prices, Government of India",
  "min_markets": 3,
  "items": [

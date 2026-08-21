@@ -268,8 +268,50 @@ def gen_ridehail() -> None:
 
 # --- 5. field reports (form CSV, tier C) -----------------------------------
 
-def jitter(v: float, m: float = 0.0009) -> float:
-    return float(v + RNG.normal(0, m))
+# A single tight Gaussian put 99% of reports within 342 m of one of five points,
+# so the heatmap drew five dense blobs on an otherwise empty district -- which is
+# not what citizen reporting looks like. Real reports come from wherever people
+# shop and travel: mostly near the market, some across the neighbourhood, a few
+# well out along the roads.
+#
+# Modelled as a mixture rather than one wider Gaussian, because simply widening
+# it would thin the market clusters out of existence at the same time. The three
+# components are: at the market, around the neighbourhood, and out of town.
+SPREAD = ((0.60, 0.0012),      # ~130 m  -- at the market itself
+          (0.32, 0.0060),      # ~660 m  -- around the neighbourhood
+          (0.08, 0.0240))      # ~2.6 km -- further out along the roads
+
+
+def jitter(v: float, m: float | None = None) -> float:
+    if m is not None:
+        return float(v + RNG.normal(0, m))
+    u, acc = RNG.random(), 0.0
+    for weight, sigma in SPREAD:
+        acc += weight
+        if u <= acc:
+            return float(v + RNG.normal(0, sigma))
+    return float(v + RNG.normal(0, SPREAD[-1][1]))
+
+
+# The frame the heatmap draws. A report outside it is not wrong, but it is
+# invisible, and a fixture that generates data its own map cannot show is a
+# fixture that will mislead whoever reads the map.
+FRAME_LAT = (12.885, 12.985)
+FRAME_LNG = (79.070, 79.345)
+
+
+def in_frame(lat: float, lng: float) -> bool:
+    return (FRAME_LAT[0] <= lat <= FRAME_LAT[1]
+            and FRAME_LNG[0] <= lng <= FRAME_LNG[1])
+
+
+def scatter(lat: float, lng: float) -> tuple[float, float]:
+    """Jitter until the point lands inside the drawn frame."""
+    for _ in range(20):
+        a, b = jitter(lat), jitter(lng)
+        if in_frame(a, b):
+            return round(a, 6), round(b, 6)
+    return round(lat, 6), round(lng, 6)
 
 
 def gen_reports() -> None:
@@ -289,8 +331,8 @@ def gen_reports() -> None:
                     price = EGG_ANCHOR[d] * RNG.uniform(0.997, 1.003)
                 else:
                     price = declared * RNG.uniform(1.10, 1.30) * RNG.uniform(0.97, 1.03)
-                rows.append([f"{d.isoformat()}T18:40:00+05:30", round(jitter(lat), 6),
-                             round(jitter(lng), 6), "egg_table",
+                a, b = scatter(lat, lng)
+                rows.append([f"{d.isoformat()}T18:40:00+05:30", a, b, "egg_table",
                              round(price, 2), "per_piece", "", "local shop"])
             for _ in range(RNG.integers(1, 4)):
                 km = float(np.round(RNG.uniform(1.5, 6.0), 1))
@@ -298,9 +340,9 @@ def gen_reports() -> None:
                     fare = float(np.round((76 + 2.0 * km + RNG.normal(0, 6)) / 10.0) * 10)
                 else:
                     fare = float(np.round(gazetted_fare(km) * RNG.uniform(*NORMAL_PREMIUM)))
-                rows.append([f"{d.isoformat()}T19:10:00+05:30", round(jitter(lat), 6),
-                             round(jitter(lng), 6), "auto_ride", fare, "per_ride", km,
-                             "street quote"])
+                a, b = scatter(lat, lng)
+                rows.append([f"{d.isoformat()}T19:10:00+05:30", a, b, "auto_ride",
+                             fare, "per_ride", km, "street quote"])
 
     # A location covered ONLY by field reports, from two grid cells. It exists to
     # exercise the evidence floor: the pattern is real but the evidence is thin,

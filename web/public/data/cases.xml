@@ -12,37 +12,37 @@
       <location>Katpadi</location>
       <locationCode>vellore_katpadi</locationCode>
     </subject>
-    <window start="2026-06-01" end="2026-08-10" days="71" />
+    <window start="2026-07-21" end="2026-08-10" days="21" />
     <finding>Prices stopped varying between sellers</finding>
     <referenceRate unit="per_piece">
       <basis>NECC declared daily egg rate</basis>
       <citation>National Egg Coordination Committee — suggested daily egg rate, Namakkal zone (suggestive, not mandatory)</citation>
-      <rate>7.58</rate>
-      <expectedRange low="6.77" high="8.38" />
+      <rate>7.05</rate>
+      <expectedRange low="6.3" high="7.8" />
     </referenceRate>
-    <observed unit="per_piece" observations="363">
-      <median>9.73</median>
-      <percentAgainstReference>28.4</percentAgainstReference>
-      <provenance independentLocalities="8">
-        <source tier="B" label="commercial listing" observations="213" />
-        <source tier="C" label="field report" observations="150" />
+    <observed unit="per_piece" observations="104">
+      <median>9.78</median>
+      <percentAgainstReference>38.7</percentAgainstReference>
+      <provenance independentLocalities="17">
+        <source tier="B" label="commercial listing" observations="63" />
+        <source tier="C" label="field report" observations="41" />
       </provenance>
     </observed>
     <measure detector="variance_collapse">
       <statistic>median_daily_cv_across_sellers</statistic>
-      <value>0.0021</value>
+      <value>0.0019</value>
       <threshold>0.03</threshold>
       <supporting>
-        <value name="days_collapsed">71</value>
+        <value name="days_collapsed">21</value>
       </supporting>
       <explanation>Independent sellers facing the same costs still disagree on price, because they buy at different times and carry different stock. This measure is the day-to-day spread of prices across sellers in one location. A spread that stays near zero for weeks is what a single repeated price looks like.</explanation>
     </measure>
-    <peersInBand residualStandardDeviation="0.946">
+    <peersInBand residualStandardDeviation="1.253">
       <location>Bagayam</location>
       <location>Sathuvachari</location>
       <location>Thorapadi</location>
     </peersInBand>
-    <summary>Prices from 363 observations across the location stayed within 0.2% of one another for 71 days, against a 3.0% threshold; median +28% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.</summary>
+    <summary>Prices from 104 observations across the location stayed within 0.2% of one another for 21 days, against a 3.0% threshold; median +39% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.</summary>
     <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
   </caseFile>
   <caseFile reference="FLG-0002" priority="3" status="Flagged for investigation" generated="2026-08-20">
@@ -65,12 +65,12 @@
       <rate>7.64</rate>
       <expectedRange low="6.83" high="8.45" />
     </referenceRate>
-    <observed unit="per_piece" observations="243">
+    <observed unit="per_piece" observations="234">
       <median>9.78</median>
       <percentAgainstReference>28.0</percentAgainstReference>
-      <provenance independentLocalities="8">
+      <provenance independentLocalities="38">
         <source tier="B" label="commercial listing" observations="141" />
-        <source tier="C" label="field report" observations="102" />
+        <source tier="C" label="field report" observations="93" />
       </provenance>
     </observed>
     <measure detector="cost_correlation">
@@ -78,12 +78,12 @@
       <value>1.117</value>
       <threshold>0.4</threshold>
       <supporting>
-        <value name="peer_correlation">0.91</value>
+        <value name="peer_correlation">0.909</value>
         <value name="cost_correlation">-0.208</value>
       </supporting>
       <explanation>A competitive price moves when costs move. This measure compares how closely each seller's price follows its neighbours' prices against how closely it follows the published reference rate. A price that follows the neighbours and ignores the reference rate is the pattern this system exists to surface.</explanation>
     </measure>
-    <peersInBand residualStandardDeviation="1.065">
+    <peersInBand residualStandardDeviation="1.112">
       <location>Bagayam</location>
       <location>Sathuvachari</location>
       <location>Thorapadi</location>
@@ -103,34 +103,34 @@
       <location>Katpadi</location>
       <locationCode>vellore_katpadi</locationCode>
     </subject>
-    <window start="2026-07-10" end="2026-07-30" days="21" />
+    <window start="2026-07-04" end="2026-07-22" days="19" />
     <finding>Sustained gap above the reference rate</finding>
     <referenceRate unit="per_ride">
       <basis>Notified autorickshaw fare schedule</basis>
       <citation>Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept — Vellore district schedule</citation>
-      <rate>61.87</rate>
-      <expectedRange low="53.8" high="69.94" />
+      <rate>59.11</rate>
+      <expectedRange low="51.4" high="66.82" />
     </referenceRate>
-    <observed unit="per_ride" observations="291">
+    <observed unit="per_ride" observations="267">
       <median>80.0</median>
-      <percentAgainstReference>29.3</percentAgainstReference>
-      <provenance independentLocalities="9">
-        <source tier="B" label="commercial listing" observations="252" />
+      <percentAgainstReference>35.3</percentAgainstReference>
+      <provenance independentLocalities="30">
+        <source tier="B" label="commercial listing" observations="228" />
         <source tier="C" label="field report" observations="39" />
       </provenance>
     </observed>
     <measure detector="persistence">
       <statistic>consecutive_days_above_band</statistic>
-      <value>21</value>
+      <value>19</value>
       <threshold>10</threshold>
       <explanation>Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock.</explanation>
     </measure>
-    <peersInBand residualStandardDeviation="4.654">
+    <peersInBand residualStandardDeviation="4.65">
       <location>Bagayam</location>
       <location>Sathuvachari</location>
       <location>Thorapadi</location>
     </peersInBand>
-    <summary>Prices stayed above the expected range for 21 consecutive days; median +29% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.</summary>
+    <summary>Prices stayed above the expected range for 19 consecutive days; median +35% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.</summary>
     <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
   </caseFile>
   <caseFile reference="FLG-0004" priority="2" status="Flagged for investigation" generated="2026-08-20">
@@ -166,7 +166,7 @@
       <threshold>10</threshold>
       <explanation>Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock.</explanation>
     </measure>
-    <peersInBand residualStandardDeviation="0.355">
+    <peersInBand residualStandardDeviation="0.358">
       <location>Kahithapattarai Sandhai</location>
       <location>Katpadi Sandhai</location>
       <location>Pallikonda Sandhai</location>
@@ -318,12 +318,12 @@
       <rate>7.58</rate>
       <expectedRange low="6.77" high="8.38" />
     </referenceRate>
-    <observed unit="per_piece" observations="363">
+    <observed unit="per_piece" observations="355">
       <median>9.73</median>
       <percentAgainstReference>28.4</percentAgainstReference>
-      <provenance independentLocalities="8">
+      <provenance independentLocalities="50">
         <source tier="B" label="commercial listing" observations="213" />
-        <source tier="C" label="field report" observations="150" />
+        <source tier="C" label="field report" observations="142" />
       </provenance>
     </observed>
     <measure detector="persistence">
@@ -332,7 +332,7 @@
       <threshold>10</threshold>
       <explanation>Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock.</explanation>
     </measure>
-    <peersInBand residualStandardDeviation="0.946">
+    <peersInBand residualStandardDeviation="0.989">
       <location>Bagayam</location>
       <location>Sathuvachari</location>
       <location>Thorapadi</location>
@@ -584,7 +584,7 @@
       <threshold>10</threshold>
       <explanation>Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock.</explanation>
     </measure>
-    <peersInBand residualStandardDeviation="0.357">
+    <peersInBand residualStandardDeviation="0.361">
       <location>Kahithapattarai Sandhai</location>
       <location>Katpadi Sandhai</location>
       <location>Pallikonda Sandhai</location>
@@ -652,7 +652,7 @@
       <basis>Modelled competitive range from wholesale mandi prices</basis>
       <citation>Agmarknet daily mandi report — Directorate of Marketing &amp; Inspection, modal wholesale price, Vellore district</citation>
       <rate>47.5</rate>
-      <expectedRange low="41.61" high="54.44" />
+      <expectedRange low="41.61" high="54.41" />
     </referenceRate>
     <observed unit="per_kg" observations="12">
       <median>66.0</median>
@@ -692,33 +692,33 @@
     <referenceRate unit="per_ride">
       <basis>Notified autorickshaw fare schedule</basis>
       <citation>Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept — Vellore district schedule</citation>
-      <rate>61.87</rate>
-      <expectedRange low="53.8" high="69.94" />
+      <rate>63.25</rate>
+      <expectedRange low="55.0" high="71.5" />
     </referenceRate>
-    <observed unit="per_ride" observations="1082">
+    <observed unit="per_ride" observations="1076">
       <median>80.0</median>
-      <percentAgainstReference>29.3</percentAgainstReference>
-      <provenance independentLocalities="21">
+      <percentAgainstReference>26.5</percentAgainstReference>
+      <provenance independentLocalities="87">
         <source tier="B" label="commercial listing" observations="924" />
-        <source tier="C" label="field report" observations="158" />
+        <source tier="C" label="field report" observations="152" />
       </provenance>
     </observed>
     <measure detector="quantisation">
       <statistic>modal_mass_at_round_values</statistic>
-      <value>0.927</value>
+      <value>0.926</value>
       <threshold>0.6</threshold>
       <supporting>
-        <value name="distance_r2">0.239</value>
+        <value name="distance_r2">0.234</value>
         <value name="distance_r2_threshold">0.35</value>
       </supporting>
       <explanation>A metered fare varies continuously with distance. This measure reports the share of quoted fares landing on round multiples, together with how much of the fare is explained by distance at all. Round numbers with weak distance response describe a fare that was set rather than measured.</explanation>
     </measure>
-    <peersInBand residualStandardDeviation="4.594">
+    <peersInBand residualStandardDeviation="4.59">
       <location>Bagayam</location>
       <location>Sathuvachari</location>
       <location>Thorapadi</location>
     </peersInBand>
-    <summary>Quoted fares cluster at round values (93% of quotes) with weak distance sensitivity (R² 0.24); median +29% relative to the notified rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.</summary>
+    <summary>Quoted fares cluster at round values (93% of quotes) with weak distance sensitivity (R² 0.23); median +26% relative to the notified rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.</summary>
     <caveat>This document records a statistical pattern flagged for investigation. It does not establish that any party has set prices unlawfully. Sellers are identified only by pseudonymous location codes.</caveat>
   </caseFile>
 </caseFileSet>

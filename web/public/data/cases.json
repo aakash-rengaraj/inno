@@ -6,52 +6,52 @@
   "tier": 3,
   "tier_label": "Priority",
   "finding": "Prices stopped varying between sellers",
-  "narrative": "Prices from 363 observations across the location stayed within 0.2% of one another for 71 days, against a 3.0% threshold; median +28% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
+  "narrative": "Prices from 104 observations across the location stayed within 0.2% of one another for 21 days, against a 3.0% threshold; median +39% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
   "window": {
-   "start": "2026-06-01",
+   "start": "2026-07-21",
    "end": "2026-08-10"
   },
-  "duration_days": 71,
+  "duration_days": 21,
   "reference": {
    "basis": "NECC declared daily egg rate",
-   "rate": 7.58,
+   "rate": 7.05,
    "band": [
-    6.77,
-    8.38
+    6.3,
+    7.8
    ],
    "unit": "per piece",
    "citation": "National Egg Coordination Committee \u2014 suggested daily egg rate, Namakkal zone (suggestive, not mandatory)"
   },
   "observed": {
-   "median": 9.73,
+   "median": 9.78,
    "unit": "per piece",
-   "n": 363,
-   "pct_vs_reference": 28.4,
+   "n": 104,
+   "pct_vs_reference": 38.7,
    "provenance": [
     {
      "tier": "B",
      "label": "commercial listing",
-     "n": 213
+     "n": 63
     },
     {
      "tier": "C",
      "label": "field report",
-     "n": 150
+     "n": 41
     }
    ],
-   "distinct_localities": 8
+   "distinct_localities": 17
   },
   "measure": {
    "detector": "variance_collapse",
    "name": "median_daily_cv_across_sellers",
-   "value": 0.0021,
+   "value": 0.0019,
    "threshold": 0.03,
    "extra": {
-    "days_collapsed": 71
+    "days_collapsed": 21
    },
    "explanation": "Independent sellers facing the same costs still disagree on price, because they buy at different times and carry different stock. This measure is the day-to-day spread of prices across sellers in one location. A spread that stays near zero for weeks is what a single repeated price looks like."
   },
-  "residual_sd": 0.946,
+  "residual_sd": 1.253,
   "peers_in_band": [
    "Bagayam",
    "Sathuvachari",
@@ -86,7 +86,7 @@
   "observed": {
    "median": 9.78,
    "unit": "per piece",
-   "n": 243,
+   "n": 234,
    "pct_vs_reference": 28.0,
    "provenance": [
     {
@@ -97,10 +97,10 @@
     {
      "tier": "C",
      "label": "field report",
-     "n": 102
+     "n": 93
     }
    ],
-   "distinct_localities": 8
+   "distinct_localities": 38
   },
   "measure": {
    "detector": "cost_correlation",
@@ -108,12 +108,12 @@
    "value": 1.117,
    "threshold": 0.4,
    "extra": {
-    "peer_correlation": 0.91,
+    "peer_correlation": 0.909,
     "cost_correlation": -0.208
    },
    "explanation": "A competitive price moves when costs move. This measure compares how closely each seller's price follows its neighbours' prices against how closely it follows the published reference rate. A price that follows the neighbours and ignores the reference rate is the pattern this system exists to surface."
   },
-  "residual_sd": 1.065,
+  "residual_sd": 1.112,
   "peers_in_band": [
    "Bagayam",
    "Sathuvachari",
@@ -129,18 +129,18 @@
   "tier": 2,
   "tier_label": "Review",
   "finding": "Sustained gap above the reference rate",
-  "narrative": "Prices stayed above the expected range for 21 consecutive days; median +29% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
+  "narrative": "Prices stayed above the expected range for 19 consecutive days; median +35% relative to the reference rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
   "window": {
-   "start": "2026-07-10",
-   "end": "2026-07-30"
+   "start": "2026-07-04",
+   "end": "2026-07-22"
   },
-  "duration_days": 21,
+  "duration_days": 19,
   "reference": {
    "basis": "Notified autorickshaw fare schedule",
-   "rate": 61.87,
+   "rate": 59.11,
    "band": [
-    53.8,
-    69.94
+    51.4,
+    66.82
    ],
    "unit": "per ride",
    "citation": "Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept \u2014 Vellore district schedule"
@@ -148,13 +148,13 @@
   "observed": {
    "median": 80.0,
    "unit": "per ride",
-   "n": 291,
-   "pct_vs_reference": 29.3,
+   "n": 267,
+   "pct_vs_reference": 35.3,
    "provenance": [
     {
      "tier": "B",
      "label": "commercial listing",
-     "n": 252
+     "n": 228
     },
     {
      "tier": "C",
@@ -162,17 +162,17 @@
      "n": 39
     }
    ],
-   "distinct_localities": 9
+   "distinct_localities": 30
   },
   "measure": {
    "detector": "persistence",
    "name": "consecutive_days_above_band",
-   "value": 21,
+   "value": 19,
    "threshold": 10,
    "extra": {},
    "explanation": "Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock."
   },
-  "residual_sd": 4.654,
+  "residual_sd": 4.65,
   "peers_in_band": [
    "Bagayam",
    "Sathuvachari",
@@ -226,7 +226,7 @@
    "extra": {},
    "explanation": "Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock."
   },
-  "residual_sd": 0.355,
+  "residual_sd": 0.358,
   "peers_in_band": [
    "Kahithapattarai Sandhai",
    "Katpadi Sandhai",
@@ -424,7 +424,7 @@
   "observed": {
    "median": 9.73,
    "unit": "per piece",
-   "n": 363,
+   "n": 355,
    "pct_vs_reference": 28.4,
    "provenance": [
     {
@@ -435,10 +435,10 @@
     {
      "tier": "C",
      "label": "field report",
-     "n": 150
+     "n": 142
     }
    ],
-   "distinct_localities": 8
+   "distinct_localities": 50
   },
   "measure": {
    "detector": "persistence",
@@ -448,7 +448,7 @@
    "extra": {},
    "explanation": "Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock."
   },
-  "residual_sd": 0.946,
+  "residual_sd": 0.989,
   "peers_in_band": [
    "Bagayam",
    "Sathuvachari",
@@ -778,7 +778,7 @@
    "extra": {},
    "explanation": "Any location can sit above its expected range for a day. This measure counts consecutive days above the range, and reports which neighbouring locations stayed inside it over the same period. Named in-band neighbours are what distinguishes a local pricing pattern from a district-wide supply shock."
   },
-  "residual_sd": 0.357,
+  "residual_sd": 0.361,
   "peers_in_band": [
    "Kahithapattarai Sandhai",
    "Katpadi Sandhai",
@@ -860,7 +860,7 @@
    "rate": 47.5,
    "band": [
     41.61,
-    54.44
+    54.41
    ],
    "unit": "per kg",
    "citation": "Agmarknet daily mandi report \u2014 Directorate of Marketing & Inspection, modal wholesale price, Vellore district"
@@ -903,7 +903,7 @@
   "tier": 3,
   "tier_label": "Priority",
   "finding": "Fares cluster at round values",
-  "narrative": "Quoted fares cluster at round values (93% of quotes) with weak distance sensitivity (R\u00b2 0.24); median +29% relative to the notified rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
+  "narrative": "Quoted fares cluster at round values (93% of quotes) with weak distance sensitivity (R\u00b2 0.23); median +26% relative to the notified rate while peer locations Bagayam, Sathuvachari and 1 other remained in-band.",
   "window": {
    "start": "2026-05-26",
    "end": "2026-08-10"
@@ -911,10 +911,10 @@
   "duration_days": 77,
   "reference": {
    "basis": "Notified autorickshaw fare schedule",
-   "rate": 61.87,
+   "rate": 63.25,
    "band": [
-    53.8,
-    69.94
+    55.0,
+    71.5
    ],
    "unit": "per ride",
    "citation": "Tamil Nadu Motor Vehicles (Autorickshaw Fare) Notification, G.O. (Ms) No. 41, Transport Dept \u2014 Vellore district schedule"
@@ -922,8 +922,8 @@
   "observed": {
    "median": 80.0,
    "unit": "per ride",
-   "n": 1082,
-   "pct_vs_reference": 29.3,
+   "n": 1076,
+   "pct_vs_reference": 26.5,
    "provenance": [
     {
      "tier": "B",
@@ -933,23 +933,23 @@
     {
      "tier": "C",
      "label": "field report",
-     "n": 158
+     "n": 152
     }
    ],
-   "distinct_localities": 21
+   "distinct_localities": 87
   },
   "measure": {
    "detector": "quantisation",
    "name": "modal_mass_at_round_values",
-   "value": 0.927,
+   "value": 0.926,
    "threshold": 0.6,
    "extra": {
-    "distance_r2": 0.239,
+    "distance_r2": 0.234,
     "distance_r2_threshold": 0.35
    },
    "explanation": "A metered fare varies continuously with distance. This measure reports the share of quoted fares landing on round multiples, together with how much of the fare is explained by distance at all. Round numbers with weak distance response describe a fare that was set rather than measured."
   },
-  "residual_sd": 4.594,
+  "residual_sd": 4.59,
   "peers_in_band": [
    "Bagayam",
    "Sathuvachari",

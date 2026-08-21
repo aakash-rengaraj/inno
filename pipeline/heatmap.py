@@ -31,7 +31,7 @@ FRAME = {"lat_min": 12.885, "lat_max": 12.985,
          "lng_min": 79.070, "lng_max": 79.345}
 
 CELL_M = 150.0
-MIN_REPORTS = 3          # the evidence floor, applied to pixels
+MIN_REPORTS = 1          # display only -- see the note above; the queue floor is 3
 M_PER_DEG_LAT = 110_574.0
 M_PER_DEG_LNG = 108_400.0   # at ~12.9 N
 

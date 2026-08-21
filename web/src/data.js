@@ -60,6 +60,20 @@ export const DETECTOR_LABEL = {
   quantisation: 'Fares cluster at round values',
 }
 
-export const shortDate = (d) =>
-  new Date(d + 'T00:00:00').toLocaleDateString('en-IN',
+// `locale` so the public page can show a Tamil month beside Tamil text; the
+// console always passes nothing and stays en-IN, which is what its case files
+// are printed in.
+// Percent above or below the reference rate. Derived, not stored: it was
+// computed inline in Queue.jsx, so the case-file list silently rendered an empty
+// column when it read a `gap` field that does not exist in the artifact. One
+// definition, used by both.
+export const gapPct = (flag) => {
+  const rate = flag?.expected?.rate
+  const median = flag?.observed?.median
+  if (!rate || median == null) return null
+  return (median / rate - 1) * 100
+}
+
+export const shortDate = (d, locale = 'en-IN') =>
+  new Date(d + 'T00:00:00').toLocaleDateString(locale,
     { day: '2-digit', month: 'short' })

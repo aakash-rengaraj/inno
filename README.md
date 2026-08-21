@@ -336,9 +336,61 @@ priority row its only signal.
 Charts duplicate the palette as literals (Recharts needs real colours, not CSS
 variables) — `web/src/Charts.jsx` carries a note to keep them in step.
 
+Motion is 110–260ms, eased out, never bouncy — a button that springs would
+undermine the tone the rest of the design is working for. Nothing animated moves
+layout: every transition is colour, opacity, border or a sub-pixel transform, so
+a slow device degrades to the static design rather than to a janky one.
+
+Two rules the animation follows:
+
+- **No `animation-fill-mode`.** `both` holds the *first* frame — `opacity: 0` —
+  until the animation runs, so anything that stops it starting leaves the page
+  blank instead of unanimated. Without a fill mode the element sits at its
+  natural opacity and the animation is decoration on a page that is already
+  correct. Costs one frame; buys never showing an invisible screen.
+- **Off under `prefers-reduced-motion`, and off when printing** — a case file
+  caught mid-animation would print half-faded.
+
 Both surfaces are usable on a phone. The console's ten-column queue scrolls
 inside its own box rather than scrolling the page, and the four columns that are
 corroborating detail rather than triage stand down below 760px.
+
+## Tamil
+
+The public surface is bilingual: English and தமிழ், toggled in the masthead and
+remembered in `localStorage`. `web/src/i18n.js` holds about sixty strings and
+`web/src/items.ta.js` the Tamil name of every commodity in the daily price list
+(53 of 53 covered). No i18n library — two languages over sixty strings is not
+something a dependency makes smaller, and the build is offline.
+
+Three things that needed care beyond translating the strings:
+
+- **Georgia has no Tamil glyphs.** A Tamil heading fell back to whatever the
+  browser chose and sat at a different weight and size from the English beside
+  it. `--serif-ta` / `--sans-ta` name the platform Tamil faces, scoped by
+  `:lang(ta)` — which `useLang` stamps on `<html>`.
+- **`word-break: break-word` splits Tamil mid-cluster.** It was breaking
+  நீர்ப்பூசணிக்காய் across two lines, which is not a hyphenation a reader can
+  repair. Tamil names now take the width they need and the table scrolls.
+- **Uppercase micro-labels are unreadable in Tamil**, which does not abbreviate
+  the way English does. `:lang(ta)` drops the transform and steps the size up.
+
+Commodity rows show the Tamil name with the English underneath, and search
+matches either — a shopper typing "tomato" on the Tamil page still finds தக்காளி.
+
+All three public screens are translated, the report form included: labels, unit
+hints, geolocation errors, the receipt and the commodity dropdown. The
+confirmation line is now stated by the client rather than echoed from the server
+— the server's own wording is English and says "tier C observation", which is
+internal vocabulary on the one page certainly being read by the public.
+
+**The Tamil was written without a native reviewer.** The names are the common
+market ones rather than the botanical ones, which is right for a shopper, but
+have a Tamil speaker read `items.ta.js` before the demo — three entries are
+flagged there where two English commodities share one everyday Tamil word.
+
+The console stays English. It is an internal instrument for one office, and an
+officer reading a case file needs the same wording that is printed on it.
 
 ## Layout
 
